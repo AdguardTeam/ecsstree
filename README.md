@@ -4,6 +4,10 @@
      
 # ECSSTree
 
+[![NPM version](https://img.shields.io/npm/v/ecss-tree.svg)](https://www.npmjs.com/package/ecss-tree)
+[![NPM Downloads](https://img.shields.io/npm/dm/ecss-tree.svg)](https://www.npmjs.com/package/ecss-tree)
+[![LICENSE](https://img.shields.io/github/license/scripthunter7/ecsstree)](https://github.com/scripthunter7/ecsstree/blob/main/LICENSE)
+
 "Adblock Extended CSS" supplement for [CSSTree](https://github.com/csstree/csstree). This allows you to manage the main adblock Extended CSS elements with tools from the CSSTree library. Generally, it supports AdGuard, uBlock Origin and Adblock Plus.
 
 ## Table of contents
