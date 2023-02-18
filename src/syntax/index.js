@@ -16,6 +16,12 @@ const selector = {
     },
 };
 
+const selectorList = {
+    parse() {
+        return this.createSingleNodeList(this.SelectorList());
+    },
+};
+
 const mediaQueryList = {
     parse() {
         return this.createSingleNodeList(this.MediaQueryList());
@@ -319,7 +325,7 @@ const xpath = {
  */
 const extendedCss = originalFork({
     pseudo: {
-        "-abp-has": selector,
+        "-abp-has": selectorList,
         "if-not": selector,
         upward: numberOrSelector,
         "nth-ancestor": number,
