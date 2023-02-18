@@ -4,3 +4,4 @@
 jest.config.js
 rollup.config.js
 *.tgz
+.prettierrc
