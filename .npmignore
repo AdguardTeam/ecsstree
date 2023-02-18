@@ -1,0 +1,6 @@
+.github
+/test/
+/coverage/
+jest.config.js
+rollup.config.js
+*.tgz
