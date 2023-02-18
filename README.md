@@ -6,8 +6,6 @@
 
 "Adblock Extended CSS" supplement for [CSSTree](https://github.com/csstree/csstree). This allows you to manage the main adblock Extended CSS elements with tools from the CSSTree library. Generally, it supports AdGuard, uBlock Origin and Adblock Plus.
 
-> :warning: Please note that this library is still under continuous development!
-
 ## Table of contents
 
 - [ECSSTree](#ecsstree)
