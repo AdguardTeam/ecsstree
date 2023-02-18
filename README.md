@@ -10,6 +10,8 @@
 
 "Adblock Extended CSS" supplement for [CSSTree](https://github.com/csstree/csstree). This allows you to manage the main adblock Extended CSS elements with tools from the CSSTree library. Generally, it supports AdGuard, uBlock Origin and Adblock Plus.
 
+> **Note:** If you are looking for a library that can parse CSS, and you don't know what is Adblock Extended CSS, you should probably use [CSSTree](https://github.com/csstree/csstree) instead of this library :)
+
 ## Table of contents
 
 - [ECSSTree](#ecsstree)
@@ -38,7 +40,7 @@ NPM package: https://www.npmjs.com/package/ecss-tree
 ## Currently supported Extended CSS elements
 
 - `:-abp-contains(text / regexp)`
-- `:-abp-has(selector)`
+- `:-abp-has(selector list)`
 - `:contains(text / regexp)`
 - `:has-text(text / regexp)`
 - `:if-not(selector)`
