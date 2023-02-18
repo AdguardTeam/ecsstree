@@ -157,9 +157,9 @@ const { inspect } = require('util');
 
 // Some inputs to test
 const inputs = [
-    'div:-abp-has(> .some-class > a[href^="https://example.com"])',
-    "body:style(padding-top: 0 !important;):matches-media((min-width: 500px) and (max-width: 1000px))",
-    "section:upward(2):contains(aaa'bbb):xpath(//div[@class='some-class'])",
+    `div:-abp-has(> .some-class > a[href^="https://example.com"])`,
+    `body:style(padding-top: 0 !important;):matches-media((min-width: 500px) and (max-width: 1000px))`,
+    `section:upward(2):contains(aaa'bbb):xpath(//*[contains(text(),"()(cc")])`,
 ];
 
 for (const input of inputs) {
