@@ -9,7 +9,6 @@
 
 import { fork as originalFork, tokenize as originalTokenize, tokenTypes } from "css-tree";
 import { CLOSING_PARENTHESIS, DOUBLE_QUOTE, ESCAPE, OPENING_PARENTHESIS, SPACE } from "../utils/constants.js";
-import { findNextUnescapedCharacter } from "../utils/string.js";
 
 const selector = {
     parse() {
@@ -106,29 +105,80 @@ const extCssContains = {
      * fix the token stream here to avoid this error.
      */
     parse() {
-        // Empty pseudo-class
-        if (this.tokenType === tokenTypes.RightParenthesis) {
-            this.error('No parameter specified for "contains()" pseudo-class');
+        // Get the current token stream
+        const tokens = this.dump();
+
+        // Note: CSSTree removes the whitespace token after the function name before calling this function
+        // So if we have :contains(  something), our tokenIndex here points to "something" and not to the
+        // whitespace token.
+
+        // :contains() case, but not :contains( something) case, so we check if the previous token is not a whitespace
+        if (this.tokenType === tokenTypes.RightParenthesis && tokens[this.tokenIndex - 1].type !== "whitespace-token") {
+            this.error('Empty parameter specified for "contains()" pseudo-class');
+        }
+
+        // Find the "real" start position of the contains() function's argument
+        let startPosition = -1;
+
+        // Save the current position within the token stream (we will need to restore it later)
+        let prevTokenIndex = this.tokenIndex;
+
+        for (let i = this.tokenIndex; i >= 0; i--) {
+            // Check token name to avoid :contains(join('')) case, where join( is also a function token
+            if (
+                tokens[i].type === "function-token" &&
+                ["contains(", "-abp-contains(", "has-text("].includes(tokens[i].chunk)
+            ) {
+                // Token after the function name is the first token of the argument
+                startPosition = this.getTokenStart(i + 1);
+                prevTokenIndex = i + 1;
+                break;
+            }
+        }
+
+        // Theoretically, this should never happen, but we check it anyway
+        if (startPosition === -1) {
+            this.error("Cannot find the start position of the contains() function's argument");
         }
 
         // Create a list for children
         const children = this.createList();
 
-        // Save the current position within the token stream (we will need to restore it later)
-        const prevTokenIndex = this.tokenIndex;
-
         // Find the real end index of the contains() function's argument
         const sourceCode = this.source;
 
-        // Find the next unescaped closing parenthesis. Don't forget to set the start position.
-        const startPosition = this.getTokenStart(this.tokenIndex);
-        const endPosition = findNextUnescapedCharacter(sourceCode, CLOSING_PARENTHESIS, startPosition);
+        let endPosition = -1;
+
+        // Parenthesis balance
+        let balance = 0;
+
+        // Contains can contain any character, such as parentheses, quotes, etc,
+        // so a bit tricky to find the end position of the pseudo-class
+        for (let i = startPosition; i < sourceCode.length; i++) {
+            const char = sourceCode[i];
+
+            if (char === OPENING_PARENTHESIS && sourceCode[i - 1] !== ESCAPE) {
+                balance++;
+            } else if (char === CLOSING_PARENTHESIS && sourceCode[i - 1] !== ESCAPE) {
+                balance--;
+
+                if (balance === -1) {
+                    endPosition = i;
+                    break;
+                }
+            }
+        }
 
         // If we cannot find the closing parenthesis, we cannot fix the token stream, so we
         // just return the children list as is. In this case, the parser will fail with an
         // error (which is correct behavior).
         if (endPosition === -1) {
             return children;
+        }
+
+        // Empty parameter
+        if (endPosition === startPosition) {
+            this.error('No parameter specified for "contains()" pseudo-class');
         }
 
         // Push content to children list
@@ -159,10 +209,7 @@ const extCssContains = {
             this.next();
         }
 
-        // But at this point we are just at the beginning of the contains() function's argument,
-        // so we need to skip the dummy spaces that we added to the source code before, which
-        // means +1 whitespace token that should be skipped:
-        this.next();
+        // CSSTree will skip insterted whitespaces
 
         // Return the children list which contains the contains() function's argument as a Raw node
         return children;
@@ -260,10 +307,7 @@ const xpath = {
             this.next();
         }
 
-        // But at this point we are just at the beginning of the xpath() function's argument,
-        // so we need to skip the dummy spaces that we added to the source code before, which
-        // means +1 whitespace token that should be skipped:
-        this.next();
+        // CSSTree will skip insterted whitespaces
 
         // Return the children list which contains the xpath() function's argument as a Raw node
         return children;
