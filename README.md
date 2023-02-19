@@ -48,7 +48,9 @@ You can install the library using one of the following methods:
   yarn add ecss-tree
   ```
 
-NPM package: https://www.npmjs.com/package/ecss-tree
+Links:
+- NPM package: https://www.npmjs.com/package/ecss-tree
+- JSDelivr CDN: https://www.jsdelivr.com/package/npm/ecss-tree
 
 ## Supported Extended CSS elements
 
@@ -354,8 +356,16 @@ Example usage:
 
 ```html
 <script>
-    const ast = ECSSTree.parse("input", { context: "selector" });
+    // Selector to parse
+    const selector = `div[title="Hello world!"]`;
+
+    // Double linked list version of AST
+    const ast = ECSSTree.parse(selector, { context: "selector" });
+
+    // Plain object version of AST
     const plain = ECSSTree.toPlainObject(ast);
+
+    // Print AST object to console
     console.log(plain);
 </script>
 ```
