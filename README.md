@@ -8,23 +8,32 @@
 [![NPM Downloads](https://img.shields.io/npm/dm/ecss-tree.svg)](https://www.npmjs.com/package/ecss-tree)
 [![LICENSE](https://img.shields.io/github/license/scripthunter7/ecsstree)](https://github.com/scripthunter7/ecsstree/blob/main/LICENSE)
 
-"Adblock Extended CSS" supplement for [CSSTree](https://github.com/csstree/csstree). This allows you to manage the main adblock Extended CSS elements with tools from the CSSTree library. Generally, it supports AdGuard, uBlock Origin and Adblock Plus.
+Adblock Extended CSS supplement for [CSSTree](https://github.com/csstree/csstree). This allows you to manage the main adblock Extended CSS elements with tools from the CSSTree library. It supports various Extended CSS language elements from Adblock Plus, AdGuard, and uBlock Origin. See the [Supported Extended CSS elements](#supported-extended-css-elements) section for a list of currently supported elements.
 
-> **Note:** If you are looking for a library that can parse CSS, and you don't know what is Adblock Extended CSS, you should probably use [CSSTree](https://github.com/csstree/csstree) instead of this library :)
+Our primary goal is to change the internal behavior of the CSSTree parser to support Extended CSS elements, but we don't want to change the API or the AST structure of CSSTree. This means that this library keeps the same API as CSSTree, and you can use it as a drop-in replacement for CSSTree if you need to parse Extended CSS.
+
+> :warning: **Note:** If you are looking for a library that can parse CSS, and you don't know what is Adblock / Extended CSS, you should probably use [CSSTree](https://github.com/csstree/csstree) instead of this library :)
 
 ## Table of contents
 
 - [ECSSTree](#ecsstree)
   - [Table of contents](#table-of-contents)
   - [Installation](#installation)
-  - [Currently supported Extended CSS elements](#currently-supported-extended-css-elements)
+  - [Supported Extended CSS elements](#supported-extended-css-elements)
   - [Motivation](#motivation)
     - [Advanced validation](#advanced-validation)
   - [Handle problematic cases](#handle-problematic-cases)
   - [Example JavaScript code](#example-javascript-code)
+  - [Development / Contributing](#development--contributing)
+    - [Development commands](#development-commands)
+  - [Reporting problems / Requesting features](#reporting-problems--requesting-features)
+  - [License](#license)
+  - [Acknowledgements](#acknowledgements)
   - [References](#references)
 
 ## Installation
+
+You can install the library using one of the following methods:
 
 - Using NPM:
   ```bash
@@ -37,21 +46,33 @@
 
 NPM package: https://www.npmjs.com/package/ecss-tree
 
-## Currently supported Extended CSS elements
+## Supported Extended CSS elements
 
-- `:-abp-contains(text / regexp)`
-- `:-abp-has(selector list)`
-- `:contains(text / regexp)`
-- `:has-text(text / regexp)`
-- `:if-not(selector)`
-- `:matches-media(media query list)`
-- `:min-text-length(number)`
-- `:nth-ancestor(number)`
-- `:style(style declaration list)`
-- `:upward(selector / number)`
-- `:xpath(xpath expression)`
+Currently, the following Extended CSS pseudo classes are supported:
 
-If a pseudo class is unknown to CSSTree, it parses its parameters as raw (if possible - see [problematic cases](https://github.com/scripthunter7/ecsstree#handle-problematic-cases)).
+- `:-abp-contains(text / regexp)`: [[ABP reference]](https://help.adblockplus.org/hc/en-us/articles/360062733293#elemhide_css)
+- `:-abp-has(selector list)`: [[ABP reference]](https://help.adblockplus.org/hc/en-us/articles/360062733293#elemhide_css)
+- `:contains(text / regexp)`: [[ADG reference]](https://github.com/AdguardTeam/ExtendedCss#extended-css-contains)
+- `:has-text(text / regexp)`: [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjecthas-textneedle)
+- `:if-not(selector)`: [[ADG reference]](https://github.com/AdguardTeam/ExtendedCss#extended-css-if-not)
+- `:matches-media(media query list)`: [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjectmatches-mediaarg)
+- `:min-text-length(number)`: [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjectmin-text-lengthn)
+- `:nth-ancestor(number)`: [[ADG reference]](https://github.com/AdguardTeam/ExtendedCss#extended-css-nth-ancestor)
+- `:style(style declaration list)`: [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Static-filter-syntax#subjectstylearg)
+- `:upward(selector / number)`: [[ADG reference]](https://github.com/AdguardTeam/ExtendedCss#extended-css-upward), [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjectupwardarg)
+- `:xpath(xpath expression)`: [[ADG reference]](https://github.com/AdguardTeam/ExtendedCss#-pseudo-class-xpath), [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjectxpatharg)
+
+In addition, CSSTree supports the following pseudo classes [by default](https://github.com/csstree/csstree/blob/master/lib/syntax/pseudo/index.js):
+- `:has(selector list)`: [[W3C reference]](https://drafts.csswg.org/selectors-4/#has-pseudo), [[ADG reference]](https://github.com/AdguardTeam/ExtendedCss#extended-css-has), [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjecthasarg)
+- `:not(selector list)`: [[W3C reference]](https://drafts.csswg.org/selectors-4/#negation-pseudo), [[ADG reference]](https://github.com/AdguardTeam/ExtendedCss#extended-css-not), [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjectnotarg)
+- `:is(selector list)`: [[W3C reference]](https://drafts.csswg.org/selectors-4/#is-pseudo), [[ADG reference]](https://github.com/AdguardTeam/ExtendedCss#extended-css-is)
+
+Also, CSSTree supports legacy Extended CSS elements by default (attribute selectors): `[-ext-name="value"]`, where `name` is the name of the Extended CSS element and `value` is its value. For example, the following selector can be parsed by CSSTree:
+```css
+[-ext-has="selector list"]
+```
+
+If a pseudo class is unknown to CSSTree, it tries to parse it as a `Raw` element (if possible - see [problematic cases](https://github.com/scripthunter7/ecsstree#handle-problematic-cases)).
 
 The CSSTree library itself is quite flexible and error-tolerant, so it basically manages well the Extended CSS elements that are not (yet) included here.
 
@@ -61,7 +82,7 @@ For example, the following selector
 ```css
 div:-abp-has(> section)
 ```
-will be parsed by the default CSS Tree as follows
+will be parsed by the default CSSTree as follows
 ```json
 {
     "type": "Selector",
@@ -83,7 +104,7 @@ will be parsed by the default CSS Tree as follows
 }
 ```
 
-The problem with this is that the `-abp-has` parameter is parsed as `Raw`, not as a `Selector`, since `-abp-has` is an unknown pseudo class in CSS.
+The problem with this is that the `-abp-has` parameter is parsed as `Raw`, not as a `Selector`, since `-abp-has` is an unknown pseudo class in CSS / CSSTree.
 
 This is where the ECSSTree library comes into play. It detects that `-abp-has` expects a selector as a parameter, i.e. it parses the passed parameter as a `Selector`. This means that the selector above will be parsed as follows:
 ```json
@@ -135,7 +156,7 @@ The library also handles problematic selectors, such as the following:
 div:contains(aaa'bbb)
 ```
 
-This selector doesn't fully meet with CSS standards, so even if CSSTree's is flexible, it will not be able to parse it properly, because it will tokenize it as follows:
+This selector doesn't fully meet with CSS standards, so even if CSSTree is flexible, it will not be able to parse it properly, because it will tokenize it as follows:
 
 | Token type | Start index | End index | Source part |
 | --- | --- | --- | --- |
@@ -145,9 +166,11 @@ This selector doesn't fully meet with CSS standards, so even if CSSTree's is fle
 | ident-token | 13 | 16 | aaa
 | string-token | 16 | 21 | 'bbb)
 
-At quote mark (') tokenizer will think that a string is starting, and it tokenizes the rest of the input as a string. This is the normal behavior for the tokenizer, but it is wrong for us, since the parser will fail with an `")" is expected` error, as it doesn't found the closing parenthesis, since it thinks that the string is still open.
+At quote mark (`'`) tokenizer will think that a string is starting, and it tokenizes the rest of the input as a string. This is the normal behavior for the tokenizer, but it is wrong for us, since the parser will fail with an `")" is expected` error, as it doesn't found the closing parenthesis, since it thinks that the string is still open.
 
 ECSSTree will handle this case by a special re-tokenization algorithm during the parsing process, when parser reaches this problematic point. This way, ECSSTree's parser will be able to parse this selector properly. It is also true for `xpath`.
+
+*Note:* ECSSTree parses `:contains` and `:xpath` parameters as `Raw`. The main goal of this library is changing the internal behavior of the CSSTree's parser to make it able to parse the Extended CSS selectors properly, not to change the AST itself. The AST should be the same as in CSSTree, so that the library can be used as a drop-in replacement for CSSTree. Parsing `:xpath` expressions or regular expressions in detail would be a huge task, and requires new AST nodes, which would be a breaking change. But it always parses the correct raw expression for you, so you can parse/validate these expressions yourself if you want. There are many libraries for this, such as [xpath](https://www.npmjs.com/package/xpath) or [regexpp](https://www.npmjs.com/package/regexpp).
 
 ## Example JavaScript code
 
@@ -185,7 +208,49 @@ for (const input of inputs) {
 }
 ```
 
+## Development / Contributing
+
+Here is a short guide on how to contribute to this project:
+
+- Pre-requisites: [Node.js](https://nodejs.org/en/) (v14 or higher), [Yarn](https://yarnpkg.com/) (v2 or higher), [Git](https://git-scm.com/), [VSCode](https://code.visualstudio.com/) (optional)
+- Clone the repository with `git clone`
+- Install dependencies with `yarn install`
+- Create a new branch with `git checkout -b <branch-name>` (e.g. `git checkout -b add-some-feature`)
+- Make your changes in the `src` folder and make suitable tests for them in the `test` folder
+- **Please do NOT differ from the original CSSTree API!** Our primary goal is to keep the API as close as possible to the original CSSTree, so that it is easy to switch between the two libraries, if needed. We only improve the "internal logic" of the library to make it able to parse Extended CSS selectors, but the API should be the same!
+- Run tests with `yarn test` (or run only a specific test with `yarn test <test-name>`)
+- Commit your changes and push them to GitHub to your fork
+- Create a pull request to this repository
+
+*Note:* you can find CSSTree API map here: https://github.com/csstree/csstree#top-level-api
+
+We would be happy to review your pull request and merge it if it is suitable for the project.
+
+### Development commands
+
+During development, you can use the following commands (listed in `package.json`):
+
+- `yarn test` - run tests with [Jest](https://jestjs.io/) (you can also run a specific test with `yarn test <test-name>`)
+- `yarn build` - build the library to the `dist` folder by using [Rollup](https://rollupjs.org/)
+
+## Reporting problems / Requesting features
+
+If you find a bug or want to request a new feature, please open an issue or a discussion on GitHub. Please provide a detailed description of the problem or the feature, and if possible, a code example, to make it easier to understand.
+
+## License
+
+This library is licensed under the MIT license. See the [LICENSE](https://github.com/scripthunter7/ecsstree/blob/main/LICENSE) file for more info.
+
+## Acknowledgements
+
+In this section, we would like to thank the following people for their work:
+
+- Roman Dvornov ([lahmatiy](https://github.com/lahmatiy)) for creating and maintaining the [CSSTree](https://github.com/csstree/csstree) library
+
 ## References
+
+Here are some useful links to learn more about Extended CSS selectors:
+
 - CSSTree docs: https://github.com/csstree/csstree/tree/master/docs
 - AdGuard *ExtendedCSS*: https://github.com/AdguardTeam/ExtendedCss
 - uBlock *"Procedural cosmetic filters"*: https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters
