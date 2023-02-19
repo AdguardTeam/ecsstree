@@ -27,6 +27,7 @@ Our primary goal is to change the internal behavior of the CSSTree parser to sup
     - [Parse and generate](#parse-and-generate)
     - [Validate XPath expressions in `:xpath()` (walker example)](#validate-xpath-expressions-in-xpath-walker-example)
     - [Validate Regular Expressions in `:contains()` (walker example)](#validate-regular-expressions-in-contains-walker-example)
+  - [Using in browser](#using-in-browser)
   - [Development / Contributing](#development--contributing)
     - [Development commands](#development-commands)
   - [Reporting problems / Requesting features](#reporting-problems--requesting-features)
@@ -333,6 +334,30 @@ for (const input of inputs) {
         }
     });
 }
+```
+
+## Using in browser
+
+Our build process generates a browser-friendly version of the library, which can be used in the browser. You can insert it into your HTML page like this:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/ecss-tree/dist/ecsstree.iife.min.js"></script>
+```
+
+or
+
+```html
+<script src="https://unpkg.com/ecss-tree@latest/dist/ecsstree.iife.min.js"></script>
+```
+
+Example usage:
+
+```html
+<script>
+    const ast = ECSSTree.parse("input", { context: "selector" });
+    const plain = ECSSTree.toPlainObject(ast);
+    console.log(plain);
+</script>
 ```
 
 ## Development / Contributing
