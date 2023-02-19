@@ -23,7 +23,10 @@ Our primary goal is to change the internal behavior of the CSSTree parser to sup
   - [Motivation](#motivation)
     - [Advanced validation](#advanced-validation)
   - [Handle problematic cases](#handle-problematic-cases)
-  - [Example JavaScript code](#example-javascript-code)
+  - [Example JavaScript codes](#example-javascript-codes)
+    - [Parse and generate](#parse-and-generate)
+    - [Validate XPath expressions in `:xpath()` (walker example)](#validate-xpath-expressions-in-xpath-walker-example)
+    - [Validate Regular Expressions in `:contains()` (walker example)](#validate-regular-expressions-in-contains-walker-example)
   - [Development / Contributing](#development--contributing)
     - [Development commands](#development-commands)
   - [Reporting problems / Requesting features](#reporting-problems--requesting-features)
@@ -170,46 +173,64 @@ At quote mark (`'`) tokenizer will think that a string is starting, and it token
 
 ECSSTree will handle this case by a special re-tokenization algorithm during the parsing process, when parser reaches this problematic point. This way, ECSSTree's parser will be able to parse this selector properly. It is also true for `xpath`.
 
-*Note:* ECSSTree parses `:contains` and `:xpath` parameters as `Raw`. The main goal of this library is changing the internal behavior of the CSSTree's parser to make it able to parse the Extended CSS selectors properly, not to change the AST itself. The AST should be the same as in CSSTree, so that the library can be used as a drop-in replacement for CSSTree. Parsing `:xpath` expressions or regular expressions in detail would be a huge task, and requires new AST nodes, which would be a breaking change. But it always parses the correct raw expression for you, so you can parse/validate these expressions yourself if you want. There are many libraries for this, such as [xpath](https://www.npmjs.com/package/xpath) or [regexpp](https://www.npmjs.com/package/regexpp).
+*Note:* ECSSTree parses `:contains` and `:xpath` parameters as `Raw`. The main goal of this library is changing the internal behavior of the CSSTree's parser to make it able to parse the Extended CSS selectors properly, not to change the AST itself. The AST should be the same as in CSSTree, so that the library can be used as a drop-in replacement for CSSTree. Parsing `:xpath` expressions or regular expressions in detail would be a huge task, and requires new AST nodes, which would be a breaking change. But it always parses the correct raw expression for you, so you can parse/validate these expressions yourself if you want. There are many libraries for this, such as [xpath](https://www.npmjs.com/package/xpath) or [regexpp](https://www.npmjs.com/package/regexpp). See [example codes](#example-javascript-codes) for more details.
 
-## Example JavaScript code
+## Example JavaScript codes
 
-Here is a very simple JavaScript code to illustrate the library. Otherwise, everything must be used in the same way as in CSSTree, since this library is a natural fork of CSSTree.
+Here are some example codes to show how to use ECSSTree. The API is the same as in CSSTree, so you can use the [CSSTree documentation](https://github.com/csstree/csstree/tree/master/docs) as a reference.
 
+### Parse and generate
+
+A simple example to parse and generate selectors (if the selector is invalid, parsing will throw an error):
 ```javascript
-const { parse, generate, toPlainObject, fromPlainObject } = require('ecss-tree');
-const { inspect } = require('util');
+const { parse, generate, toPlainObject, fromPlainObject } = require("ecss-tree");
+const { inspect } = require("util");
 
 // Some inputs to test
 const inputs = [
+    // Valid selectors
     `div:-abp-has(> .some-class > a[href^="https://example.com"])`,
     `body:style(padding-top: 0 !important;):matches-media((min-width: 500px) and (max-width: 1000px))`,
     `section:upward(2):contains(aaa'bbb):xpath(//*[contains(text(),"()(cc")])`,
+
+    // Missing closing bracket at the end
+    `div:-abp-has(> .some-class > a[href^="https://example.com"]`,
 ];
 
 // Iterate over inputs
 for (const input of inputs) {
-    // Parse raw input to AST. This will throw an error if the input is not valid.
-    // Don't forget to set context to 'selector', because CSSTree will try to parse
-    // 'stylesheet' by default.
-    const ast = parse(input, { context: 'selector' });
+    try {
+        // Parse raw input to AST. This will throw an error if the input is not valid.
+        // Don't forget to set context to 'selector', because CSSTree will try to parse
+        // 'stylesheet' by default.
+        const ast = parse(input, { context: "selector" });
 
-    // By default, AST uses a doubly linked list. To convert it to plain object, you can
-    // use toPlainObject() function.
-    // If you want to convert AST back to doubly linked list version, you can use
-    // fromPlainObject() function.
-    const astPlain = toPlainObject(ast);
-    // const astAgain = fromPlainObject(astPlain);
-    
-    // Print AST to console
-    console.log(inspect(astPlain, { colors: true, depth: null }));
+        // By default, AST uses a doubly linked list. To convert it to plain object, you can
+        // use toPlainObject() function.
+        // If you want to convert AST back to doubly linked list version, you can use
+        // fromPlainObject() function.
+        const astPlain = toPlainObject(ast);
+        // const astAgain = fromPlainObject(astPlain);
 
-    // You can also generate string from AST (don't use plain object here)
-    console.log(generate(ast));
+        // Print AST to console
+        console.log(inspect(astPlain, { colors: true, depth: null }));
+
+        // You can also generate string from AST (don't use plain object here)
+        console.log(generate(ast));
+    } catch (e) {
+        // Mark invalid selector
+        console.log(`Invalid selector: ${input}`);
+
+        // Show CSSTree's formatted error message
+        console.log(e.formattedMessage);
+    }
 }
 ```
 
+### Validate XPath expressions in `:xpath()` (walker example)
+
 You can validate `:xpath()` expressions with [xpath](https://www.npmjs.com/package/xpath) library this way:
+
 ```javascript
 const { parse, walk } = require("ecss-tree");
 // https://www.npmjs.com/package/xpath
@@ -238,10 +259,13 @@ for (const input of inputs) {
         // If the current node is a :xpath() pseudo-class
         if (node.type === "PseudoClassSelector" && node.name === "xpath") {
             // Get the argument of the pseudo-class (xpath expression)
+            // This is a Raw node, so the expression itself is in node.value
+            // See https://github.com/csstree/csstree/blob/master/docs/ast.md#raw
             const arg = node.children.first;
 
             try {
-                // Try to parse xpath expression. If it's invalid, then an error will be thrown
+                // Try to parse xpath expression. If it's invalid, then an error
+                // will be thrown
                 xpath.parse(arg.value);
 
                 // If no error was thrown, then the expression is valid
@@ -249,6 +273,62 @@ for (const input of inputs) {
             } catch (e) {
                 // If error was thrown, then the expression is invalid
                 console.log(`Invalid xpath expression: ${arg.value}`);
+            }
+        }
+    });
+}
+```
+
+### Validate Regular Expressions in `:contains()` (walker example)
+
+You can validate regular expressions in `:contains()` pseudo-classes with [regexpp](https://www.npmjs.com/package/regexpp) library this way:
+
+```javascript
+const { parse, walk } = require("ecss-tree");
+// https://www.npmjs.com/package/regexpp
+const { RegExpValidator } = require("regexpp");
+
+// Some inputs to test
+const inputs = [
+    // Not RegExps
+    `:contains(aaa)`,
+    `:contains(aaa bbb)`,
+
+    // Invalid flag
+    `:contains(/^aaa$/igx)`,
+
+    // RegExps
+    `:contains(/aaa/)`,
+    `:contains(/^aaa$/)`,
+    `:contains(/^aaa$/ig)`,
+];
+
+// Create RegExpValidator instance
+// See https://github.com/mysticatea/regexpp#validateregexpliteralsource-options
+const validator = new RegExpValidator();
+
+// Iterate over inputs
+for (const input of inputs) {
+    // Parse raw CSS selector to AST
+    const ast = parse(input, { context: "selector" });
+
+    // Walk parsed AST
+    walk(ast, (node) => {
+        // If the current node is a :contains() pseudo-class
+        if (node.type === "PseudoClassSelector" && node.name === "contains") {
+            // Get the argument of the pseudo-class. It's a Raw node, so the
+            // value is stored in node.value property.
+            // See https://github.com/csstree/csstree/blob/master/docs/ast.md#raw
+            const arg = node.children.first;
+
+            try {
+                validator.validateLiteral(arg.value);
+
+                // If no error was thrown, then the argument is a regexp
+                console.log(`Valid regexp: ${arg.value}`);
+            } catch (e) {
+                // If error was thrown, then the argument is not a regexp
+                console.log(`Invalid regexp: ${arg.value}`);
             }
         }
     });
