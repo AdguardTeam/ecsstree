@@ -187,6 +187,7 @@ const inputs = [
     `section:upward(2):contains(aaa'bbb):xpath(//*[contains(text(),"()(cc")])`,
 ];
 
+// Iterate over inputs
 for (const input of inputs) {
     // Parse raw input to AST. This will throw an error if the input is not valid.
     // Don't forget to set context to 'selector', because CSSTree will try to parse
@@ -205,6 +206,52 @@ for (const input of inputs) {
 
     // You can also generate string from AST (don't use plain object here)
     console.log(generate(ast));
+}
+```
+
+You can validate `:xpath()` expressions with [xpath](https://www.npmjs.com/package/xpath) library this way:
+```javascript
+const { parse, walk } = require("ecss-tree");
+// https://www.npmjs.com/package/xpath
+const xpath = require("xpath");
+
+// Some inputs to test
+const inputs = [
+    // Some examples from https://www.w3schools.com/xml/xpath_syntax.asp
+    `:xpath(/bookstore/book[1])`,
+    `:xpath(/bookstore/book[last()])`,
+    `:xpath(//title[@lang='en'])`,
+
+    // Invalid :xpath() pseudo-class
+    `:xpath(aaa'bbb)`,
+    `:xpath($#...)`,
+    `:xpath(...)`,
+];
+
+// Iterate over inputs
+for (const input of inputs) {
+    // Parse raw CSS selector to AST
+    const ast = parse(input, { context: "selector" });
+
+    // Walk parsed AST
+    walk(ast, (node) => {
+        // If the current node is a :xpath() pseudo-class
+        if (node.type === "PseudoClassSelector" && node.name === "xpath") {
+            // Get the argument of the pseudo-class (xpath expression)
+            const arg = node.children.first;
+
+            try {
+                // Try to parse xpath expression. If it's invalid, then an error will be thrown
+                xpath.parse(arg.value);
+
+                // If no error was thrown, then the expression is valid
+                console.log(`Valid xpath expression: ${arg.value}`);
+            } catch (e) {
+                // If error was thrown, then the expression is invalid
+                console.log(`Invalid xpath expression: ${arg.value}`);
+            }
+        }
+    });
 }
 ```
 
