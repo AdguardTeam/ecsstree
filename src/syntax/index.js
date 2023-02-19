@@ -10,6 +10,8 @@
 import { fork as originalFork, tokenize as originalTokenize, tokenTypes } from "css-tree";
 import { CLOSING_PARENTHESIS, DOUBLE_QUOTE, ESCAPE, OPENING_PARENTHESIS, SPACE } from "../utils/constants.js";
 
+const CONTAINS_PSEUDO_CLASSES = ["contains(", "-abp-contains(", "has-text("];
+
 const selector = {
     parse() {
         return this.createSingleNodeList(this.Selector());
@@ -131,10 +133,7 @@ const extCssContains = {
 
         for (let i = this.tokenIndex; i >= 0; i--) {
             // Check token name to avoid :contains(join('')) case, where join( is also a function token
-            if (
-                tokens[i].type === "function-token" &&
-                ["contains(", "-abp-contains(", "has-text("].includes(tokens[i].chunk)
-            ) {
+            if (tokens[i].type === "function-token" && CONTAINS_PSEUDO_CLASSES.includes(tokens[i].chunk)) {
                 // Token after the function name is the first token of the argument
                 startPosition = this.getTokenStart(i + 1);
                 prevTokenIndex = i + 1;
