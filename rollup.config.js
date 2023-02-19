@@ -62,7 +62,7 @@ const umd = {
     input: "./src/syntax/index.js",
     output: [
         {
-            file: `./dist/ecsstree.umd.js`,
+            file: `./dist/ecsstree.umd.min.js`,
             name: "ECSSTree",
             format: "umd",
             sourcemap: false,
@@ -76,7 +76,7 @@ const iife = {
     input: "./src/syntax/index.js",
     output: [
         {
-            file: `./dist/ecsstree.iife.js`,
+            file: `./dist/ecsstree.iife.min.js`,
             name: "ECSSTree",
             format: "iife",
             sourcemap: false,
