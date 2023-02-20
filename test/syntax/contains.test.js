@@ -9,12 +9,22 @@ const parserConfig = {
 
 describe(":contains()", () => {
     test("throws on invalid input", () => {
-        expect(() => parse(`:contains()`, parserConfig)).toThrow(
-            'Empty parameter specified for "contains()" pseudo-class'
-        );
+        expect(() => parse(`:contains()`, parserConfig)).toThrow("Empty parameter specified");
 
         expect(() => parse(`:contains(a`, parserConfig)).toThrow();
         expect(() => parse(`:contains(a'`, parserConfig)).toThrow();
+
+        // :-abp-contains alias
+        expect(() => parse(`:-abp-contains()`, parserConfig)).toThrow("Empty parameter specified");
+
+        expect(() => parse(`:-abp-contains(a`, parserConfig)).toThrow();
+        expect(() => parse(`:-abp-contains(a'`, parserConfig)).toThrow();
+
+        // :has-text alias
+        expect(() => parse(`:has-text()`, parserConfig)).toThrow("Empty parameter specified");
+
+        expect(() => parse(`:has-text(a`, parserConfig)).toThrow();
+        expect(() => parse(`:has-text(a'`, parserConfig)).toThrow();
     });
 
     test("parses valid input properly", () => {
@@ -994,5 +1004,51 @@ describe(":contains()", () => {
 
         expect(generate(parse(`:contains(aaa'bbb)`, parserConfig))).toEqual(`:contains(aaa'bbb)`);
         expect(generate(parse(`:contains(aaa"bbb)`, parserConfig))).toEqual(`:contains(aaa"bbb)`);
+
+        // :-abp-contains alias
+        expect(generate(parse(`:-abp-contains( )`, parserConfig))).toEqual(`:-abp-contains( )`);
+        expect(generate(parse(`:-abp-contains(  )`, parserConfig))).toEqual(`:-abp-contains(  )`);
+
+        expect(generate(parse(`:-abp-contains(aaa)`, parserConfig))).toEqual(`:-abp-contains(aaa)`);
+        expect(generate(parse(`:-abp-contains( aaa)`, parserConfig))).toEqual(`:-abp-contains( aaa)`);
+        expect(generate(parse(`:-abp-contains(aaa )`, parserConfig))).toEqual(`:-abp-contains(aaa )`);
+        expect(generate(parse(`:-abp-contains( aaa )`, parserConfig))).toEqual(`:-abp-contains( aaa )`);
+        expect(generate(parse(`:-abp-contains( aaa bbb )`, parserConfig))).toEqual(`:-abp-contains( aaa bbb )`);
+        expect(generate(parse(`:-abp-contains( aaa  bbb )`, parserConfig))).toEqual(`:-abp-contains( aaa  bbb )`);
+        expect(generate(parse(`:-abp-contains( aaa  bbb  ccc )`, parserConfig))).toEqual(
+            `:-abp-contains( aaa  bbb  ccc )`
+        );
+
+        expect(generate(parse(`:-abp-contains((aaa))`, parserConfig))).toEqual(`:-abp-contains((aaa))`);
+
+        expect(generate(parse(`:-abp-contains(/aaa/)`, parserConfig))).toEqual(`:-abp-contains(/aaa/)`);
+        expect(generate(parse(`:-abp-contains(/aaa/i)`, parserConfig))).toEqual(`:-abp-contains(/aaa/i)`);
+        expect(generate(parse(`:-abp-contains(/^(a|b){3,}$/)`, parserConfig))).toEqual(`:-abp-contains(/^(a|b){3,}$/)`);
+        expect(generate(parse(`:-abp-contains(/aaa\\(\\)/i)`, parserConfig))).toEqual(`:-abp-contains(/aaa\\(\\)/i)`);
+
+        expect(generate(parse(`:-abp-contains(aaa'bbb)`, parserConfig))).toEqual(`:-abp-contains(aaa'bbb)`);
+        expect(generate(parse(`:-abp-contains(aaa"bbb)`, parserConfig))).toEqual(`:-abp-contains(aaa"bbb)`);
+
+        // :has-text alias
+        expect(generate(parse(`:has-text( )`, parserConfig))).toEqual(`:has-text( )`);
+        expect(generate(parse(`:has-text(  )`, parserConfig))).toEqual(`:has-text(  )`);
+
+        expect(generate(parse(`:has-text(aaa)`, parserConfig))).toEqual(`:has-text(aaa)`);
+        expect(generate(parse(`:has-text( aaa)`, parserConfig))).toEqual(`:has-text( aaa)`);
+        expect(generate(parse(`:has-text(aaa )`, parserConfig))).toEqual(`:has-text(aaa )`);
+        expect(generate(parse(`:has-text( aaa )`, parserConfig))).toEqual(`:has-text( aaa )`);
+        expect(generate(parse(`:has-text( aaa bbb )`, parserConfig))).toEqual(`:has-text( aaa bbb )`);
+        expect(generate(parse(`:has-text( aaa  bbb )`, parserConfig))).toEqual(`:has-text( aaa  bbb )`);
+        expect(generate(parse(`:has-text( aaa  bbb  ccc )`, parserConfig))).toEqual(`:has-text( aaa  bbb  ccc )`);
+
+        expect(generate(parse(`:has-text((aaa))`, parserConfig))).toEqual(`:has-text((aaa))`);
+
+        expect(generate(parse(`:has-text(/aaa/)`, parserConfig))).toEqual(`:has-text(/aaa/)`);
+        expect(generate(parse(`:has-text(/aaa/i)`, parserConfig))).toEqual(`:has-text(/aaa/i)`);
+        expect(generate(parse(`:has-text(/^(a|b){3,}$/)`, parserConfig))).toEqual(`:has-text(/^(a|b){3,}$/)`);
+        expect(generate(parse(`:has-text(/aaa\\(\\)/i)`, parserConfig))).toEqual(`:has-text(/aaa\\(\\)/i)`);
+
+        expect(generate(parse(`:has-text(aaa'bbb)`, parserConfig))).toEqual(`:has-text(aaa'bbb)`);
+        expect(generate(parse(`:has-text(aaa"bbb)`, parserConfig))).toEqual(`:has-text(aaa"bbb)`);
     });
 });

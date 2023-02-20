@@ -122,7 +122,7 @@ const extCssContains = {
 
         // :contains() case, but not :contains( something) case, so we check if the previous token is not a whitespace
         if (this.tokenType === tokenTypes.RightParenthesis && tokens[this.tokenIndex - 1].type !== "whitespace-token") {
-            this.error('Empty parameter specified for "contains()" pseudo-class');
+            this.error("Empty parameter specified");
         }
 
         // Find the "real" start position of the contains() function's argument
