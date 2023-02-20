@@ -7,20 +7,20 @@ const parserConfig = {
 
 describe(":min-text-length()", () => {
     test("throws on invalid input", () => {
-        expect(() => parse(`:min-text-length()`, parserConfig)).toThrow();
-        expect(() => parse(`:min-text-length( )`, parserConfig)).toThrow();
+        expect(() => parse(":min-text-length()", parserConfig)).toThrow();
+        expect(() => parse(":min-text-length( )", parserConfig)).toThrow();
 
-        expect(() => parse(`:min-text-length($$)`, parserConfig)).toThrow();
-        expect(() => parse(`:min-text-length(.)`, parserConfig)).toThrow();
+        expect(() => parse(":min-text-length($$)", parserConfig)).toThrow();
+        expect(() => parse(":min-text-length(.)", parserConfig)).toThrow();
 
         // Selector
-        expect(() => parse(`:min-text-length(div)`, parserConfig)).toThrow();
-        expect(() => parse(`:min-text-length(div + section[class^="something"])`, parserConfig)).toThrow();
+        expect(() => parse(":min-text-length(div)", parserConfig)).toThrow();
+        expect(() => parse(':min-text-length(div + section[class^="something"])', parserConfig)).toThrow();
     });
 
     test("parses valid input properly", () => {
         // Number
-        expect(toPlainObject(parse(`div:min-text-length(42)`, parserConfig))).toMatchObject({
+        expect(toPlainObject(parse("div:min-text-length(42)", parserConfig))).toMatchObject({
             type: "Selector",
             loc: {
                 source: "<unknown>",
@@ -94,6 +94,6 @@ describe(":min-text-length()", () => {
     });
 
     test("generates valid input properly", () => {
-        expect(generate(parse(`div:min-text-length(42)`, parserConfig))).toEqual(`div:min-text-length(42)`);
+        expect(generate(parse("div:min-text-length(42)", parserConfig))).toEqual("div:min-text-length(42)");
     });
 });

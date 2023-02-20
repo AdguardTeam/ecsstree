@@ -7,16 +7,16 @@ const parserConfig = {
 
 describe(":-abp-has()", () => {
     test("throws on invalid input", () => {
-        expect(() => parse(`:-abp-has()`, parserConfig)).toThrow();
-        expect(() => parse(`:-abp-has( )`, parserConfig)).toThrow();
+        expect(() => parse(":-abp-has()", parserConfig)).toThrow();
+        expect(() => parse(":-abp-has( )", parserConfig)).toThrow();
 
-        expect(() => parse(`:-abp-has($$)`, parserConfig)).toThrow();
-        expect(() => parse(`:-abp-has(.)`, parserConfig)).toThrow();
+        expect(() => parse(":-abp-has($$)", parserConfig)).toThrow();
+        expect(() => parse(":-abp-has(.)", parserConfig)).toThrow();
     });
 
     test("parses valid input properly", () => {
         // Simple selector
-        expect(toPlainObject(parse(`:-abp-has(div)`, parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(":-abp-has(div)", parserConfig))).toMatchObject({
             type: "Selector",
             loc: {
                 source: "<unknown>",
@@ -108,7 +108,7 @@ describe(":-abp-has()", () => {
         });
 
         // Complex selector
-        expect(toPlainObject(parse(`:-abp-has(div:has(> a[href*="tracker"]))`, parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':-abp-has(div:has(> a[href*="tracker"]))', parserConfig))).toMatchObject({
             type: "Selector",
             loc: {
                 source: "<unknown>",
@@ -341,7 +341,7 @@ describe(":-abp-has()", () => {
         });
 
         // Simple selector list
-        expect(toPlainObject(parse(`:-abp-has(div, div)`, parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(":-abp-has(div, div)", parserConfig))).toMatchObject({
             type: "Selector",
             loc: {
                 source: "<unknown>",
@@ -469,7 +469,7 @@ describe(":-abp-has()", () => {
 
         // Complex selector list
         expect(
-            toPlainObject(parse(`:-abp-has(div, div:has(> a[href*="tracker"]) + section:contains(ads))`, parserConfig))
+            toPlainObject(parse(':-abp-has(div, div:has(> a[href*="tracker"]) + section:contains(ads))', parserConfig))
         ).toMatchObject({
             type: "Selector",
             loc: {
@@ -809,18 +809,18 @@ describe(":-abp-has()", () => {
     });
 
     test("generates valid input properly", () => {
-        expect(generate(parse(`:-abp-has(div)`, parserConfig))).toEqual(`:-abp-has(div)`);
-        expect(generate(parse(`:-abp-has(div:has(> a[href*="tracker"]))`, parserConfig))).toEqual(
-            `:-abp-has(div:has(>a[href*="tracker"]))`
+        expect(generate(parse(":-abp-has(div)", parserConfig))).toEqual(":-abp-has(div)");
+        expect(generate(parse(':-abp-has(div:has(> a[href*="tracker"]))', parserConfig))).toEqual(
+            ':-abp-has(div:has(>a[href*="tracker"]))'
         );
-        expect(generate(parse(`:-abp-has(div:has(> a[href*='tracker']))`, parserConfig))).toEqual(
-            `:-abp-has(div:has(>a[href*="tracker"]))`
+        expect(generate(parse(":-abp-has(div:has(> a[href*='tracker']))", parserConfig))).toEqual(
+            ':-abp-has(div:has(>a[href*="tracker"]))'
         );
 
         // Selector lists
-        expect(generate(parse(`:-abp-has(div, div)`, parserConfig))).toEqual(`:-abp-has(div,div)`);
+        expect(generate(parse(":-abp-has(div, div)", parserConfig))).toEqual(":-abp-has(div,div)");
         expect(
-            generate(parse(`:-abp-has(div, div:has(> a[href*="tracker"]) + section:contains(ads))`, parserConfig))
-        ).toEqual(`:-abp-has(div,div:has(>a[href*="tracker"])+section:contains(ads))`);
+            generate(parse(':-abp-has(div, div:has(> a[href*="tracker"]) + section:contains(ads))', parserConfig))
+        ).toEqual(':-abp-has(div,div:has(>a[href*="tracker"])+section:contains(ads))');
     });
 });

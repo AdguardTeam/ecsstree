@@ -7,20 +7,20 @@ const parserConfig = {
 
 describe(":nth-ancestor()", () => {
     test("throws on invalid input", () => {
-        expect(() => parse(`:nth-ancestor()`, parserConfig)).toThrow();
-        expect(() => parse(`:nth-ancestor( )`, parserConfig)).toThrow();
+        expect(() => parse(":nth-ancestor()", parserConfig)).toThrow();
+        expect(() => parse(":nth-ancestor( )", parserConfig)).toThrow();
 
-        expect(() => parse(`:nth-ancestor($$)`, parserConfig)).toThrow();
-        expect(() => parse(`:nth-ancestor(.)`, parserConfig)).toThrow();
+        expect(() => parse(":nth-ancestor($$)", parserConfig)).toThrow();
+        expect(() => parse(":nth-ancestor(.)", parserConfig)).toThrow();
 
         // Selector
-        expect(() => parse(`:nth-ancestor(div)`, parserConfig)).toThrow();
-        expect(() => parse(`:nth-ancestor(div + section[class^="something"])`, parserConfig)).toThrow();
+        expect(() => parse(":nth-ancestor(div)", parserConfig)).toThrow();
+        expect(() => parse(':nth-ancestor(div + section[class^="something"])', parserConfig)).toThrow();
     });
 
     test("parses valid input properly", () => {
         // Number
-        expect(toPlainObject(parse(`div:nth-ancestor(42)`, parserConfig))).toMatchObject({
+        expect(toPlainObject(parse("div:nth-ancestor(42)", parserConfig))).toMatchObject({
             type: "Selector",
             loc: {
                 source: "<unknown>",
@@ -94,6 +94,6 @@ describe(":nth-ancestor()", () => {
     });
 
     test("generates valid input properly", () => {
-        expect(generate(parse(`div:nth-ancestor(42)`, parserConfig))).toEqual(`div:nth-ancestor(42)`);
+        expect(generate(parse("div:nth-ancestor(42)", parserConfig))).toEqual("div:nth-ancestor(42)");
     });
 });

@@ -7,16 +7,16 @@ const parserConfig = {
 
 describe(":matches-media()", () => {
     test("throws on invalid input", () => {
-        expect(() => parse(`:matches-media()`, parserConfig)).toThrow();
-        expect(() => parse(`:matches-media( )`, parserConfig)).toThrow();
+        expect(() => parse(":matches-media()", parserConfig)).toThrow();
+        expect(() => parse(":matches-media( )", parserConfig)).toThrow();
 
-        expect(() => parse(`:matches-media($$)`, parserConfig)).toThrow();
-        expect(() => parse(`:matches-media(.)`, parserConfig)).toThrow();
+        expect(() => parse(":matches-media($$)", parserConfig)).toThrow();
+        expect(() => parse(":matches-media(.)", parserConfig)).toThrow();
     });
 
     test("parses valid input properly", () => {
         // Simple media query
-        expect(toPlainObject(parse(`div:matches-media((min-width: 720px))`, parserConfig))).toMatchObject({
+        expect(toPlainObject(parse("div:matches-media((min-width: 720px))", parserConfig))).toMatchObject({
             type: "Selector",
             loc: {
                 source: "<unknown>",
@@ -145,7 +145,7 @@ describe(":matches-media()", () => {
         // Complex media query
         expect(
             toPlainObject(
-                parse(`div:matches-media((min-height: 680px), screen and (orientation: portrait))`, parserConfig)
+                parse("div:matches-media((min-height: 680px), screen and (orientation: portrait))", parserConfig)
             )
         ).toMatchObject({
             type: "Selector",
@@ -361,11 +361,11 @@ describe(":matches-media()", () => {
     });
 
     test("generates valid input properly", () => {
-        expect(generate(parse(`div:matches-media((min-width: 720px))`, parserConfig))).toEqual(
-            `div:matches-media((min-width:720px))`
+        expect(generate(parse("div:matches-media((min-width: 720px))", parserConfig))).toEqual(
+            "div:matches-media((min-width:720px))"
         );
         expect(
-            generate(parse(`div:matches-media((min-height: 680px), screen and (orientation: portrait))`, parserConfig))
-        ).toEqual(`div:matches-media((min-height:680px),screen and (orientation:portrait))`);
+            generate(parse("div:matches-media((min-height: 680px), screen and (orientation: portrait))", parserConfig))
+        ).toEqual("div:matches-media((min-height:680px),screen and (orientation:portrait))");
     });
 });

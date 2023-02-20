@@ -7,15 +7,15 @@ const parserConfig = {
 
 describe(":if-not()", () => {
     test("throws on invalid input", () => {
-        expect(() => parse(`:if-not()`, parserConfig)).toThrow();
-        expect(() => parse(`:if-not( )`, parserConfig)).toThrow();
+        expect(() => parse(":if-not()", parserConfig)).toThrow();
+        expect(() => parse(":if-not( )", parserConfig)).toThrow();
 
-        expect(() => parse(`:if-not($$)`, parserConfig)).toThrow();
-        expect(() => parse(`:if-not(.)`, parserConfig)).toThrow();
+        expect(() => parse(":if-not($$)", parserConfig)).toThrow();
+        expect(() => parse(":if-not(.)", parserConfig)).toThrow();
     });
 
     test("parses valid input properly", () => {
-        expect(toPlainObject(parse(`div:if-not(.something + #another)`, parserConfig))).toMatchObject({
+        expect(toPlainObject(parse("div:if-not(.something + #another)", parserConfig))).toMatchObject({
             type: "Selector",
             loc: {
                 source: "<unknown>",
@@ -141,8 +141,8 @@ describe(":if-not()", () => {
     });
 
     test("generates valid input properly", () => {
-        expect(generate(parse(`div:if-not(.something + #another)`, parserConfig))).toEqual(
-            `div:if-not(.something+#another)`
+        expect(generate(parse("div:if-not(.something + #another)", parserConfig))).toEqual(
+            "div:if-not(.something+#another)"
         );
     });
 });

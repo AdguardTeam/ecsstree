@@ -1,17 +1,17 @@
-import resolve from "@rollup/plugin-node-resolve";
+import alias from "@rollup/plugin-alias";
 import commonjs from "@rollup/plugin-commonjs";
 import externals from "rollup-plugin-node-externals";
-import alias from "@rollup/plugin-alias";
-import { getBabelOutputPlugin } from "@rollup/plugin-babel";
-import terser from "@rollup/plugin-terser";
 import json from "@rollup/plugin-json";
+import resolve from "@rollup/plugin-node-resolve";
+import terser from "@rollup/plugin-terser";
+import { getBabelOutputPlugin } from "@rollup/plugin-babel";
 
 // CommonJS build
 const cjs = {
     input: "./src/index.js",
     output: [
         {
-            file: `./dist/ecsstree.cjs`,
+            file: "./dist/ecsstree.cjs",
             format: "cjs",
             exports: "auto",
             sourcemap: false,
@@ -25,7 +25,7 @@ const esm = {
     input: "./src/index.js",
     output: [
         {
-            file: `./dist/ecsstree.esm.js`,
+            file: "./dist/ecsstree.esm.js",
             format: "esm",
             sourcemap: false,
         },
@@ -64,7 +64,7 @@ const umd = {
     input: "./src/index.js",
     output: [
         {
-            file: `./dist/ecsstree.umd.min.js`,
+            file: "./dist/ecsstree.umd.min.js",
             name: "ECSSTree",
             format: "umd",
             sourcemap: false,
@@ -78,7 +78,7 @@ const iife = {
     input: "./src/index.js",
     output: [
         {
-            file: `./dist/ecsstree.iife.min.js`,
+            file: "./dist/ecsstree.iife.min.js",
             name: "ECSSTree",
             format: "iife",
             sourcemap: false,
