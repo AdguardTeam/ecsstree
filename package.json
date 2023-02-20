@@ -42,6 +42,7 @@
     "@rollup/plugin-alias": "^4.0.2",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^24.0.0",
+    "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-terser": "^0.2.1",
     "husky": "^8.0.0",

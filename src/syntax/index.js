@@ -7,7 +7,7 @@
  * @see {@link https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters}
  */
 
-import { fork as originalFork, tokenize as originalTokenize, tokenTypes } from "css-tree";
+import { fork, tokenize, tokenTypes } from "css-tree";
 import { CLOSING_PARENTHESIS, DOUBLE_QUOTE, ESCAPE, OPENING_PARENTHESIS, SPACE } from "../utils/constants.js";
 
 const CONTAINS_PSEUDO_CLASSES = ["contains(", "-abp-contains(", "has-text("];
@@ -207,7 +207,7 @@ const extCssContains = {
         // Theoretically this "trick" doesn't cause problems, because we parsed the argument of the
         // contains() function as a Raw node, so we don't need to parse it again, but the parser will
         // continue its work from the correct position.
-        this.setSource(newSourceCode, originalTokenize);
+        this.setSource(newSourceCode, tokenize);
 
         // Restore the position within the token stream.
         while (this.tokenIndex < prevTokenIndex) {
@@ -305,7 +305,7 @@ const xpath = {
         // Theoretically this "trick" doesn't cause problems, because we parsed the argument of the
         // xpath() function as a Raw node, so we don't need to parse it again, but the parser will
         // continue its work from the correct position.
-        this.setSource(newSourceCode, originalTokenize);
+        this.setSource(newSourceCode, tokenize);
 
         // Restore the position within the token stream.
         while (this.tokenIndex < prevTokenIndex) {
@@ -322,7 +322,7 @@ const xpath = {
 /**
  * Extended CSS syntax for css-tree (forked from css-tree)
  */
-const extendedCss = originalFork({
+const extendedCssSyntax = fork({
     pseudo: {
         "-abp-has": selectorList,
         "if-not": selector,
@@ -338,21 +338,4 @@ const extendedCss = originalFork({
     },
 });
 
-// Export regular css-tree functions
-export const {
-    tokenize,
-    parse,
-    generate,
-    lexer,
-    createLexer,
-
-    walk,
-    find,
-    findLast,
-    findAll,
-
-    toPlainObject,
-    fromPlainObject,
-
-    fork,
-} = extendedCss;
+export default extendedCssSyntax;

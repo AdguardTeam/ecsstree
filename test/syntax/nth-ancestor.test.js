@@ -1,4 +1,4 @@
-import { parse, generate, toPlainObject } from "../../src/syntax";
+import { parse, generate, toPlainObject } from "../../src/index.js";
 
 const parserConfig = {
     context: "selector",

@@ -1,6 +1,6 @@
 // Tests for :contains(), :-abp-contains() and :has-text() pseudo-classes
 
-import { parse, generate, toPlainObject } from "../../src/syntax";
+import { parse, generate, toPlainObject } from "../../src/index.js";
 
 const parserConfig = {
     context: "selector",

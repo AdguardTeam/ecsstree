@@ -4,10 +4,11 @@ import externals from "rollup-plugin-node-externals";
 import alias from "@rollup/plugin-alias";
 import { getBabelOutputPlugin } from "@rollup/plugin-babel";
 import terser from "@rollup/plugin-terser";
+import json from "@rollup/plugin-json";
 
 // CommonJS build
 const cjs = {
-    input: "./src/syntax/index.js",
+    input: "./src/index.js",
     output: [
         {
             file: `./dist/ecsstree.cjs`,
@@ -16,12 +17,12 @@ const cjs = {
             sourcemap: false,
         },
     ],
-    plugins: [externals(), commonjs({ sourceMap: false }), resolve({ preferBuiltins: false })],
+    plugins: [json(), externals(), commonjs({ sourceMap: false }), resolve({ preferBuiltins: false })],
 };
 
 // ECMAScript build
 const esm = {
-    input: "./src/syntax/index.js",
+    input: "./src/index.js",
     output: [
         {
             file: `./dist/ecsstree.esm.js`,
@@ -29,10 +30,11 @@ const esm = {
             sourcemap: false,
         },
     ],
-    plugins: [externals(), commonjs({ sourceMap: false }), resolve({ preferBuiltins: false })],
+    plugins: [json(), externals(), commonjs({ sourceMap: false }), resolve({ preferBuiltins: false })],
 };
 
 const browserPlugins = [
+    json(),
     commonjs({ sourceMap: false }),
     resolve({ preferBuiltins: false, browser: true }),
     alias({
@@ -59,7 +61,7 @@ const browserPlugins = [
 
 // Browser-friendly UMD build
 const umd = {
-    input: "./src/syntax/index.js",
+    input: "./src/index.js",
     output: [
         {
             file: `./dist/ecsstree.umd.min.js`,
@@ -73,7 +75,7 @@ const umd = {
 
 // Browser-friendly IIFE build
 const iife = {
-    input: "./src/syntax/index.js",
+    input: "./src/index.js",
     output: [
         {
             file: `./dist/ecsstree.iife.min.js`,
