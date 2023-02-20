@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import alias from "@rollup/plugin-alias";
 import commonjs from "@rollup/plugin-commonjs";
 import externals from "rollup-plugin-node-externals";
@@ -5,6 +6,11 @@ import json from "@rollup/plugin-json";
 import resolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
 import { getBabelOutputPlugin } from "@rollup/plugin-babel";
+
+const commonPlugins = [
+    json(),
+    commonjs({ sourceMap: false }),
+];
 
 // CommonJS build
 const cjs = {
@@ -17,7 +23,11 @@ const cjs = {
             sourcemap: false,
         },
     ],
-    plugins: [json(), externals(), commonjs({ sourceMap: false }), resolve({ preferBuiltins: false })],
+    plugins: [
+        ...commonPlugins,
+        externals(),
+        resolve({ preferBuiltins: false })
+    ],
 };
 
 // ECMAScript build
@@ -30,13 +40,19 @@ const esm = {
             sourcemap: false,
         },
     ],
-    plugins: [json(), externals(), commonjs({ sourceMap: false }), resolve({ preferBuiltins: false })],
+    plugins: [
+        ...commonPlugins,
+        externals(),
+        resolve({ preferBuiltins: false }),
+    ],
 };
 
 const browserPlugins = [
-    json(),
-    commonjs({ sourceMap: false }),
-    resolve({ preferBuiltins: false, browser: true }),
+    ...commonPlugins,
+    resolve({
+        preferBuiltins: false,
+        browser: true
+    }),
     alias({
         entries: [
             {
@@ -88,4 +104,9 @@ const iife = {
 };
 
 // Export build configs for Rollup
-export default [cjs, esm, umd, iife];
+export default [
+    cjs,
+    esm,
+    umd,
+    iife
+];
