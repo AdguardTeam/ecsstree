@@ -631,13 +631,13 @@ describe(":style()", () => {
     });
 
     test("generates valid input properly", () => {
-        expect(generate(parse(`div:style(padding: 0)`, parserConfig))).toEqual(`div:style(padding:0)`);
-        expect(generate(parse(`div:style(padding: 0;)`, parserConfig))).toEqual(`div:style(padding:0)`);
-        expect(generate(parse(`div:style(padding: 0 !important)`, parserConfig))).toEqual(
-            `div:style(padding:0!important)`
+        expect(generate(parse("div:style(padding: 0)", parserConfig))).toEqual("div:style(padding:0)");
+        expect(generate(parse("div:style(padding: 0;)", parserConfig))).toEqual("div:style(padding:0)");
+        expect(generate(parse("div:style(padding: 0 !important)", parserConfig))).toEqual(
+            "div:style(padding:0!important)"
         );
         expect(
-            generate(parse(`div:style(padding: 0 !important; margin: 0; color: black !important)`, parserConfig))
-        ).toEqual(`div:style(padding:0!important;margin:0;color:black!important)`);
+            generate(parse("div:style(padding: 0 !important; margin: 0; color: black !important)", parserConfig))
+        ).toEqual("div:style(padding:0!important;margin:0;color:black!important)");
     });
 });

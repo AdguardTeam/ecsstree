@@ -8,7 +8,7 @@ const parserConfig = {
 describe(":xpath()", () => {
     test("parses valid input properly", () => {
         // Very simple test, just to make sure it's working
-        expect(toPlainObject(parse(`:xpath(//test)`, parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(":xpath(//test)", parserConfig))).toMatchObject({
             type: "Selector",
             loc: {
                 source: "<unknown>",
@@ -64,7 +64,7 @@ describe(":xpath()", () => {
         });
 
         // Test with a more complex expression, which contains a lot of special cases
-        expect(toPlainObject(parse(`:xpath(//*[contains(text(),"()(cc")])`, parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':xpath(//*[contains(text(),"()(cc")])', parserConfig))).toMatchObject({
             type: "Selector",
             loc: {
                 source: "<unknown>",
@@ -121,9 +121,9 @@ describe(":xpath()", () => {
     });
 
     test("generates valid input properly", () => {
-        expect(generate(parse(`:xpath(//test)`, parserConfig))).toEqual(`:xpath(//test)`);
-        expect(generate(parse(`:xpath(//*[contains(text(),"()(cc")])`, parserConfig))).toEqual(
-            `:xpath(//*[contains(text(),"()(cc")])`
+        expect(generate(parse(":xpath(//test)", parserConfig))).toEqual(":xpath(//test)");
+        expect(generate(parse(':xpath(//*[contains(text(),"()(cc")])', parserConfig))).toEqual(
+            ':xpath(//*[contains(text(),"()(cc")])'
         );
     });
 });

@@ -70,6 +70,8 @@ const style = {
                 default:
                     children.push(
                         // Parse declaration with fallback to Raw node
+                        // We need arrow function here, because we need to use the current context
+                        // eslint-disable-next-line arrow-body-style
                         this.parseWithFallback(this.Declaration, (startToken) => {
                             // Parse until the next semicolon (this handles if we have multiple declarations in the
                             // same style, so we not parse all of them as a single Raw rule because of this)
@@ -131,7 +133,7 @@ const extCssContains = {
         // Save the current position within the token stream (we will need to restore it later)
         let prevTokenIndex = this.tokenIndex;
 
-        for (let i = this.tokenIndex; i >= 0; i--) {
+        for (let i = this.tokenIndex; i >= 0; i -= 1) {
             // Check token name to avoid :contains(join('')) case, where join( is also a function token
             if (tokens[i].type === "function-token" && CONTAINS_PSEUDO_CLASSES.includes(tokens[i].chunk)) {
                 // Token after the function name is the first token of the argument
@@ -159,13 +161,13 @@ const extCssContains = {
 
         // Contains can contain any character, such as parentheses, quotes, etc,
         // so a bit tricky to find the end position of the pseudo-class
-        for (let i = startPosition; i < sourceCode.length; i++) {
+        for (let i = startPosition; i < sourceCode.length; i += 1) {
             const char = sourceCode[i];
 
             if (char === OPENING_PARENTHESIS && sourceCode[i - 1] !== ESCAPE) {
-                balance++;
+                balance += 1;
             } else if (char === CLOSING_PARENTHESIS && sourceCode[i - 1] !== ESCAPE) {
-                balance--;
+                balance -= 1;
 
                 if (balance === -1) {
                     endPosition = i;
@@ -252,28 +254,26 @@ const xpath = {
         let inString = false;
 
         // Iterate over the corresponding part of the source code
-        for (let i = startPosition; i < sourceCode.length; i++) {
-            if (sourceCode[i] == DOUBLE_QUOTE && sourceCode[i - 1] != ESCAPE) {
+        for (let i = startPosition; i < sourceCode.length; i += 1) {
+            if (sourceCode[i] === DOUBLE_QUOTE && sourceCode[i - 1] !== ESCAPE) {
                 inString = !inString;
             }
 
-            // If we are inside a string, we don't care about parentheses
-            if (inString) {
-                continue;
-            }
+            // If we are not inside a string, we can check parentheses balance
+            if (!inString) {
+                // Check parentheses balance
+                if (sourceCode[i] === OPENING_PARENTHESIS) {
+                    balance += 1;
+                } else if (sourceCode[i] === CLOSING_PARENTHESIS) {
+                    balance -= 1;
 
-            // Check parentheses balance
-            if (sourceCode[i] == OPENING_PARENTHESIS) {
-                balance++;
-            } else if (sourceCode[i] == CLOSING_PARENTHESIS) {
-                balance--;
-
-                // If the parentheses balance is -1, it means that we have found the closing,
-                // because this closing breaks the parentheses balance, which means it is not
-                // belongs to the xpath expression.
-                if (balance === -1) {
-                    endPosition = i;
-                    break;
+                    // If the parentheses balance is -1, it means that we have found the closing,
+                    // because this closing breaks the parentheses balance, which means it is not
+                    // belongs to the xpath expression.
+                    if (balance === -1) {
+                        endPosition = i;
+                        break;
+                    }
                 }
             }
         }
@@ -330,11 +330,11 @@ const extendedCssSyntax = fork({
         "nth-ancestor": number,
         "min-text-length": number,
         "matches-media": mediaQueryList,
-        style: style,
+        style,
         contains: extCssContains,
         "has-text": extCssContains,
         "-abp-contains": extCssContains,
-        xpath: xpath,
+        xpath,
     },
 });
 

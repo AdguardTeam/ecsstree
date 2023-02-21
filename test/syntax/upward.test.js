@@ -7,11 +7,11 @@ const parserConfig = {
 
 describe(":upward()", () => {
     test("throws on invalid input", () => {
-        expect(() => parse(`:upward()`, parserConfig)).toThrow();
-        expect(() => parse(`:upward( )`, parserConfig)).toThrow();
+        expect(() => parse(":upward()", parserConfig)).toThrow();
+        expect(() => parse(":upward( )", parserConfig)).toThrow();
 
-        expect(() => parse(`:upward($$)`, parserConfig)).toThrow();
-        expect(() => parse(`:upward(.)`, parserConfig)).toThrow();
+        expect(() => parse(":upward($$)", parserConfig)).toThrow();
+        expect(() => parse(":upward(.)", parserConfig)).toThrow();
     });
 
     test("parses valid input properly", () => {
@@ -215,9 +215,9 @@ describe(":upward()", () => {
     });
 
     test("generates valid input properly", () => {
-        expect(generate(parse(`div:upward(42)`, parserConfig))).toEqual(`div:upward(42)`);
-        expect(generate(parse(`div:upward(.something + #another)`, parserConfig))).toEqual(
-            `div:upward(.something+#another)`
+        expect(generate(parse("div:upward(42)", parserConfig))).toEqual("div:upward(42)");
+        expect(generate(parse("div:upward(.something + #another)", parserConfig))).toEqual(
+            "div:upward(.something+#another)"
         );
     });
 });

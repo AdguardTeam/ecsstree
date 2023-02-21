@@ -4,7 +4,7 @@ import syntax from "./syntax/index.js";
 // the API manually. See the original source code:
 // https://github.com/csstree/csstree/blob/master/lib/index.js
 
-export * from "./version.js";
+export { default as version } from "./version.js";
 
 export {
     createSyntax,
