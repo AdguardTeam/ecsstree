@@ -8,11 +8,9 @@
 [![NPM Downloads](https://img.shields.io/npm/dm/@adguard/ecss-tree.svg)](https://www.npmjs.com/package/@adguard/ecss-tree)
 [![LICENSE](https://img.shields.io/github/license/AdguardTeam/ecsstree)](https://github.com/AdguardTeam/ecsstree/blob/main/LICENSE)
 
-Adblock Extended CSS supplement for [CSSTree](https://github.com/csstree/csstree). This allows you to manage the main adblock Extended CSS elements with tools from the CSSTree library. It supports various Extended CSS language elements from Adblock Plus, AdGuard, and uBlock Origin. See the [Supported Extended CSS elements](#supported-extended-css-elements) section for a list of currently supported elements.
+Adblock Extended CSS supplement for [CSSTree](https://github.com/csstree/csstree). Our primary goal is to change the internal behavior of the CSSTree parser to support Extended CSS language elements, but we don't want to change the API or the AST structure. This means that ECSSTree keeps the same API as CSSTree, and you can use it as a drop-in replacement for CSSTree if you need to parse Extended CSS. ECSSTree is fully backwards compatible with CSSTree, so you can pass our AST to CSSTree functions and vice versa without any problems.
 
-Our primary goal is to change the internal behavior of the CSSTree parser to support Extended CSS elements, but we don't want to change the API or the AST structure of CSSTree. This means that this library keeps the same API as CSSTree, and you can use it as a drop-in replacement for CSSTree if you need to parse Extended CSS.
-
-> :warning: **Note:** If you are looking for a library that can parse CSS, and you don't know what is Adblock / Extended CSS, you should probably use [CSSTree](https://github.com/csstree/csstree) instead of this library :)
+> :warning: **Note:** If you are looking for a library that can parse CSS, but you don't know what is Adblock or Extended CSS, you should probably use [CSSTree](https://github.com/csstree/csstree) instead of this library :)
 
 ## Table of contents
 
