@@ -1,23 +1,23 @@
-import { parse, generate, toPlainObject } from "../../src/index.js";
+import { parse, generate, toPlainObject } from '../../src/index';
 
 const parserConfig = {
-    context: "selector",
+    context: 'selector',
     positions: true,
 };
 
-describe(":style()", () => {
-    test("throws on invalid input", () => {
+describe(':style()', () => {
+    test('throws on invalid input', () => {
         // Empty declaration
-        expect(() => parse("div:style()", parserConfig)).toThrow();
-        expect(() => parse("div:style( )", parserConfig)).toThrow();
+        expect(() => parse('div:style()', parserConfig)).toThrow();
+        expect(() => parse('div:style( )', parserConfig)).toThrow();
     });
 
-    test("parses valid input properly", () => {
+    test('parses valid input properly', () => {
         // Simple style
-        expect(toPlainObject(parse("div:style(padding: 0)", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse('div:style(padding: 0)', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -31,9 +31,9 @@ describe(":style()", () => {
             },
             children: [
                 {
-                    type: "TypeSelector",
+                    type: 'TypeSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -45,12 +45,12 @@ describe(":style()", () => {
                             column: 4,
                         },
                     },
-                    name: "div",
+                    name: 'div',
                 },
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 3,
                             line: 1,
@@ -62,12 +62,12 @@ describe(":style()", () => {
                             column: 22,
                         },
                     },
-                    name: "style",
+                    name: 'style',
                     children: [
                         {
-                            type: "DeclarationList",
+                            type: 'DeclarationList',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -81,9 +81,9 @@ describe(":style()", () => {
                             },
                             children: [
                                 {
-                                    type: "Declaration",
+                                    type: 'Declaration',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 10,
                                             line: 1,
@@ -96,11 +96,11 @@ describe(":style()", () => {
                                         },
                                     },
                                     important: false,
-                                    property: "padding",
+                                    property: 'padding',
                                     value: {
-                                        type: "Value",
+                                        type: 'Value',
                                         loc: {
-                                            source: "<unknown>",
+                                            source: '<unknown>',
                                             start: {
                                                 offset: 19,
                                                 line: 1,
@@ -114,9 +114,9 @@ describe(":style()", () => {
                                         },
                                         children: [
                                             {
-                                                type: "Number",
+                                                type: 'Number',
                                                 loc: {
-                                                    source: "<unknown>",
+                                                    source: '<unknown>',
                                                     start: {
                                                         offset: 19,
                                                         line: 1,
@@ -128,7 +128,7 @@ describe(":style()", () => {
                                                         column: 21,
                                                     },
                                                 },
-                                                value: "0",
+                                                value: '0',
                                             },
                                         ],
                                     },
@@ -141,10 +141,10 @@ describe(":style()", () => {
         });
 
         // Semicolon at the end
-        expect(toPlainObject(parse("div:style(padding: 0;)", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse('div:style(padding: 0;)', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -158,9 +158,9 @@ describe(":style()", () => {
             },
             children: [
                 {
-                    type: "TypeSelector",
+                    type: 'TypeSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -172,12 +172,12 @@ describe(":style()", () => {
                             column: 4,
                         },
                     },
-                    name: "div",
+                    name: 'div',
                 },
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 3,
                             line: 1,
@@ -189,12 +189,12 @@ describe(":style()", () => {
                             column: 23,
                         },
                     },
-                    name: "style",
+                    name: 'style',
                     children: [
                         {
-                            type: "DeclarationList",
+                            type: 'DeclarationList',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -208,9 +208,9 @@ describe(":style()", () => {
                             },
                             children: [
                                 {
-                                    type: "Declaration",
+                                    type: 'Declaration',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 10,
                                             line: 1,
@@ -223,11 +223,11 @@ describe(":style()", () => {
                                         },
                                     },
                                     important: false,
-                                    property: "padding",
+                                    property: 'padding',
                                     value: {
-                                        type: "Value",
+                                        type: 'Value',
                                         loc: {
-                                            source: "<unknown>",
+                                            source: '<unknown>',
                                             start: {
                                                 offset: 19,
                                                 line: 1,
@@ -241,9 +241,9 @@ describe(":style()", () => {
                                         },
                                         children: [
                                             {
-                                                type: "Number",
+                                                type: 'Number',
                                                 loc: {
-                                                    source: "<unknown>",
+                                                    source: '<unknown>',
                                                     start: {
                                                         offset: 19,
                                                         line: 1,
@@ -255,7 +255,7 @@ describe(":style()", () => {
                                                         column: 21,
                                                     },
                                                 },
-                                                value: "0",
+                                                value: '0',
                                             },
                                         ],
                                     },
@@ -268,10 +268,10 @@ describe(":style()", () => {
         });
 
         // Important style
-        expect(toPlainObject(parse("div:style(padding: 0 !important)", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse('div:style(padding: 0 !important)', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -285,9 +285,9 @@ describe(":style()", () => {
             },
             children: [
                 {
-                    type: "TypeSelector",
+                    type: 'TypeSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -299,12 +299,12 @@ describe(":style()", () => {
                             column: 4,
                         },
                     },
-                    name: "div",
+                    name: 'div',
                 },
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 3,
                             line: 1,
@@ -316,12 +316,12 @@ describe(":style()", () => {
                             column: 33,
                         },
                     },
-                    name: "style",
+                    name: 'style',
                     children: [
                         {
-                            type: "DeclarationList",
+                            type: 'DeclarationList',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -335,9 +335,9 @@ describe(":style()", () => {
                             },
                             children: [
                                 {
-                                    type: "Declaration",
+                                    type: 'Declaration',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 10,
                                             line: 1,
@@ -350,11 +350,11 @@ describe(":style()", () => {
                                         },
                                     },
                                     important: true,
-                                    property: "padding",
+                                    property: 'padding',
                                     value: {
-                                        type: "Value",
+                                        type: 'Value',
                                         loc: {
-                                            source: "<unknown>",
+                                            source: '<unknown>',
                                             start: {
                                                 offset: 19,
                                                 line: 1,
@@ -368,9 +368,9 @@ describe(":style()", () => {
                                         },
                                         children: [
                                             {
-                                                type: "Number",
+                                                type: 'Number',
                                                 loc: {
-                                                    source: "<unknown>",
+                                                    source: '<unknown>',
                                                     start: {
                                                         offset: 19,
                                                         line: 1,
@@ -382,7 +382,7 @@ describe(":style()", () => {
                                                         column: 21,
                                                     },
                                                 },
-                                                value: "0",
+                                                value: '0',
                                             },
                                         ],
                                     },
@@ -396,11 +396,11 @@ describe(":style()", () => {
 
         // Complex style
         expect(
-            toPlainObject(parse("div:style(padding: 0 !important; margin: 0; color: black !important)", parserConfig))
+            toPlainObject(parse('div:style(padding: 0 !important; margin: 0; color: black !important)', parserConfig)),
         ).toMatchObject({
-            type: "Selector",
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -414,9 +414,9 @@ describe(":style()", () => {
             },
             children: [
                 {
-                    type: "TypeSelector",
+                    type: 'TypeSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -428,12 +428,12 @@ describe(":style()", () => {
                             column: 4,
                         },
                     },
-                    name: "div",
+                    name: 'div',
                 },
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 3,
                             line: 1,
@@ -445,12 +445,12 @@ describe(":style()", () => {
                             column: 69,
                         },
                     },
-                    name: "style",
+                    name: 'style',
                     children: [
                         {
-                            type: "DeclarationList",
+                            type: 'DeclarationList',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -464,9 +464,9 @@ describe(":style()", () => {
                             },
                             children: [
                                 {
-                                    type: "Declaration",
+                                    type: 'Declaration',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 10,
                                             line: 1,
@@ -479,11 +479,11 @@ describe(":style()", () => {
                                         },
                                     },
                                     important: true,
-                                    property: "padding",
+                                    property: 'padding',
                                     value: {
-                                        type: "Value",
+                                        type: 'Value',
                                         loc: {
-                                            source: "<unknown>",
+                                            source: '<unknown>',
                                             start: {
                                                 offset: 19,
                                                 line: 1,
@@ -497,9 +497,9 @@ describe(":style()", () => {
                                         },
                                         children: [
                                             {
-                                                type: "Number",
+                                                type: 'Number',
                                                 loc: {
-                                                    source: "<unknown>",
+                                                    source: '<unknown>',
                                                     start: {
                                                         offset: 19,
                                                         line: 1,
@@ -511,15 +511,15 @@ describe(":style()", () => {
                                                         column: 21,
                                                     },
                                                 },
-                                                value: "0",
+                                                value: '0',
                                             },
                                         ],
                                     },
                                 },
                                 {
-                                    type: "Declaration",
+                                    type: 'Declaration',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 33,
                                             line: 1,
@@ -532,11 +532,11 @@ describe(":style()", () => {
                                         },
                                     },
                                     important: false,
-                                    property: "margin",
+                                    property: 'margin',
                                     value: {
-                                        type: "Value",
+                                        type: 'Value',
                                         loc: {
-                                            source: "<unknown>",
+                                            source: '<unknown>',
                                             start: {
                                                 offset: 41,
                                                 line: 1,
@@ -550,9 +550,9 @@ describe(":style()", () => {
                                         },
                                         children: [
                                             {
-                                                type: "Number",
+                                                type: 'Number',
                                                 loc: {
-                                                    source: "<unknown>",
+                                                    source: '<unknown>',
                                                     start: {
                                                         offset: 41,
                                                         line: 1,
@@ -564,15 +564,15 @@ describe(":style()", () => {
                                                         column: 43,
                                                     },
                                                 },
-                                                value: "0",
+                                                value: '0',
                                             },
                                         ],
                                     },
                                 },
                                 {
-                                    type: "Declaration",
+                                    type: 'Declaration',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 44,
                                             line: 1,
@@ -585,11 +585,11 @@ describe(":style()", () => {
                                         },
                                     },
                                     important: true,
-                                    property: "color",
+                                    property: 'color',
                                     value: {
-                                        type: "Value",
+                                        type: 'Value',
                                         loc: {
-                                            source: "<unknown>",
+                                            source: '<unknown>',
                                             start: {
                                                 offset: 51,
                                                 line: 1,
@@ -603,9 +603,9 @@ describe(":style()", () => {
                                         },
                                         children: [
                                             {
-                                                type: "Identifier",
+                                                type: 'Identifier',
                                                 loc: {
-                                                    source: "<unknown>",
+                                                    source: '<unknown>',
                                                     start: {
                                                         offset: 51,
                                                         line: 1,
@@ -617,7 +617,7 @@ describe(":style()", () => {
                                                         column: 57,
                                                     },
                                                 },
-                                                name: "black",
+                                                name: 'black',
                                             },
                                         ],
                                     },
@@ -630,14 +630,14 @@ describe(":style()", () => {
         });
     });
 
-    test("generates valid input properly", () => {
-        expect(generate(parse("div:style(padding: 0)", parserConfig))).toEqual("div:style(padding:0)");
-        expect(generate(parse("div:style(padding: 0;)", parserConfig))).toEqual("div:style(padding:0)");
-        expect(generate(parse("div:style(padding: 0 !important)", parserConfig))).toEqual(
-            "div:style(padding:0!important)"
+    test('generates valid input properly', () => {
+        expect(generate(parse('div:style(padding: 0)', parserConfig))).toEqual('div:style(padding:0)');
+        expect(generate(parse('div:style(padding: 0;)', parserConfig))).toEqual('div:style(padding:0)');
+        expect(generate(parse('div:style(padding: 0 !important)', parserConfig))).toEqual(
+            'div:style(padding:0!important)',
         );
         expect(
-            generate(parse("div:style(padding: 0 !important; margin: 0; color: black !important)", parserConfig))
-        ).toEqual("div:style(padding:0!important;margin:0;color:black!important)");
+            generate(parse('div:style(padding: 0 !important; margin: 0; color: black !important)', parserConfig)),
+        ).toEqual('div:style(padding:0!important;margin:0;color:black!important)');
     });
 });

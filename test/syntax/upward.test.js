@@ -1,25 +1,25 @@
-import { parse, generate, toPlainObject } from "../../src/index.js";
+import { parse, generate, toPlainObject } from '../../src/index';
 
 const parserConfig = {
-    context: "selector",
+    context: 'selector',
     positions: true,
 };
 
-describe(":upward()", () => {
-    test("throws on invalid input", () => {
-        expect(() => parse(":upward()", parserConfig)).toThrow();
-        expect(() => parse(":upward( )", parserConfig)).toThrow();
+describe(':upward()', () => {
+    test('throws on invalid input', () => {
+        expect(() => parse(':upward()', parserConfig)).toThrow();
+        expect(() => parse(':upward( )', parserConfig)).toThrow();
 
-        expect(() => parse(":upward($$)", parserConfig)).toThrow();
-        expect(() => parse(":upward(.)", parserConfig)).toThrow();
+        expect(() => parse(':upward($$)', parserConfig)).toThrow();
+        expect(() => parse(':upward(.)', parserConfig)).toThrow();
     });
 
-    test("parses valid input properly", () => {
+    test('parses valid input properly', () => {
         // Number
-        expect(toPlainObject(parse("div:upward(42)", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse('div:upward(42)', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -33,9 +33,9 @@ describe(":upward()", () => {
             },
             children: [
                 {
-                    type: "TypeSelector",
+                    type: 'TypeSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -47,12 +47,12 @@ describe(":upward()", () => {
                             column: 4,
                         },
                     },
-                    name: "div",
+                    name: 'div',
                 },
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 3,
                             line: 1,
@@ -64,12 +64,12 @@ describe(":upward()", () => {
                             column: 15,
                         },
                     },
-                    name: "upward",
+                    name: 'upward',
                     children: [
                         {
-                            type: "Number",
+                            type: 'Number',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 11,
                                     line: 1,
@@ -81,7 +81,7 @@ describe(":upward()", () => {
                                     column: 14,
                                 },
                             },
-                            value: "42",
+                            value: '42',
                         },
                     ],
                 },
@@ -89,10 +89,10 @@ describe(":upward()", () => {
         });
 
         // Selector
-        expect(toPlainObject(parse("div:upward(.something + #another)", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse('div:upward(.something + #another)', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -106,9 +106,9 @@ describe(":upward()", () => {
             },
             children: [
                 {
-                    type: "TypeSelector",
+                    type: 'TypeSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -120,12 +120,12 @@ describe(":upward()", () => {
                             column: 4,
                         },
                     },
-                    name: "div",
+                    name: 'div',
                 },
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 3,
                             line: 1,
@@ -137,12 +137,12 @@ describe(":upward()", () => {
                             column: 34,
                         },
                     },
-                    name: "upward",
+                    name: 'upward',
                     children: [
                         {
-                            type: "Selector",
+                            type: 'Selector',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 11,
                                     line: 1,
@@ -156,9 +156,9 @@ describe(":upward()", () => {
                             },
                             children: [
                                 {
-                                    type: "ClassSelector",
+                                    type: 'ClassSelector',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 11,
                                             line: 1,
@@ -170,12 +170,12 @@ describe(":upward()", () => {
                                             column: 22,
                                         },
                                     },
-                                    name: "something",
+                                    name: 'something',
                                 },
                                 {
-                                    type: "Combinator",
+                                    type: 'Combinator',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 22,
                                             line: 1,
@@ -187,12 +187,12 @@ describe(":upward()", () => {
                                             column: 24,
                                         },
                                     },
-                                    name: "+",
+                                    name: '+',
                                 },
                                 {
-                                    type: "IdSelector",
+                                    type: 'IdSelector',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 24,
                                             line: 1,
@@ -204,7 +204,7 @@ describe(":upward()", () => {
                                             column: 33,
                                         },
                                     },
-                                    name: "another",
+                                    name: 'another',
                                 },
                             ],
                         },
@@ -214,10 +214,10 @@ describe(":upward()", () => {
         });
     });
 
-    test("generates valid input properly", () => {
-        expect(generate(parse("div:upward(42)", parserConfig))).toEqual("div:upward(42)");
-        expect(generate(parse("div:upward(.something + #another)", parserConfig))).toEqual(
-            "div:upward(.something+#another)"
+    test('generates valid input properly', () => {
+        expect(generate(parse('div:upward(42)', parserConfig))).toEqual('div:upward(42)');
+        expect(generate(parse('div:upward(.something + #another)', parserConfig))).toEqual(
+            'div:upward(.something+#another)',
         );
     });
 });

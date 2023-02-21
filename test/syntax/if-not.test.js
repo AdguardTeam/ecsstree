@@ -1,24 +1,24 @@
-import { parse, generate, toPlainObject } from "../../src/index.js";
+import { parse, generate, toPlainObject } from '../../src/index';
 
 const parserConfig = {
-    context: "selector",
+    context: 'selector',
     positions: true,
 };
 
-describe(":if-not()", () => {
-    test("throws on invalid input", () => {
-        expect(() => parse(":if-not()", parserConfig)).toThrow();
-        expect(() => parse(":if-not( )", parserConfig)).toThrow();
+describe(':if-not()', () => {
+    test('throws on invalid input', () => {
+        expect(() => parse(':if-not()', parserConfig)).toThrow();
+        expect(() => parse(':if-not( )', parserConfig)).toThrow();
 
-        expect(() => parse(":if-not($$)", parserConfig)).toThrow();
-        expect(() => parse(":if-not(.)", parserConfig)).toThrow();
+        expect(() => parse(':if-not($$)', parserConfig)).toThrow();
+        expect(() => parse(':if-not(.)', parserConfig)).toThrow();
     });
 
-    test("parses valid input properly", () => {
-        expect(toPlainObject(parse("div:if-not(.something + #another)", parserConfig))).toMatchObject({
-            type: "Selector",
+    test('parses valid input properly', () => {
+        expect(toPlainObject(parse('div:if-not(.something + #another)', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -32,9 +32,9 @@ describe(":if-not()", () => {
             },
             children: [
                 {
-                    type: "TypeSelector",
+                    type: 'TypeSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -46,12 +46,12 @@ describe(":if-not()", () => {
                             column: 4,
                         },
                     },
-                    name: "div",
+                    name: 'div',
                 },
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 3,
                             line: 1,
@@ -63,12 +63,12 @@ describe(":if-not()", () => {
                             column: 34,
                         },
                     },
-                    name: "if-not",
+                    name: 'if-not',
                     children: [
                         {
-                            type: "Selector",
+                            type: 'Selector',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 11,
                                     line: 1,
@@ -82,9 +82,9 @@ describe(":if-not()", () => {
                             },
                             children: [
                                 {
-                                    type: "ClassSelector",
+                                    type: 'ClassSelector',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 11,
                                             line: 1,
@@ -96,12 +96,12 @@ describe(":if-not()", () => {
                                             column: 22,
                                         },
                                     },
-                                    name: "something",
+                                    name: 'something',
                                 },
                                 {
-                                    type: "Combinator",
+                                    type: 'Combinator',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 22,
                                             line: 1,
@@ -113,12 +113,12 @@ describe(":if-not()", () => {
                                             column: 24,
                                         },
                                     },
-                                    name: "+",
+                                    name: '+',
                                 },
                                 {
-                                    type: "IdSelector",
+                                    type: 'IdSelector',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 24,
                                             line: 1,
@@ -130,7 +130,7 @@ describe(":if-not()", () => {
                                             column: 33,
                                         },
                                     },
-                                    name: "another",
+                                    name: 'another',
                                 },
                             ],
                         },
@@ -140,9 +140,9 @@ describe(":if-not()", () => {
         });
     });
 
-    test("generates valid input properly", () => {
-        expect(generate(parse("div:if-not(.something + #another)", parserConfig))).toEqual(
-            "div:if-not(.something+#another)"
+    test('generates valid input properly', () => {
+        expect(generate(parse('div:if-not(.something + #another)', parserConfig))).toEqual(
+            'div:if-not(.something+#another)',
         );
     });
 });

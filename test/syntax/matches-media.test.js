@@ -1,25 +1,25 @@
-import { parse, generate, toPlainObject } from "../../src/index.js";
+import { parse, generate, toPlainObject } from '../../src/index';
 
 const parserConfig = {
-    context: "selector",
+    context: 'selector',
     positions: true,
 };
 
-describe(":matches-media()", () => {
-    test("throws on invalid input", () => {
-        expect(() => parse(":matches-media()", parserConfig)).toThrow();
-        expect(() => parse(":matches-media( )", parserConfig)).toThrow();
+describe(':matches-media()', () => {
+    test('throws on invalid input', () => {
+        expect(() => parse(':matches-media()', parserConfig)).toThrow();
+        expect(() => parse(':matches-media( )', parserConfig)).toThrow();
 
-        expect(() => parse(":matches-media($$)", parserConfig)).toThrow();
-        expect(() => parse(":matches-media(.)", parserConfig)).toThrow();
+        expect(() => parse(':matches-media($$)', parserConfig)).toThrow();
+        expect(() => parse(':matches-media(.)', parserConfig)).toThrow();
     });
 
-    test("parses valid input properly", () => {
+    test('parses valid input properly', () => {
         // Simple media query
-        expect(toPlainObject(parse("div:matches-media((min-width: 720px))", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse('div:matches-media((min-width: 720px))', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -33,9 +33,9 @@ describe(":matches-media()", () => {
             },
             children: [
                 {
-                    type: "TypeSelector",
+                    type: 'TypeSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -47,12 +47,12 @@ describe(":matches-media()", () => {
                             column: 4,
                         },
                     },
-                    name: "div",
+                    name: 'div',
                 },
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 3,
                             line: 1,
@@ -64,12 +64,12 @@ describe(":matches-media()", () => {
                             column: 38,
                         },
                     },
-                    name: "matches-media",
+                    name: 'matches-media',
                     children: [
                         {
-                            type: "MediaQueryList",
+                            type: 'MediaQueryList',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 18,
                                     line: 1,
@@ -83,9 +83,9 @@ describe(":matches-media()", () => {
                             },
                             children: [
                                 {
-                                    type: "MediaQuery",
+                                    type: 'MediaQuery',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 18,
                                             line: 1,
@@ -99,9 +99,9 @@ describe(":matches-media()", () => {
                                     },
                                     children: [
                                         {
-                                            type: "MediaFeature",
+                                            type: 'MediaFeature',
                                             loc: {
-                                                source: "<unknown>",
+                                                source: '<unknown>',
                                                 start: {
                                                     offset: 18,
                                                     line: 1,
@@ -113,11 +113,11 @@ describe(":matches-media()", () => {
                                                     column: 37,
                                                 },
                                             },
-                                            name: "min-width",
+                                            name: 'min-width',
                                             value: {
-                                                type: "Dimension",
+                                                type: 'Dimension',
                                                 loc: {
-                                                    source: "<unknown>",
+                                                    source: '<unknown>',
                                                     start: {
                                                         offset: 30,
                                                         line: 1,
@@ -129,8 +129,8 @@ describe(":matches-media()", () => {
                                                         column: 36,
                                                     },
                                                 },
-                                                value: "720",
-                                                unit: "px",
+                                                value: '720',
+                                                unit: 'px',
                                             },
                                         },
                                     ],
@@ -145,12 +145,12 @@ describe(":matches-media()", () => {
         // Complex media query
         expect(
             toPlainObject(
-                parse("div:matches-media((min-height: 680px), screen and (orientation: portrait))", parserConfig)
-            )
+                parse('div:matches-media((min-height: 680px), screen and (orientation: portrait))', parserConfig),
+            ),
         ).toMatchObject({
-            type: "Selector",
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -164,9 +164,9 @@ describe(":matches-media()", () => {
             },
             children: [
                 {
-                    type: "TypeSelector",
+                    type: 'TypeSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -178,12 +178,12 @@ describe(":matches-media()", () => {
                             column: 4,
                         },
                     },
-                    name: "div",
+                    name: 'div',
                 },
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 3,
                             line: 1,
@@ -195,12 +195,12 @@ describe(":matches-media()", () => {
                             column: 75,
                         },
                     },
-                    name: "matches-media",
+                    name: 'matches-media',
                     children: [
                         {
-                            type: "MediaQueryList",
+                            type: 'MediaQueryList',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 18,
                                     line: 1,
@@ -214,9 +214,9 @@ describe(":matches-media()", () => {
                             },
                             children: [
                                 {
-                                    type: "MediaQuery",
+                                    type: 'MediaQuery',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 18,
                                             line: 1,
@@ -230,9 +230,9 @@ describe(":matches-media()", () => {
                                     },
                                     children: [
                                         {
-                                            type: "MediaFeature",
+                                            type: 'MediaFeature',
                                             loc: {
-                                                source: "<unknown>",
+                                                source: '<unknown>',
                                                 start: {
                                                     offset: 18,
                                                     line: 1,
@@ -244,11 +244,11 @@ describe(":matches-media()", () => {
                                                     column: 38,
                                                 },
                                             },
-                                            name: "min-height",
+                                            name: 'min-height',
                                             value: {
-                                                type: "Dimension",
+                                                type: 'Dimension',
                                                 loc: {
-                                                    source: "<unknown>",
+                                                    source: '<unknown>',
                                                     start: {
                                                         offset: 31,
                                                         line: 1,
@@ -260,16 +260,16 @@ describe(":matches-media()", () => {
                                                         column: 37,
                                                     },
                                                 },
-                                                value: "680",
-                                                unit: "px",
+                                                value: '680',
+                                                unit: 'px',
                                             },
                                         },
                                     ],
                                 },
                                 {
-                                    type: "MediaQuery",
+                                    type: 'MediaQuery',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 39,
                                             line: 1,
@@ -283,9 +283,9 @@ describe(":matches-media()", () => {
                                     },
                                     children: [
                                         {
-                                            type: "Identifier",
+                                            type: 'Identifier',
                                             loc: {
-                                                source: "<unknown>",
+                                                source: '<unknown>',
                                                 start: {
                                                     offset: 39,
                                                     line: 1,
@@ -297,12 +297,12 @@ describe(":matches-media()", () => {
                                                     column: 46,
                                                 },
                                             },
-                                            name: "screen",
+                                            name: 'screen',
                                         },
                                         {
-                                            type: "Identifier",
+                                            type: 'Identifier',
                                             loc: {
-                                                source: "<unknown>",
+                                                source: '<unknown>',
                                                 start: {
                                                     offset: 46,
                                                     line: 1,
@@ -314,12 +314,12 @@ describe(":matches-media()", () => {
                                                     column: 50,
                                                 },
                                             },
-                                            name: "and",
+                                            name: 'and',
                                         },
                                         {
-                                            type: "MediaFeature",
+                                            type: 'MediaFeature',
                                             loc: {
-                                                source: "<unknown>",
+                                                source: '<unknown>',
                                                 start: {
                                                     offset: 50,
                                                     line: 1,
@@ -331,11 +331,11 @@ describe(":matches-media()", () => {
                                                     column: 74,
                                                 },
                                             },
-                                            name: "orientation",
+                                            name: 'orientation',
                                             value: {
-                                                type: "Identifier",
+                                                type: 'Identifier',
                                                 loc: {
-                                                    source: "<unknown>",
+                                                    source: '<unknown>',
                                                     start: {
                                                         offset: 64,
                                                         line: 1,
@@ -347,7 +347,7 @@ describe(":matches-media()", () => {
                                                         column: 73,
                                                     },
                                                 },
-                                                name: "portrait",
+                                                name: 'portrait',
                                             },
                                         },
                                     ],
@@ -360,12 +360,12 @@ describe(":matches-media()", () => {
         });
     });
 
-    test("generates valid input properly", () => {
-        expect(generate(parse("div:matches-media((min-width: 720px))", parserConfig))).toEqual(
-            "div:matches-media((min-width:720px))"
+    test('generates valid input properly', () => {
+        expect(generate(parse('div:matches-media((min-width: 720px))', parserConfig))).toEqual(
+            'div:matches-media((min-width:720px))',
         );
         expect(
-            generate(parse("div:matches-media((min-height: 680px), screen and (orientation: portrait))", parserConfig))
-        ).toEqual("div:matches-media((min-height:680px),screen and (orientation:portrait))");
+            generate(parse('div:matches-media((min-height: 680px), screen and (orientation: portrait))', parserConfig)),
+        ).toEqual('div:matches-media((min-height:680px),screen and (orientation:portrait))');
     });
 });

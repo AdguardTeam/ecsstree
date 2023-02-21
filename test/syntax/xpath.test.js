@@ -1,17 +1,17 @@
-import { parse, generate, toPlainObject } from "../../src/index.js";
+import { parse, generate, toPlainObject } from '../../src/index';
 
 const parserConfig = {
-    context: "selector",
+    context: 'selector',
     positions: true,
 };
 
-describe(":xpath()", () => {
-    test("parses valid input properly", () => {
+describe(':xpath()', () => {
+    test('parses valid input properly', () => {
         // Very simple test, just to make sure it's working
-        expect(toPlainObject(parse(":xpath(//test)", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse(':xpath(//test)', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -25,9 +25,9 @@ describe(":xpath()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -39,12 +39,12 @@ describe(":xpath()", () => {
                             column: 15,
                         },
                     },
-                    name: "xpath",
+                    name: 'xpath',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 7,
                                     line: 1,
@@ -56,7 +56,7 @@ describe(":xpath()", () => {
                                     column: 14,
                                 },
                             },
-                            value: "//test",
+                            value: '//test',
                         },
                     ],
                 },
@@ -65,9 +65,9 @@ describe(":xpath()", () => {
 
         // Test with a more complex expression, which contains a lot of special cases
         expect(toPlainObject(parse(':xpath(//*[contains(text(),"()(cc")])', parserConfig))).toMatchObject({
-            type: "Selector",
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -81,9 +81,9 @@ describe(":xpath()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -95,12 +95,12 @@ describe(":xpath()", () => {
                             column: 38,
                         },
                     },
-                    name: "xpath",
+                    name: 'xpath',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 7,
                                     line: 1,
@@ -120,10 +120,10 @@ describe(":xpath()", () => {
         });
     });
 
-    test("generates valid input properly", () => {
-        expect(generate(parse(":xpath(//test)", parserConfig))).toEqual(":xpath(//test)");
+    test('generates valid input properly', () => {
+        expect(generate(parse(':xpath(//test)', parserConfig))).toEqual(':xpath(//test)');
         expect(generate(parse(':xpath(//*[contains(text(),"()(cc")])', parserConfig))).toEqual(
-            ':xpath(//*[contains(text(),"()(cc")])'
+            ':xpath(//*[contains(text(),"()(cc")])',
         );
     });
 });

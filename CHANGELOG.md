@@ -4,10 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.6] - 2022-02-21
+
+### Added
+- Import types from `@types/css-tree`
+- Small example project in TypeScript
+- Integrate ESLint, some code style improvements
+
+### Fixed
+- Remove Node warnings when running tests
+
+### Changed
+- Exclude some unnecessary files from NPM release
+- Move package under `AdguardTeam` organization
+
 ## [1.0.4] - 2022-02-19
 
 ### Changed
-
 - Browser builds now ends with `.min.js`
 - README improvements
 
@@ -19,19 +32,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [1.0.2] - 2022-02-18
 
 ### Fixed
-
 - Change `:-abp-has` to selector list instead of selector
 
 ## [1.0.1] - 2022-02-18
 
 ### Fixed
-
 - Improved `:contains` (and `:-abp-contains` & `:has-text`) pseudo class parsing, handle parenthesis / function calls in the parameter
 
 ## [1.0.0] - 2022-02-18
 
 ### Added
-
 - Initial version of the library
 - Support for `:-abp-contains(text / regexp)` pseudo class [[ABP reference]](https://help.adblockplus.org/hc/en-us/articles/360062733293#elemhide_css)
 - Support for `:-abp-has(selector)` pseudo class [[ABP reference]](https://help.adblockplus.org/hc/en-us/articles/360062733293#elemhide_css)
