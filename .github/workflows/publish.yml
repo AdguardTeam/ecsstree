@@ -34,6 +34,6 @@ jobs:
         run: yarn pack --filename ecsstree.tgz
 
       - name: Publish to NPM
-        run: yarn publish ecsstree.tgz --non-interactive
+        run: yarn publish ecsstree.tgz --access=public --non-interactive
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

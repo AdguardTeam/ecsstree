@@ -1,5 +1,5 @@
 {
-  "name": "ecss-tree",
+  "name": "@adguard/ecss-tree",
   "version": "1.0.4",
   "description": "Adblock Extended CSS fork for CSSTree",
   "author": "scripthunter7",
