@@ -205,13 +205,13 @@ for (const input of inputs) {
         // If you want to convert AST back to doubly linked list version, you can use
         // fromPlainObject() function.
         const astPlain = toPlainObject(ast);
-        // const astAgain = fromPlainObject(astPlain);
+        const astAgain = fromPlainObject(astPlain);
 
         // Print AST to console
         console.log(inspect(astPlain, { colors: true, depth: null }));
 
         // You can also generate string from AST (don't use plain object here)
-        console.log(generate(ast));
+        console.log(generate(astAgain));
     } catch (e) {
         // Mark invalid selector
         console.log(`Invalid selector: ${input}`);
