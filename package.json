@@ -61,6 +61,6 @@
     "prepare": "husky install",
     "lint": "eslint . --cache",
     "test": "node --no-warnings --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "build": "yarn rollup --config rollup.config.js"
+    "build": "rollup --config rollup.config.js"
   }
 }
