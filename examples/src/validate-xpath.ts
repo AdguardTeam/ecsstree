@@ -1,7 +1,7 @@
 // You can run this script with `yarn ts-node-esm validate-xpath.ts`
 // (you can run TypeScript scripts directly with ts-node module)
 
-import { parse, walk, CssNode } from 'ecss-tree';
+import { parse, walk, CssNode } from '@adguard/ecss-tree';
 // https://www.npmjs.com/package/xpath
 import xpath from 'xpath';
 

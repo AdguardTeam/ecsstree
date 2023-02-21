@@ -3,7 +3,7 @@
 
 import {
     parse, generate, toPlainObject, fromPlainObject,
-} from 'ecss-tree';
+} from '@adguard/ecss-tree';
 import { inspect } from 'util';
 
 // Some inputs to test, feel free to add more

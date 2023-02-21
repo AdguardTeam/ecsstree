@@ -4,8 +4,8 @@
      
 # ECSSTree
 
-[![NPM version](https://img.shields.io/npm/v/ecss-tree.svg)](https://www.npmjs.com/package/ecss-tree)
-[![NPM Downloads](https://img.shields.io/npm/dm/ecss-tree.svg)](https://www.npmjs.com/package/ecss-tree)
+[![NPM version](https://img.shields.io/npm/v/@adguard/ecss-tree.svg)](https://www.npmjs.com/package/@adguard/ecss-tree)
+[![NPM Downloads](https://img.shields.io/npm/dm/@adguard/ecss-tree.svg)](https://www.npmjs.com/package/@adguard/ecss-tree)
 [![LICENSE](https://img.shields.io/github/license/AdguardTeam/ecsstree)](https://github.com/AdguardTeam/ecsstree/blob/main/LICENSE)
 
 Adblock Extended CSS supplement for [CSSTree](https://github.com/csstree/csstree). This allows you to manage the main adblock Extended CSS elements with tools from the CSSTree library. It supports various Extended CSS language elements from Adblock Plus, AdGuard, and uBlock Origin. See the [Supported Extended CSS elements](#supported-extended-css-elements) section for a list of currently supported elements.
@@ -38,16 +38,16 @@ You can install the library using one of the following methods:
 
 - Using NPM:
   ```bash
-  npm install ecss-tree
+  npm install @adguard/ecss-tree
   ```
 - Using Yarn:
   ```bash
-  yarn add ecss-tree
+  yarn add @adguard/ecss-tree
   ```
 
 Links:
-- NPM package: https://www.npmjs.com/package/ecss-tree
-- JSDelivr CDN: https://www.jsdelivr.com/package/npm/ecss-tree
+- NPM package: https://www.npmjs.com/package/@adguard/ecss-tree
+- JSDelivr CDN: https://www.jsdelivr.com/package/npm/@adguard/ecss-tree
 
 ## Supported Extended CSS elements
 
@@ -180,7 +180,7 @@ ECSSTree will handle this case by a special re-tokenization algorithm during the
 Here are a very simple example to show how to use ECSSTree:
 
 ```javascript
-const { parse, generate, toPlainObject, fromPlainObject } = require("ecss-tree");
+const { parse, generate, toPlainObject, fromPlainObject } = require("@adguard/ecss-tree");
 const { inspect } = require("util");
 
 // Some inputs to test
@@ -233,13 +233,13 @@ You can find more examples in the [examples](/examples) folder.
 Our build process generates a browser-friendly version of the library, which can be used in the browser. You can insert it into your HTML page like this:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/ecss-tree/dist/ecsstree.iife.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@adguard/ecss-tree/dist/ecsstree.iife.min.js"></script>
 ```
 
 or
 
 ```html
-<script src="https://unpkg.com/ecss-tree@latest/dist/ecsstree.iife.min.js"></script>
+<script src="https://unpkg.com/@adguard/ecss-tree@latest/dist/ecsstree.iife.min.js"></script>
 ```
 
 Example usage:

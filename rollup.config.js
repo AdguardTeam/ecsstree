@@ -120,7 +120,7 @@ const dts = {
                 ' * the exact same API as CSSTree, we can use the same type definitions.',
                 ' *',
                 " * However, we can't use the @types/css-tree directly, because of a naming",
-                " * conflict with the actual CSSTree package. Our package is called 'ecss-tree',",
+                " * conflict with the actual CSSTree package. Our package is called '@adguard/ecss-tree',",
                 " * but the type definitions are written for 'css-tree'. Therefore, we need to",
                 ' * export type definitions from @types/css-tree to this file at build time.',
                 ' *',

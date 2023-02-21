@@ -1,7 +1,7 @@
 // You can run this script with `yarn ts-node-esm validate-regexp.ts`
 // (you can run TypeScript scripts directly with ts-node module)
 
-import { parse, walk, CssNode } from 'ecss-tree';
+import { parse, walk, CssNode } from '@adguard/ecss-tree';
 // https://www.npmjs.com/package/regexpp
 import { RegExpValidator } from 'regexpp';
 
