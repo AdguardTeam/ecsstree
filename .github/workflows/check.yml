@@ -1,0 +1,33 @@
+name: Code check
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore: ["*.md", "examples/**"]
+  pull_request:
+    branches:
+      - main
+    paths-ignore: ["*.md", "examples/**"]
+
+jobs:
+  code_check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out to repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run ESLint
+        run: yarn lint
+
+      - name: Run Jest tests
+        run: yarn test
