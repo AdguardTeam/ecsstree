@@ -1,0 +1,24 @@
+{
+  "license": "MIT",
+  "author": "AdGuard Software Ltd. <https://adguard.com>",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint . --ext .ts"
+  },
+  "dependencies": {
+    "@adguard/ecss-tree": "^1.0.6",
+    "regexpp": "^3.2.0",
+    "xpath": "^0.0.32"
+  },
+  "devDependencies": {
+    "@types/node": "^18.14.0",
+    "@typescript-eslint/eslint-plugin": "^5.53.0",
+    "@typescript-eslint/parser": "^5.53.0",
+    "eslint": "^8.34.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  }
+}

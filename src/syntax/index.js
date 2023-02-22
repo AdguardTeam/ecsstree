@@ -1,103 +1,205 @@
 /**
- * CSSTree syntax fork for "Adblock Extended CSS" syntax.
+ * CSSTree syntax extension fork for "Adblock Extended CSS" syntax.
  *
- * This library supports various CSS extensions from AdGuard and uBlock Origin.
+ * ! DURING DEVELOPMENT, PLEASE DO NOT DIFFER FROM THE ORIGINAL CSSTREE API
+ * ! IN ANY WAY!
+ * ! OUR PRIMARY GOAL IS TO KEEP THE API AS CLOSE AS POSSIBLE TO THE ORIGINAL
+ * ! CSSTREE API, SO CSSTREE EASILY CAN BE REPLACED WITH ECSSTREE EVERYWHERE
+ * ! ANY TIME.
+ *
+ * This library supports various Extended CSS language elements from
+ * - AdGuard,
+ * - uBlock Origin and
+ * - Adblock Plus.
  *
  * @see {@link https://github.com/AdguardTeam/ExtendedCss}
  * @see {@link https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters}
+ * @see {@link https://help.adblockplus.org/hc/en-us/articles/360062733293#elemhide-emulation}
  */
 
-import { fork, tokenize, tokenTypes } from "css-tree";
-import { CLOSING_PARENTHESIS, DOUBLE_QUOTE, ESCAPE, OPENING_PARENTHESIS, SPACE } from "../utils/constants.js";
+import { fork, tokenize, tokenTypes } from 'css-tree';
+import {
+    CLOSING_PARENTHESIS, DOUBLE_QUOTE, ESCAPE, OPENING_PARENTHESIS, SPACE,
+} from '../utils/constants';
 
-const CONTAINS_PSEUDO_CLASSES = ["contains(", "-abp-contains(", "has-text("];
+// :contains()-related pseudo-classes
+const CONTAINS_PSEUDO_CLASSES = ['contains(', '-abp-contains(', 'has-text('];
 
 const selector = {
+    /**
+     * CSSTree logic for parsing a selector from the token stream.
+     * Via "this" we can access the parser's internal context, eg.
+     * methods, token stream, etc.
+     *
+     * Idea comes from CSSTree source code
+     *
+     * @returns Doubly linked list which contains the parsed selector node
+     * @throws If parsing not possible
+     * @see {@link https://github.com/csstree/csstree/blob/master/lib/syntax/pseudo/index.js}
+     */
     parse() {
         return this.createSingleNodeList(this.Selector());
     },
 };
 
 const selectorList = {
+    /**
+     * CSSTree logic for parsing a selector list from the token stream.
+     * Via "this" we can access the parser's internal context, eg.
+     * methods, token stream, etc.
+     *
+     * Idea comes from CSSTree source code
+     *
+     * @returns Doubly linked list which contains the parsed selector list node
+     * @throws If parsing not possible
+     * @see {@link https://github.com/csstree/csstree/blob/master/lib/syntax/pseudo/index.js}
+     */
     parse() {
         return this.createSingleNodeList(this.SelectorList());
     },
 };
 
 const mediaQueryList = {
+    /**
+     * CSSTree logic for parsing a media query list from the token stream.
+     * Via "this" we can access the parser's internal context, eg.
+     * methods, token stream, etc.
+     *
+     * Idea comes from CSSTree source code
+     *
+     * @returns Doubly linked list which contains the parsed media query list node
+     * @throws If parsing not possible
+     * @see {@link https://github.com/csstree/csstree/blob/master/lib/syntax/pseudo/index.js}
+     */
     parse() {
         return this.createSingleNodeList(this.MediaQueryList());
     },
 };
 
 const numberOrSelector = {
+    /**
+     * CSSTree logic for parsing a number or a selector from the token
+     * stream.
+     * Via "this" we can access the parser's internal context, eg.
+     * methods, token stream, etc.
+     *
+     * Idea comes from CSSTree source code
+     *
+     * @returns Doubly linked list which contains the parsed number or selector node
+     * @throws If parsing not possible
+     * @see {@link https://github.com/csstree/csstree/blob/master/lib/syntax/pseudo/index.js}
+     */
     parse() {
-        return this.createSingleNodeList(this.parseWithFallback(this.Number, this.Selector));
+        return this.createSingleNodeList(
+            // If the next token is a number, parse it as a number,
+            // otherwise parse it as a selector as fallback
+            // * PLEASE NOTE: If the number parsing is failed, CSSTree
+            // * will throw an "internal error" via "onParsingError"
+            // * callback.
+            // * See: https://github.com/csstree/csstree/blob/master/docs/parsing.md#onparseerror
+            // * This not a breaking issue, because the parsing will
+            // * continue its work.
+            this.parseWithFallback(this.Number, this.Selector),
+        );
     },
 };
 
 const number = {
+    /**
+     * CSSTree logic for parsing a number from the token stream.
+     * Via "this" we can access the parser's internal context, eg.
+     * methods, token stream, etc.
+     *
+     * Idea comes from CSSTree source code
+     *
+     * @returns Doubly linked list which contains the parsed number node
+     * @throws If parsing not possible
+     * @see {@link https://github.com/csstree/csstree/blob/master/lib/syntax/pseudo/index.js}
+     */
     parse() {
         return this.createSingleNodeList(this.Number());
     },
 };
 
 const style = {
+    /**
+     * ECSSTree logic for parsing uBO's style from the token stream.
+     * Via "this" we can access the parser's internal context, eg.
+     * methods, token stream, etc.
+     *
+     * @returns Doubly linked list which contains the parsed declaration list node
+     * @throws If parsing not possible
+     */
     parse() {
-        // Empty style
+        // Throw an error if the current token is not a left parenthesis,
+        // which means that the style is not specified at all.
         if (this.tokenType === tokenTypes.RightParenthesis) {
-            this.error("No style specified");
+            this.error('No style specified');
         }
 
-        // Create a list for children
+        // Prepare a doubly linked list for children
         const children = this.createList();
 
-        // Get the current token's balance from the token stream. Balance pair map allows
-        // to determinate when the current function ends.
+        // Get the current token's balance from the token stream. Balance pair map
+        // lets us to determine when the current function ends.
         const balance = this.balance[this.tokenIndex];
 
         // In order to avoid infinite loop we also need to track the current token index
         while (this.balance[this.tokenIndex] === balance && this.tokenIndex < this.tokenCount) {
             switch (this.tokenType) {
-                // Skip whitespaces, comments and semicolons
+                // Skip whitespaces, comments and semicolons, which are actually not needed
+                // here
                 case tokenTypes.WhiteSpace:
                 case tokenTypes.Comment:
                 case tokenTypes.Semicolon:
+                    // Jump to the next token
                     this.next();
                     break;
 
-                // At this point we can assume that we have a declaration
+                // At this point we can assume that we have a declaration, so it's time to parse it
                 default:
                     children.push(
                         // Parse declaration with fallback to Raw node
-                        // We need arrow function here, because we need to use the current context
+                        // We need arrow function here, because we need to use the current parser
+                        // context via "this" keyword, but regular functions will have their own
+                        // context, that breaks the logic.
+
                         // eslint-disable-next-line arrow-body-style
                         this.parseWithFallback(this.Declaration, (startToken) => {
-                            // Parse until the next semicolon (this handles if we have multiple declarations in the
-                            // same style, so we not parse all of them as a single Raw rule because of this)
+                            // Parse until the next semicolon (this handles if we have multiple declarations in
+                            // the same style, so we not parse all of them as a single Raw rule because of this)
                             return this.Raw(startToken, this.consumeUntilSemicolonIncluded, true);
-                        })
+                        }),
                     );
             }
         }
 
-        // Create a DeclarationList node
+        // Create a DeclarationList node and pass the children to it
+        // You can find the structure of the node in the CSSTree documentation:
+        // https://github.com/csstree/csstree/blob/master/docs/ast.md#declarationlist
         const declarationList = {
-            type: "DeclarationList",
+            type: 'DeclarationList',
+            // CSSTree will handle position calculation for us
             loc: this.getLocationFromList(children),
             children,
         };
 
+        // Return the previously created CSSTree-compatible node
         return this.createSingleNodeList(declarationList);
     },
 };
 
 const extCssContains = {
     /**
-     * Adblock Extended CSS allows using contains() without quote marks, so the tokenization maybe
-     * turns wrong at this point.
+     * ECSSTree logic for parsing :contains() and similar pseudo-classes from the token stream.
      *
-     * Here is an example why and how it can happen. Let's assume that the input is
+     * Via "this" we can access the parser's internal context, eg. methods, token stream, etc.
+     *
+     * Adblock Extended CSS allows using quote marks,  parentheses as unquoted argument in
+     * :contains() and similar pseudo-classes, and the default CSSTree logic may not work
+     * correctly in some cases, because it is a bit tricky to parse such pseudo-classes.
+     *
+     * Here is an example. Let's assume that the input is
      * ```css
      * :contains(aaa'bbb)
      * ```
@@ -108,67 +210,87 @@ const extCssContains = {
      *  aaa             ident-token
      *  'bbb)           string-token
      *
-     * So, at quote mark (') tokenizer will think that a string is starting, and it tokenizes
+     * At quote mark (') tokenizer will think that a string is starting, and it tokenizes
      * the rest of the input as a string. This is the normal behavior for the tokenizer, but
      * it is wrong for us, since the parser will fail with an ")" is expected error, because
      * it cannot find the closing balance pair for the opening parenthesis. So, we need to
      * fix the token stream here to avoid this error.
+     *
+     * @returns Doubly linked list which contains the parsed :contains() argument as a Raw node
+     * @throws If parsing not possible
      */
     parse() {
-        // Get the current token stream
+        // Get the current token stream from the parser's context
         const tokens = this.dump();
 
         // Note: CSSTree removes the whitespace token after the function name before calling this function
         // So if we have :contains(  something), our tokenIndex here points to "something" and not to the
         // whitespace token.
+        // eslint-disable-next-line max-len
+        // See: https://github.com/csstree/csstree/blob/612cc5f2922b2304869497d165a0cc65257f7a8b/lib/syntax/node/PseudoClassSelector.js#L31-L34
 
-        // :contains() case, but not :contains( something) case, so we check if the previous token is not a whitespace
-        if (this.tokenType === tokenTypes.RightParenthesis && tokens[this.tokenIndex - 1].type !== "whitespace-token") {
-            this.error("Empty parameter specified");
+        // In the case of :contains(), these whitespaces are matter.
+
+        // :contains() case, but not :contains( ) or :contains( something) case, so we check if the previous token is
+        // not a whitespace
+        if (this.tokenType === tokenTypes.RightParenthesis && tokens[this.tokenIndex - 1].type !== 'whitespace-token') {
+            this.error('Empty parameter specified');
         }
 
-        // Find the "real" start position of the contains() function's argument
+        // Find the "real" start position of the :contains() function's argument which is includes
+        // possible whitespace tokens
         let startPosition = -1;
 
-        // Save the current position within the token stream (we will need to restore it later)
+        // Save the current position within the token stream (we will need to restore it later,
+        // after re-tokenizing the input, to restore the parser's state)
         let prevTokenIndex = this.tokenIndex;
 
+        // Iterate over the token stream from the current position to the beginning
         for (let i = this.tokenIndex; i >= 0; i -= 1) {
-            // Check token name to avoid :contains(join('')) case, where join( is also a function token
-            if (tokens[i].type === "function-token" && CONTAINS_PSEUDO_CLASSES.includes(tokens[i].chunk)) {
-                // Token after the function name is the first token of the argument
+            // Check token name to avoid :contains(join('')) case, where "join(" is also a function token
+            // Since this parsing function will be called, we definitely have a function token before
+            if (tokens[i].type === 'function-token' && CONTAINS_PSEUDO_CLASSES.includes(tokens[i].chunk)) {
+                // Find the first token of the :contains() function's argument, which
+                // is the next token after the function token (i + 1)
                 startPosition = this.getTokenStart(i + 1);
                 prevTokenIndex = i + 1;
                 break;
             }
         }
 
-        // Theoretically, this should never happen, but we check it anyway
+        // Theoretically, this should never happen, because CSSTree only calls this function
+        // if it finds a :contains() function, but we check it just in case...
         if (startPosition === -1) {
             this.error("Cannot find the start position of the contains() function's argument");
         }
 
-        // Create a list for children
+        // Prepare a doubly linked list for children nodes, but actually we only
+        // parse a single raw node
         const children = this.createList();
 
-        // Find the real end index of the contains() function's argument
+        // Get the whole source code from the parser's context
         const sourceCode = this.source;
 
+        // Find the real end index of the :contains() function's argument
         let endPosition = -1;
 
         // Parenthesis balance
         let balance = 0;
 
-        // Contains can contain any character, such as parentheses, quotes, etc,
-        // so a bit tricky to find the end position of the pseudo-class
+        // :contains()'s argument can contain any character, such as parentheses, quotes...
+        // so a bit tricky to find the end position of this pseudo-class
         for (let i = startPosition; i < sourceCode.length; i += 1) {
             const char = sourceCode[i];
 
             if (char === OPENING_PARENTHESIS && sourceCode[i - 1] !== ESCAPE) {
+                // If we find an unescaped opening parenthesis, we increase the balance
                 balance += 1;
             } else if (char === CLOSING_PARENTHESIS && sourceCode[i - 1] !== ESCAPE) {
+                // If we find an unescaped closing parenthesis, we decrease the balance
                 balance -= 1;
 
+                // If the balance is -1, it means that we found the closing parenthesis of the
+                // :contains() function's argument, because it breaks the balance
                 if (balance === -1) {
                     endPosition = i;
                     break;
@@ -178,7 +300,7 @@ const extCssContains = {
 
         // If we cannot find the closing parenthesis, we cannot fix the token stream, so we
         // just return the children list as is. In this case, the parser will fail with an
-        // error (which is correct behavior).
+        // error about the missing closing parenthesis, which is correct behavior in this case.
         if (endPosition === -1) {
             return children;
         }
@@ -188,27 +310,38 @@ const extCssContains = {
             this.error('No parameter specified for "contains()" pseudo-class');
         }
 
-        // Push content to children list
+        // Create a raw node with the :contains() function's argument (get it from the source code)
+        // See https://github.com/csstree/csstree/blob/master/docs/ast.md#raw
         children.push({
-            type: "Raw",
-            // Give positions, if enabled (CSSTree will handle it)
+            type: 'Raw',
+            // CSSTree will store positions, if "positions" option is enabled in the parser options
+            // (it is disabled by default)
             loc: this.getLocation(startPosition, endPosition),
             value: sourceCode.substring(startPosition, endPosition),
         });
 
-        // Create a new source code, where fill the contains() function's argument with whitespaces,
-        // but keep the length of the source code the same. This will fix the token stream, so the
-        // parser will not fail with an error, and positions remain the same.
-        const newSourceCode =
-            sourceCode.substring(0, startPosition) +
-            new Array(endPosition - startPosition + 1).join(SPACE) +
-            sourceCode.substring(endPosition);
+        // Create a new source code, where fill the :contains() function's argument with whitespaces,
+        // but keep the length of the source code the same. This will "fixes" the token stream, so the
+        // parser will not fail with an error, and positions also remain the same.
+        // So, if we have this input:
+        //
+        //  div:contains(aa'bb) + a[href^="https://example.com/"]
+        //
+        // then at this point this transformation will be done as follows:
+        //
+        //  div:contains(     ) + a[href^="https://example.com/"]
+        //
+        // In the second source code there are no quote marks that can break the token stream in the
+        // first :contains() function's argument, which is necessary to proper re-tokenization.
+        const newSourceCode = sourceCode.substring(0, startPosition)
+            + new Array(endPosition - startPosition + 1).join(SPACE)
+            + sourceCode.substring(endPosition);
 
-        // Modify the parsed source code. This will reset the token stream, so we need to restore
-        // the position within the token stream later.
+        // Modify the parsed source code within the parser's context. This means a re-tokenization,
+        // which will "fix" the token stream.
         // Theoretically this "trick" doesn't cause problems, because we parsed the argument of the
-        // contains() function as a Raw node, so we don't need to parse it again, but the parser will
-        // continue its work from the correct position.
+        // :contains() function as a Raw node, so we don't need to parse it again, but the parser will
+        // continue its work from this point correctly.
         this.setSource(newSourceCode, tokenize);
 
         // Restore the position within the token stream.
@@ -216,35 +349,46 @@ const extCssContains = {
             this.next();
         }
 
-        // CSSTree will skip insterted whitespaces
+        // CSSTree will skip inserted whitespaces automatically, so we don't need to do it manually. See:
+        // eslint-disable-next-line max-len
+        // https://github.com/csstree/csstree/blob/612cc5f2922b2304869497d165a0cc65257f7a8b/lib/syntax/node/PseudoClassSelector.js#L31-L34
 
-        // Return the children list which contains the contains() function's argument as a Raw node
+        // Return the children list which contains the :contains() function's argument as a Raw node
         return children;
     },
 };
 
 const xpath = {
+    /**
+     * ECSSTree logic for parsing :xpath() pseudo-classes from the token stream.
+     *
+     * Via "this" we can access the parser's internal context, eg. methods, token stream, etc.
+     *
+     * @returns Doubly linked list which contains the parsed :xpath() function's argument as a Raw node
+     * @throws If parsing not possible
+     */
     parse() {
-        // Empty pseudo-class
+        // No parameter specified for the pseudo-class, so we throw an error and stop the parsing
         if (this.tokenType === tokenTypes.RightParenthesis) {
-            this.error('No parameter specified for "xpath()" pseudo-class');
+            this.error('Empty parameter specified');
         }
 
-        // Create a list for children
+        // Prepare a doubly linked list for children nodes, but actually we only
+        // parse a single raw node
         const children = this.createList();
 
-        // Save the current position within the token stream (we will need to restore it later)
+        // Save the current position within the token stream (we will need to restore it later,
+        // after re-tokenizing the input, to restore the parser's state)
         const prevTokenIndex = this.tokenIndex;
 
-        // Find the real end index of the xpath() function's argument
+        // Get the whole source code from the parser's context
         const sourceCode = this.source;
 
+        // Start position of the argument is the position of the current token
+        // (CSSTree drops whitespace before this token, but this is not a problem here)
         const startPosition = this.getTokenStart(this.tokenIndex);
 
-        // Find the end of the xpath() function's argument. It is a quite complex task, because
-        // the argument can contain any characters, including parentheses, quotes, etc.
-        // We will use a simple heuristic: checking parentheses balance. Maybe not the best
-        // solution, but it works in most cases.
+        // Find the index of the pseudo-class's closing parenthesis
         let endPosition = -1;
 
         // Parentheses balance
@@ -255,21 +399,23 @@ const xpath = {
 
         // Iterate over the corresponding part of the source code
         for (let i = startPosition; i < sourceCode.length; i += 1) {
+            // If we find an unescaped quote mark, we toggle the "inString" flag
+            // It is important, because we should omit parentheses inside strings.
             if (sourceCode[i] === DOUBLE_QUOTE && sourceCode[i - 1] !== ESCAPE) {
                 inString = !inString;
             }
 
-            // If we are not inside a string, we can check parentheses balance
+            // If we are not inside a string, we should check parentheses balance
             if (!inString) {
-                // Check parentheses balance
-                if (sourceCode[i] === OPENING_PARENTHESIS) {
+                if (sourceCode[i] === OPENING_PARENTHESIS && sourceCode[i - 1] !== ESCAPE) {
+                    // If we find an unescaped opening parenthesis, we increase the balance
                     balance += 1;
-                } else if (sourceCode[i] === CLOSING_PARENTHESIS) {
+                } else if (sourceCode[i] === CLOSING_PARENTHESIS && sourceCode[i - 1] !== ESCAPE) {
+                    // If we find an unescaped closing parenthesis, we decrease the balance
                     balance -= 1;
 
-                    // If the parentheses balance is -1, it means that we have found the closing,
-                    // because this closing breaks the parentheses balance, which means it is not
-                    // belongs to the xpath expression.
+                    // If the balance is -1, it means that we found the closing parenthesis of the
+                    // pseudo-class
                     if (balance === -1) {
                         endPosition = i;
                         break;
@@ -280,31 +426,43 @@ const xpath = {
 
         // If we cannot find the closing parenthesis, we cannot fix the token stream, so we
         // just return the children list as is. In this case, the parser will fail with an
-        // error (which is correct behavior).
+        // error about the missing closing parenthesis, which is correct behavior in this case.
         if (endPosition === -1) {
             return children;
         }
 
-        // Push content to children list
+        // Create a raw node with the argument of the pseudo-class (get it from the source code)
+        // See https://github.com/csstree/csstree/blob/master/docs/ast.md#raw
         children.push({
-            type: "Raw",
+            type: 'Raw',
+            // CSSTree will store positions, if "positions" option is enabled in the parser options
+            // (it is disabled by default)
             loc: this.getLocation(startPosition, endPosition),
             value: sourceCode.substring(startPosition, endPosition),
         });
 
-        // Create a new source code, where fill the xpath() function's argument with whitespace,
-        // but keep the length of the source code the same. This will fix the token stream, so the
-        // parser will not fail with an error, and positions remain consistent.
-        const newSourceCode =
-            sourceCode.substring(0, startPosition) +
-            new Array(endPosition - startPosition + 1).join(SPACE) +
-            sourceCode.substring(endPosition);
+        // Create a new source code, where fill the argument of the pseudo-class with whitespaces,
+        // but keep the length of the source code the same. This will "fixes" the token stream, so the
+        // parser will not fail with an error, and positions also remain the same.
+        // So, if we have this input:
+        //
+        //  div:pseudo-class(aa'bb) + a[href^="https://example.com/"]
+        //
+        // then at this point this transformation will be done as follows:
+        //
+        //  div:pseudo-class(     ) + a[href^="https://example.com/"]
+        //
+        // In the second source code there are no quote marks that can break the token stream in the
+        // first :pseudo-class() function's argument, which is necessary to proper re-tokenization.
+        const newSourceCode = sourceCode.substring(0, startPosition)
+            + new Array(endPosition - startPosition + 1).join(SPACE)
+            + sourceCode.substring(endPosition);
 
-        // Modify the parsed source code. This will reset the token stream, so we need to restore
-        // the position within the token stream later.
+        // Modify the parsed source code within the parser's context. This means a re-tokenization,
+        // which will "fix" the token stream.
         // Theoretically this "trick" doesn't cause problems, because we parsed the argument of the
-        // xpath() function as a Raw node, so we don't need to parse it again, but the parser will
-        // continue its work from the correct position.
+        // pseudo-class as a Raw node, so we don't need to parse it again, but the parser will
+        // continue its work from this point correctly.
         this.setSource(newSourceCode, tokenize);
 
         // Restore the position within the token stream.
@@ -312,28 +470,33 @@ const xpath = {
             this.next();
         }
 
-        // CSSTree will skip insterted whitespaces
+        // CSSTree will skip inserted whitespaces
+        // eslint-disable-next-line max-len
+        // https://github.com/csstree/csstree/blob/612cc5f2922b2304869497d165a0cc65257f7a8b/lib/syntax/node/PseudoClassSelector.js#L31-L34
 
-        // Return the children list which contains the xpath() function's argument as a Raw node
+        // Return the children list which contains the pseudo-class's argument as a Raw node
         return children;
     },
 };
 
 /**
- * Extended CSS syntax for css-tree (forked from css-tree)
+ * Extended CSS syntax via CSSTree fork API. Thanks for the idea to @lahmatiy!
+ *
+ * @see {@link https://github.com/csstree/csstree/issues/211#issuecomment-1349732115}
+ * @see {@link https://github.com/csstree/csstree/blob/master/lib/syntax/create.js}
  */
 const extendedCssSyntax = fork({
     pseudo: {
-        "-abp-has": selectorList,
-        "if-not": selector,
+        '-abp-has': selectorList,
+        'if-not': selector,
         upward: numberOrSelector,
-        "nth-ancestor": number,
-        "min-text-length": number,
-        "matches-media": mediaQueryList,
+        'nth-ancestor': number,
+        'min-text-length': number,
+        'matches-media': mediaQueryList,
         style,
         contains: extCssContains,
-        "has-text": extCssContains,
-        "-abp-contains": extCssContains,
+        'has-text': extCssContains,
+        '-abp-contains': extCssContains,
         xpath,
     },
 });

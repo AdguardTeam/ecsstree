@@ -1,38 +1,38 @@
 // Tests for :contains(), :-abp-contains() and :has-text() pseudo-classes
 
-import { parse, generate, toPlainObject } from "../../src/index.js";
+import { parse, generate, toPlainObject } from '../../src/index';
 
 const parserConfig = {
-    context: "selector",
+    context: 'selector',
     positions: true,
 };
 
-describe(":contains()", () => {
-    test("throws on invalid input", () => {
-        expect(() => parse(":contains()", parserConfig)).toThrow("Empty parameter specified");
+describe(':contains()', () => {
+    test('throws on invalid input', () => {
+        expect(() => parse(':contains()', parserConfig)).toThrow('Empty parameter specified');
 
-        expect(() => parse(":contains(a", parserConfig)).toThrow();
+        expect(() => parse(':contains(a', parserConfig)).toThrow();
         expect(() => parse(":contains(a'", parserConfig)).toThrow();
 
         // :-abp-contains alias
-        expect(() => parse(":-abp-contains()", parserConfig)).toThrow("Empty parameter specified");
+        expect(() => parse(':-abp-contains()', parserConfig)).toThrow('Empty parameter specified');
 
-        expect(() => parse(":-abp-contains(a", parserConfig)).toThrow();
+        expect(() => parse(':-abp-contains(a', parserConfig)).toThrow();
         expect(() => parse(":-abp-contains(a'", parserConfig)).toThrow();
 
         // :has-text alias
-        expect(() => parse(":has-text()", parserConfig)).toThrow("Empty parameter specified");
+        expect(() => parse(':has-text()', parserConfig)).toThrow('Empty parameter specified');
 
-        expect(() => parse(":has-text(a", parserConfig)).toThrow();
+        expect(() => parse(':has-text(a', parserConfig)).toThrow();
         expect(() => parse(":has-text(a'", parserConfig)).toThrow();
     });
 
-    test("parses valid input properly", () => {
+    test('parses valid input properly', () => {
         // One whitespace
-        expect(toPlainObject(parse(":contains( )", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse(':contains( )', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -46,9 +46,9 @@ describe(":contains()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -60,12 +60,12 @@ describe(":contains()", () => {
                             column: 13,
                         },
                     },
-                    name: "contains",
+                    name: 'contains',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -77,7 +77,7 @@ describe(":contains()", () => {
                                     column: 12,
                                 },
                             },
-                            value: " ",
+                            value: ' ',
                         },
                     ],
                 },
@@ -85,10 +85,10 @@ describe(":contains()", () => {
         });
 
         // Two whitespaces
-        expect(toPlainObject(parse(":contains(  )", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse(':contains(  )', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -102,9 +102,9 @@ describe(":contains()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -116,12 +116,12 @@ describe(":contains()", () => {
                             column: 14,
                         },
                     },
-                    name: "contains",
+                    name: 'contains',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -133,7 +133,7 @@ describe(":contains()", () => {
                                     column: 13,
                                 },
                             },
-                            value: "  ",
+                            value: '  ',
                         },
                     ],
                 },
@@ -141,10 +141,10 @@ describe(":contains()", () => {
         });
 
         // Very simple input
-        expect(toPlainObject(parse(":contains(aaa)", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse(':contains(aaa)', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -158,9 +158,9 @@ describe(":contains()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -172,12 +172,12 @@ describe(":contains()", () => {
                             column: 15,
                         },
                     },
-                    name: "contains",
+                    name: 'contains',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -189,7 +189,7 @@ describe(":contains()", () => {
                                     column: 14,
                                 },
                             },
-                            value: "aaa",
+                            value: 'aaa',
                         },
                     ],
                 },
@@ -197,10 +197,10 @@ describe(":contains()", () => {
         });
 
         // Space before input
-        expect(toPlainObject(parse(":contains( aaa)", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse(':contains( aaa)', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -214,9 +214,9 @@ describe(":contains()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -228,12 +228,12 @@ describe(":contains()", () => {
                             column: 16,
                         },
                     },
-                    name: "contains",
+                    name: 'contains',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -245,7 +245,7 @@ describe(":contains()", () => {
                                     column: 15,
                                 },
                             },
-                            value: " aaa",
+                            value: ' aaa',
                         },
                     ],
                 },
@@ -253,10 +253,10 @@ describe(":contains()", () => {
         });
 
         // Space after input
-        expect(toPlainObject(parse(":contains(aaa )", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse(':contains(aaa )', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -270,9 +270,9 @@ describe(":contains()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -284,12 +284,12 @@ describe(":contains()", () => {
                             column: 16,
                         },
                     },
-                    name: "contains",
+                    name: 'contains',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -301,7 +301,7 @@ describe(":contains()", () => {
                                     column: 15,
                                 },
                             },
-                            value: "aaa ",
+                            value: 'aaa ',
                         },
                     ],
                 },
@@ -309,10 +309,10 @@ describe(":contains()", () => {
         });
 
         // Space before and after input
-        expect(toPlainObject(parse(":contains( aaa )", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse(':contains( aaa )', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -326,9 +326,9 @@ describe(":contains()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -340,12 +340,12 @@ describe(":contains()", () => {
                             column: 17,
                         },
                     },
-                    name: "contains",
+                    name: 'contains',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -357,7 +357,7 @@ describe(":contains()", () => {
                                     column: 16,
                                 },
                             },
-                            value: " aaa ",
+                            value: ' aaa ',
                         },
                     ],
                 },
@@ -365,10 +365,10 @@ describe(":contains()", () => {
         });
 
         // Space before and after input, with space in input
-        expect(toPlainObject(parse(":contains(  aaa  bbb  )", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse(':contains(  aaa  bbb  )', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -382,9 +382,9 @@ describe(":contains()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -396,12 +396,12 @@ describe(":contains()", () => {
                             column: 24,
                         },
                     },
-                    name: "contains",
+                    name: 'contains',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -413,7 +413,7 @@ describe(":contains()", () => {
                                     column: 23,
                                 },
                             },
-                            value: "  aaa  bbb  ",
+                            value: '  aaa  bbb  ',
                         },
                     ],
                 },
@@ -421,10 +421,10 @@ describe(":contains()", () => {
         });
 
         // Space in input
-        expect(toPlainObject(parse(":contains(aaa bbb ccc)", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse(':contains(aaa bbb ccc)', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -438,9 +438,9 @@ describe(":contains()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -452,12 +452,12 @@ describe(":contains()", () => {
                             column: 23,
                         },
                     },
-                    name: "contains",
+                    name: 'contains',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -469,7 +469,7 @@ describe(":contains()", () => {
                                     column: 22,
                                 },
                             },
-                            value: "aaa bbb ccc",
+                            value: 'aaa bbb ccc',
                         },
                     ],
                 },
@@ -477,10 +477,10 @@ describe(":contains()", () => {
         });
 
         // Parenthesis in input
-        expect(toPlainObject(parse(":contains((aaa))", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse(':contains((aaa))', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -494,9 +494,9 @@ describe(":contains()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -508,12 +508,12 @@ describe(":contains()", () => {
                             column: 17,
                         },
                     },
-                    name: "contains",
+                    name: 'contains',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -525,7 +525,7 @@ describe(":contains()", () => {
                                     column: 16,
                                 },
                             },
-                            value: "(aaa)",
+                            value: '(aaa)',
                         },
                     ],
                 },
@@ -533,10 +533,10 @@ describe(":contains()", () => {
         });
 
         // Parenthesis in input, but a bit more complex
-        expect(toPlainObject(parse(":contains((aaa)(bbb)\\)\\()", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse(':contains((aaa)(bbb)\\)\\()', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -550,9 +550,9 @@ describe(":contains()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -564,12 +564,12 @@ describe(":contains()", () => {
                             column: 26,
                         },
                     },
-                    name: "contains",
+                    name: 'contains',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -581,7 +581,7 @@ describe(":contains()", () => {
                                     column: 25,
                                 },
                             },
-                            value: "(aaa)(bbb)\\)\\(",
+                            value: '(aaa)(bbb)\\)\\(',
                         },
                     ],
                 },
@@ -589,10 +589,10 @@ describe(":contains()", () => {
         });
 
         // Regular expression
-        expect(toPlainObject(parse(":contains(/aaa/)", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse(':contains(/aaa/)', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -606,9 +606,9 @@ describe(":contains()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -620,12 +620,12 @@ describe(":contains()", () => {
                             column: 17,
                         },
                     },
-                    name: "contains",
+                    name: 'contains',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -637,7 +637,7 @@ describe(":contains()", () => {
                                     column: 16,
                                 },
                             },
-                            value: "/aaa/",
+                            value: '/aaa/',
                         },
                     ],
                 },
@@ -645,10 +645,10 @@ describe(":contains()", () => {
         });
 
         // Regular expression with flags
-        expect(toPlainObject(parse(":contains(/aaa/i)", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse(':contains(/aaa/i)', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -662,9 +662,9 @@ describe(":contains()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -676,12 +676,12 @@ describe(":contains()", () => {
                             column: 18,
                         },
                     },
-                    name: "contains",
+                    name: 'contains',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -693,7 +693,7 @@ describe(":contains()", () => {
                                     column: 17,
                                 },
                             },
-                            value: "/aaa/i",
+                            value: '/aaa/i',
                         },
                     ],
                 },
@@ -701,10 +701,10 @@ describe(":contains()", () => {
         });
 
         // Regular expression with parentheses
-        expect(toPlainObject(parse(":contains(/^(a|b){3,}$/)", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse(':contains(/^(a|b){3,}$/)', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -718,9 +718,9 @@ describe(":contains()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -732,12 +732,12 @@ describe(":contains()", () => {
                             column: 25,
                         },
                     },
-                    name: "contains",
+                    name: 'contains',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -749,7 +749,7 @@ describe(":contains()", () => {
                                     column: 24,
                                 },
                             },
-                            value: "/^(a|b){3,}$/",
+                            value: '/^(a|b){3,}$/',
                         },
                     ],
                 },
@@ -757,10 +757,10 @@ describe(":contains()", () => {
         });
 
         // Regular expression with escaped parentheses
-        expect(toPlainObject(parse(":contains(/aaa\\(\\)/i)", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse(':contains(/aaa\\(\\)/i)', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -774,9 +774,9 @@ describe(":contains()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -788,12 +788,12 @@ describe(":contains()", () => {
                             column: 22,
                         },
                     },
-                    name: "contains",
+                    name: 'contains',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -805,7 +805,7 @@ describe(":contains()", () => {
                                     column: 21,
                                 },
                             },
-                            value: "/aaa\\(\\)/i",
+                            value: '/aaa\\(\\)/i',
                         },
                     ],
                 },
@@ -814,9 +814,9 @@ describe(":contains()", () => {
 
         // Single quote mark within the string
         expect(toPlainObject(parse(":contains(aaa'bbb)", parserConfig))).toMatchObject({
-            type: "Selector",
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -830,9 +830,9 @@ describe(":contains()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -844,12 +844,12 @@ describe(":contains()", () => {
                             column: 19,
                         },
                     },
-                    name: "contains",
+                    name: 'contains',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -870,9 +870,9 @@ describe(":contains()", () => {
 
         // Double quote mark within the string
         expect(toPlainObject(parse(':contains(aaa"bbb)', parserConfig))).toMatchObject({
-            type: "Selector",
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -886,9 +886,9 @@ describe(":contains()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -900,12 +900,12 @@ describe(":contains()", () => {
                             column: 19,
                         },
                     },
-                    name: "contains",
+                    name: 'contains',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -926,9 +926,9 @@ describe(":contains()", () => {
 
         // Functions
         expect(toPlainObject(parse(":contains(function(another('')))", parserConfig))).toMatchObject({
-            type: "Selector",
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -942,9 +942,9 @@ describe(":contains()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -956,12 +956,12 @@ describe(":contains()", () => {
                             column: 33,
                         },
                     },
-                    name: "contains",
+                    name: 'contains',
                     children: [
                         {
-                            type: "Raw",
+                            type: 'Raw',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -981,73 +981,73 @@ describe(":contains()", () => {
         });
     });
 
-    test("generates valid input properly", () => {
-        expect(generate(parse(":contains( )", parserConfig))).toEqual(":contains( )");
-        expect(generate(parse(":contains(  )", parserConfig))).toEqual(":contains(  )");
+    test('generates valid input properly', () => {
+        expect(generate(parse(':contains( )', parserConfig))).toEqual(':contains( )');
+        expect(generate(parse(':contains(  )', parserConfig))).toEqual(':contains(  )');
 
-        expect(generate(parse(":contains(aaa)", parserConfig))).toEqual(":contains(aaa)");
-        expect(generate(parse(":contains( aaa)", parserConfig))).toEqual(":contains( aaa)");
-        expect(generate(parse(":contains(aaa )", parserConfig))).toEqual(":contains(aaa )");
-        expect(generate(parse(":contains( aaa )", parserConfig))).toEqual(":contains( aaa )");
-        expect(generate(parse(":contains( aaa bbb )", parserConfig))).toEqual(":contains( aaa bbb )");
-        expect(generate(parse(":contains( aaa  bbb )", parserConfig))).toEqual(":contains( aaa  bbb )");
-        expect(generate(parse(":contains( aaa  bbb  ccc )", parserConfig))).toEqual(":contains( aaa  bbb  ccc )");
+        expect(generate(parse(':contains(aaa)', parserConfig))).toEqual(':contains(aaa)');
+        expect(generate(parse(':contains( aaa)', parserConfig))).toEqual(':contains( aaa)');
+        expect(generate(parse(':contains(aaa )', parserConfig))).toEqual(':contains(aaa )');
+        expect(generate(parse(':contains( aaa )', parserConfig))).toEqual(':contains( aaa )');
+        expect(generate(parse(':contains( aaa bbb )', parserConfig))).toEqual(':contains( aaa bbb )');
+        expect(generate(parse(':contains( aaa  bbb )', parserConfig))).toEqual(':contains( aaa  bbb )');
+        expect(generate(parse(':contains( aaa  bbb  ccc )', parserConfig))).toEqual(':contains( aaa  bbb  ccc )');
 
-        expect(generate(parse(":contains((aaa))", parserConfig))).toEqual(":contains((aaa))");
+        expect(generate(parse(':contains((aaa))', parserConfig))).toEqual(':contains((aaa))');
         // eslint-disable-next-line max-len
         // TODO: "(aaa)(bbb)\\)\\("" is generated as "(aaa)(bbb) \\)\\(", but it should be "(aaa)(bbb)\\)\\(" - CSSTree related issue
         // expect(generate(parse(`:contains((aaa)(bbb)\\)\\()`, parserConfig))).toEqual(`:contains((aaa)(bbb)\\)\\()`);
 
-        expect(generate(parse(":contains(/aaa/)", parserConfig))).toEqual(":contains(/aaa/)");
-        expect(generate(parse(":contains(/aaa/i)", parserConfig))).toEqual(":contains(/aaa/i)");
-        expect(generate(parse(":contains(/^(a|b){3,}$/)", parserConfig))).toEqual(":contains(/^(a|b){3,}$/)");
-        expect(generate(parse(":contains(/aaa\\(\\)/i)", parserConfig))).toEqual(":contains(/aaa\\(\\)/i)");
+        expect(generate(parse(':contains(/aaa/)', parserConfig))).toEqual(':contains(/aaa/)');
+        expect(generate(parse(':contains(/aaa/i)', parserConfig))).toEqual(':contains(/aaa/i)');
+        expect(generate(parse(':contains(/^(a|b){3,}$/)', parserConfig))).toEqual(':contains(/^(a|b){3,}$/)');
+        expect(generate(parse(':contains(/aaa\\(\\)/i)', parserConfig))).toEqual(':contains(/aaa\\(\\)/i)');
 
         expect(generate(parse(":contains(aaa'bbb)", parserConfig))).toEqual(":contains(aaa'bbb)");
         expect(generate(parse(':contains(aaa"bbb)', parserConfig))).toEqual(':contains(aaa"bbb)');
 
         // :-abp-contains alias
-        expect(generate(parse(":-abp-contains( )", parserConfig))).toEqual(":-abp-contains( )");
-        expect(generate(parse(":-abp-contains(  )", parserConfig))).toEqual(":-abp-contains(  )");
+        expect(generate(parse(':-abp-contains( )', parserConfig))).toEqual(':-abp-contains( )');
+        expect(generate(parse(':-abp-contains(  )', parserConfig))).toEqual(':-abp-contains(  )');
 
-        expect(generate(parse(":-abp-contains(aaa)", parserConfig))).toEqual(":-abp-contains(aaa)");
-        expect(generate(parse(":-abp-contains( aaa)", parserConfig))).toEqual(":-abp-contains( aaa)");
-        expect(generate(parse(":-abp-contains(aaa )", parserConfig))).toEqual(":-abp-contains(aaa )");
-        expect(generate(parse(":-abp-contains( aaa )", parserConfig))).toEqual(":-abp-contains( aaa )");
-        expect(generate(parse(":-abp-contains( aaa bbb )", parserConfig))).toEqual(":-abp-contains( aaa bbb )");
-        expect(generate(parse(":-abp-contains( aaa  bbb )", parserConfig))).toEqual(":-abp-contains( aaa  bbb )");
-        expect(generate(parse(":-abp-contains( aaa  bbb  ccc )", parserConfig))).toEqual(
-            ":-abp-contains( aaa  bbb  ccc )"
+        expect(generate(parse(':-abp-contains(aaa)', parserConfig))).toEqual(':-abp-contains(aaa)');
+        expect(generate(parse(':-abp-contains( aaa)', parserConfig))).toEqual(':-abp-contains( aaa)');
+        expect(generate(parse(':-abp-contains(aaa )', parserConfig))).toEqual(':-abp-contains(aaa )');
+        expect(generate(parse(':-abp-contains( aaa )', parserConfig))).toEqual(':-abp-contains( aaa )');
+        expect(generate(parse(':-abp-contains( aaa bbb )', parserConfig))).toEqual(':-abp-contains( aaa bbb )');
+        expect(generate(parse(':-abp-contains( aaa  bbb )', parserConfig))).toEqual(':-abp-contains( aaa  bbb )');
+        expect(generate(parse(':-abp-contains( aaa  bbb  ccc )', parserConfig))).toEqual(
+            ':-abp-contains( aaa  bbb  ccc )',
         );
 
-        expect(generate(parse(":-abp-contains((aaa))", parserConfig))).toEqual(":-abp-contains((aaa))");
+        expect(generate(parse(':-abp-contains((aaa))', parserConfig))).toEqual(':-abp-contains((aaa))');
 
-        expect(generate(parse(":-abp-contains(/aaa/)", parserConfig))).toEqual(":-abp-contains(/aaa/)");
-        expect(generate(parse(":-abp-contains(/aaa/i)", parserConfig))).toEqual(":-abp-contains(/aaa/i)");
-        expect(generate(parse(":-abp-contains(/^(a|b){3,}$/)", parserConfig))).toEqual(":-abp-contains(/^(a|b){3,}$/)");
-        expect(generate(parse(":-abp-contains(/aaa\\(\\)/i)", parserConfig))).toEqual(":-abp-contains(/aaa\\(\\)/i)");
+        expect(generate(parse(':-abp-contains(/aaa/)', parserConfig))).toEqual(':-abp-contains(/aaa/)');
+        expect(generate(parse(':-abp-contains(/aaa/i)', parserConfig))).toEqual(':-abp-contains(/aaa/i)');
+        expect(generate(parse(':-abp-contains(/^(a|b){3,}$/)', parserConfig))).toEqual(':-abp-contains(/^(a|b){3,}$/)');
+        expect(generate(parse(':-abp-contains(/aaa\\(\\)/i)', parserConfig))).toEqual(':-abp-contains(/aaa\\(\\)/i)');
 
         expect(generate(parse(":-abp-contains(aaa'bbb)", parserConfig))).toEqual(":-abp-contains(aaa'bbb)");
         expect(generate(parse(':-abp-contains(aaa"bbb)', parserConfig))).toEqual(':-abp-contains(aaa"bbb)');
 
         // :has-text alias
-        expect(generate(parse(":has-text( )", parserConfig))).toEqual(":has-text( )");
-        expect(generate(parse(":has-text(  )", parserConfig))).toEqual(":has-text(  )");
+        expect(generate(parse(':has-text( )', parserConfig))).toEqual(':has-text( )');
+        expect(generate(parse(':has-text(  )', parserConfig))).toEqual(':has-text(  )');
 
-        expect(generate(parse(":has-text(aaa)", parserConfig))).toEqual(":has-text(aaa)");
-        expect(generate(parse(":has-text( aaa)", parserConfig))).toEqual(":has-text( aaa)");
-        expect(generate(parse(":has-text(aaa )", parserConfig))).toEqual(":has-text(aaa )");
-        expect(generate(parse(":has-text( aaa )", parserConfig))).toEqual(":has-text( aaa )");
-        expect(generate(parse(":has-text( aaa bbb )", parserConfig))).toEqual(":has-text( aaa bbb )");
-        expect(generate(parse(":has-text( aaa  bbb )", parserConfig))).toEqual(":has-text( aaa  bbb )");
-        expect(generate(parse(":has-text( aaa  bbb  ccc )", parserConfig))).toEqual(":has-text( aaa  bbb  ccc )");
+        expect(generate(parse(':has-text(aaa)', parserConfig))).toEqual(':has-text(aaa)');
+        expect(generate(parse(':has-text( aaa)', parserConfig))).toEqual(':has-text( aaa)');
+        expect(generate(parse(':has-text(aaa )', parserConfig))).toEqual(':has-text(aaa )');
+        expect(generate(parse(':has-text( aaa )', parserConfig))).toEqual(':has-text( aaa )');
+        expect(generate(parse(':has-text( aaa bbb )', parserConfig))).toEqual(':has-text( aaa bbb )');
+        expect(generate(parse(':has-text( aaa  bbb )', parserConfig))).toEqual(':has-text( aaa  bbb )');
+        expect(generate(parse(':has-text( aaa  bbb  ccc )', parserConfig))).toEqual(':has-text( aaa  bbb  ccc )');
 
-        expect(generate(parse(":has-text((aaa))", parserConfig))).toEqual(":has-text((aaa))");
+        expect(generate(parse(':has-text((aaa))', parserConfig))).toEqual(':has-text((aaa))');
 
-        expect(generate(parse(":has-text(/aaa/)", parserConfig))).toEqual(":has-text(/aaa/)");
-        expect(generate(parse(":has-text(/aaa/i)", parserConfig))).toEqual(":has-text(/aaa/i)");
-        expect(generate(parse(":has-text(/^(a|b){3,}$/)", parserConfig))).toEqual(":has-text(/^(a|b){3,}$/)");
-        expect(generate(parse(":has-text(/aaa\\(\\)/i)", parserConfig))).toEqual(":has-text(/aaa\\(\\)/i)");
+        expect(generate(parse(':has-text(/aaa/)', parserConfig))).toEqual(':has-text(/aaa/)');
+        expect(generate(parse(':has-text(/aaa/i)', parserConfig))).toEqual(':has-text(/aaa/i)');
+        expect(generate(parse(':has-text(/^(a|b){3,}$/)', parserConfig))).toEqual(':has-text(/^(a|b){3,}$/)');
+        expect(generate(parse(':has-text(/aaa\\(\\)/i)', parserConfig))).toEqual(':has-text(/aaa\\(\\)/i)');
 
         expect(generate(parse(":has-text(aaa'bbb)", parserConfig))).toEqual(":has-text(aaa'bbb)");
         expect(generate(parse(':has-text(aaa"bbb)', parserConfig))).toEqual(':has-text(aaa"bbb)');

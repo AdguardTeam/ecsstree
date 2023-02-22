@@ -1,0 +1,25 @@
+# ESLint configuration file for TypeScript based on Airbnb's style guide
+root: true
+extends:
+  - airbnb-base
+  - airbnb-typescript/base
+parser: "@typescript-eslint/parser"
+plugins:
+  - "@typescript-eslint"
+rules:
+  max-len:
+    - error
+    - code: 120
+      comments: 120
+      tabWidth: 4
+      ignoreUrls: false
+      ignoreTrailingComments: false
+      ignoreComments: false
+  "@typescript-eslint/indent":
+    - error
+    - 4
+    - SwitchCase: 1
+  # This is a demo project, so we don't need to worry about console.logs
+  "no-console": 0
+parserOptions:
+  project: ./tsconfig.json

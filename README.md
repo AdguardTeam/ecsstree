@@ -4,15 +4,13 @@
      
 # ECSSTree
 
-[![NPM version](https://img.shields.io/npm/v/ecss-tree.svg)](https://www.npmjs.com/package/ecss-tree)
-[![NPM Downloads](https://img.shields.io/npm/dm/ecss-tree.svg)](https://www.npmjs.com/package/ecss-tree)
-[![LICENSE](https://img.shields.io/github/license/scripthunter7/ecsstree)](https://github.com/scripthunter7/ecsstree/blob/main/LICENSE)
+[![NPM version](https://img.shields.io/npm/v/@adguard/ecss-tree.svg)](https://www.npmjs.com/package/@adguard/ecss-tree)
+[![NPM Downloads](https://img.shields.io/npm/dm/@adguard/ecss-tree.svg)](https://www.npmjs.com/package/@adguard/ecss-tree)
+[![LICENSE](https://img.shields.io/github/license/AdguardTeam/ecsstree)](https://github.com/AdguardTeam/ecsstree/blob/main/LICENSE)
 
-Adblock Extended CSS supplement for [CSSTree](https://github.com/csstree/csstree). This allows you to manage the main adblock Extended CSS elements with tools from the CSSTree library. It supports various Extended CSS language elements from Adblock Plus, AdGuard, and uBlock Origin. See the [Supported Extended CSS elements](#supported-extended-css-elements) section for a list of currently supported elements.
+Adblock Extended CSS supplement for [CSSTree](https://github.com/csstree/csstree). Our primary goal is to change the internal behavior of the CSSTree parser to support Extended CSS (ECSS) language elements, but we don't change the API or the AST structure. Therefore ECSSTree fully backwards compatible with CSSTree, so you can pass our AST to CSSTree functions and vice versa without any problems.
 
-Our primary goal is to change the internal behavior of the CSSTree parser to support Extended CSS elements, but we don't want to change the API or the AST structure of CSSTree. This means that this library keeps the same API as CSSTree, and you can use it as a drop-in replacement for CSSTree if you need to parse Extended CSS.
-
-> :warning: **Note:** If you are looking for a library that can parse CSS, and you don't know what is Adblock / Extended CSS, you should probably use [CSSTree](https://github.com/csstree/csstree) instead of this library :)
+> :warning: **Note:** If you are looking for a library that can parse CSS, but you don't know what is Adblock or Extended CSS, you should probably use [CSSTree](https://github.com/csstree/csstree) instead of this library :)
 
 ## Table of contents
 
@@ -23,14 +21,11 @@ Our primary goal is to change the internal behavior of the CSSTree parser to sup
   - [Motivation](#motivation)
     - [Advanced validation](#advanced-validation)
   - [Handle problematic cases](#handle-problematic-cases)
-  - [Example JavaScript codes](#example-javascript-codes)
-    - [Parse and generate](#parse-and-generate)
-    - [Validate XPath expressions in `:xpath()` (walker example)](#validate-xpath-expressions-in-xpath-walker-example)
-    - [Validate Regular Expressions in `:contains()` (walker example)](#validate-regular-expressions-in-contains-walker-example)
+  - [Examples](#examples)
   - [Using in browser](#using-in-browser)
-  - [Development / Contributing](#development--contributing)
-    - [Development commands](#development-commands)
   - [Reporting problems / Requesting features](#reporting-problems--requesting-features)
+  - [Development \& Contributing](#development--contributing)
+    - [Development commands](#development-commands)
   - [License](#license)
   - [Acknowledgements](#acknowledgements)
   - [References](#references)
@@ -41,16 +36,16 @@ You can install the library using one of the following methods:
 
 - Using NPM:
   ```bash
-  npm install ecss-tree
+  npm install @adguard/ecss-tree
   ```
 - Using Yarn:
   ```bash
-  yarn add ecss-tree
+  yarn add @adguard/ecss-tree
   ```
 
 Links:
-- NPM package: https://www.npmjs.com/package/ecss-tree
-- JSDelivr CDN: https://www.jsdelivr.com/package/npm/ecss-tree
+- NPM package: https://www.npmjs.com/package/@adguard/ecss-tree
+- JSDelivr CDN: https://www.jsdelivr.com/package/npm/@adguard/ecss-tree
 
 ## Supported Extended CSS elements
 
@@ -78,7 +73,7 @@ Also, CSSTree supports legacy Extended CSS elements by default (attribute select
 [-ext-has="selector list"]
 ```
 
-If a pseudo class is unknown to CSSTree, it tries to parse it as a `Raw` element (if possible - see [problematic cases](https://github.com/scripthunter7/ecsstree#handle-problematic-cases)).
+If a pseudo class is unknown to CSSTree, it tries to parse it as a `Raw` element (if possible - see [problematic cases](https://github.com/AdguardTeam/ecsstree#handle-problematic-cases)).
 
 The CSSTree library itself is quite flexible and error-tolerant, so it basically manages well the Extended CSS elements that are not (yet) included here.
 
@@ -176,17 +171,14 @@ At quote mark (`'`) tokenizer will think that a string is starting, and it token
 
 ECSSTree will handle this case by a special re-tokenization algorithm during the parsing process, when parser reaches this problematic point. This way, ECSSTree's parser will be able to parse this selector properly. It is also true for `xpath`.
 
-*Note:* ECSSTree parses `:contains` and `:xpath` parameters as `Raw`. The main goal of this library is changing the internal behavior of the CSSTree's parser to make it able to parse the Extended CSS selectors properly, not to change the AST itself. The AST should be the same as in CSSTree, so that the library can be used as a drop-in replacement for CSSTree. Parsing `:xpath` expressions or regular expressions in detail would be a huge task, and requires new AST nodes, which would be a breaking change. But it always parses the correct raw expression for you, so you can parse/validate these expressions yourself if you want. There are many libraries for this, such as [xpath](https://www.npmjs.com/package/xpath) or [regexpp](https://www.npmjs.com/package/regexpp). See [example codes](#example-javascript-codes) for more details.
+*Note:* ECSSTree parses `:contains` and `:xpath` parameters as `Raw`. The main goal of this library is changing the internal behavior of the CSSTree's parser to make it able to parse the Extended CSS selectors properly, not to change the AST itself. The AST should be the same as in CSSTree, so that the library can be used as a drop-in replacement for CSSTree. Parsing `:xpath` expressions or regular expressions in detail would be a huge task, and requires new AST nodes, which would be a breaking change. But it always parses the correct raw expression for you, so you can parse/validate these expressions yourself if you want. There are many libraries for this, such as [xpath](https://www.npmjs.com/package/xpath) or [regexpp](https://www.npmjs.com/package/regexpp). See [example codes](/examples) for more details.
 
-## Example JavaScript codes
+## Examples
 
-Here are some example codes to show how to use ECSSTree. The API is the same as in CSSTree, so you can use the [CSSTree documentation](https://github.com/csstree/csstree/tree/master/docs) as a reference.
+Here are a very simple example to show how to use ECSSTree:
 
-### Parse and generate
-
-A simple example to parse and generate selectors (if the selector is invalid, parsing will throw an error):
 ```javascript
-const { parse, generate, toPlainObject, fromPlainObject } = require("ecss-tree");
+const { parse, generate, toPlainObject, fromPlainObject } = require("@adguard/ecss-tree");
 const { inspect } = require("util");
 
 // Some inputs to test
@@ -213,13 +205,13 @@ for (const input of inputs) {
         // If you want to convert AST back to doubly linked list version, you can use
         // fromPlainObject() function.
         const astPlain = toPlainObject(ast);
-        // const astAgain = fromPlainObject(astPlain);
+        const astAgain = fromPlainObject(astPlain);
 
         // Print AST to console
         console.log(inspect(astPlain, { colors: true, depth: null }));
 
         // You can also generate string from AST (don't use plain object here)
-        console.log(generate(ast));
+        console.log(generate(astAgain));
     } catch (e) {
         // Mark invalid selector
         console.log(`Invalid selector: ${input}`);
@@ -230,126 +222,22 @@ for (const input of inputs) {
 }
 ```
 
-### Validate XPath expressions in `:xpath()` (walker example)
+The API is the same as in CSSTree, so you can use the [CSSTree documentation](https://github.com/csstree/csstree/tree/master/docs) as a reference.
 
-You can validate `:xpath()` expressions with [xpath](https://www.npmjs.com/package/xpath) library this way:
-
-```javascript
-const { parse, walk } = require("ecss-tree");
-// https://www.npmjs.com/package/xpath
-const xpath = require("xpath");
-
-// Some inputs to test
-const inputs = [
-    // Some examples from https://www.w3schools.com/xml/xpath_syntax.asp
-    `:xpath(/bookstore/book[1])`,
-    `:xpath(/bookstore/book[last()])`,
-    `:xpath(//title[@lang='en'])`,
-
-    // Invalid :xpath() pseudo-class
-    `:xpath(aaa'bbb)`,
-    `:xpath($#...)`,
-    `:xpath(...)`,
-];
-
-// Iterate over inputs
-for (const input of inputs) {
-    // Parse raw CSS selector to AST
-    const ast = parse(input, { context: "selector" });
-
-    // Walk parsed AST
-    walk(ast, (node) => {
-        // If the current node is a :xpath() pseudo-class
-        if (node.type === "PseudoClassSelector" && node.name === "xpath") {
-            // Get the argument of the pseudo-class (xpath expression)
-            // This is a Raw node, so the expression itself is in node.value
-            // See https://github.com/csstree/csstree/blob/master/docs/ast.md#raw
-            const arg = node.children.first;
-
-            try {
-                // Try to parse xpath expression. If it's invalid, then an error
-                // will be thrown
-                xpath.parse(arg.value);
-
-                // If no error was thrown, then the expression is valid
-                console.log(`Valid xpath expression: ${arg.value}`);
-            } catch (e) {
-                // If error was thrown, then the expression is invalid
-                console.log(`Invalid xpath expression: ${arg.value}`);
-            }
-        }
-    });
-}
-```
-
-### Validate Regular Expressions in `:contains()` (walker example)
-
-You can validate regular expressions in `:contains()` pseudo-classes with [regexpp](https://www.npmjs.com/package/regexpp) library this way:
-
-```javascript
-const { parse, walk } = require("ecss-tree");
-// https://www.npmjs.com/package/regexpp
-const { RegExpValidator } = require("regexpp");
-
-// Some inputs to test
-const inputs = [
-    // Not RegExps
-    `:contains(aaa)`,
-    `:contains(aaa bbb)`,
-
-    // Invalid flag
-    `:contains(/^aaa$/igx)`,
-
-    // RegExps
-    `:contains(/aaa/)`,
-    `:contains(/^aaa$/)`,
-    `:contains(/^aaa$/ig)`,
-];
-
-// Create RegExpValidator instance
-// See https://github.com/mysticatea/regexpp#validateregexpliteralsource-options
-const validator = new RegExpValidator();
-
-// Iterate over inputs
-for (const input of inputs) {
-    // Parse raw CSS selector to AST
-    const ast = parse(input, { context: "selector" });
-
-    // Walk parsed AST
-    walk(ast, (node) => {
-        // If the current node is a :contains() pseudo-class
-        if (node.type === "PseudoClassSelector" && node.name === "contains") {
-            // Get the argument of the pseudo-class. It's a Raw node, so the
-            // value is stored in node.value property.
-            // See https://github.com/csstree/csstree/blob/master/docs/ast.md#raw
-            const arg = node.children.first;
-
-            try {
-                validator.validateLiteral(arg.value);
-
-                // If no error was thrown, then the argument is a regexp
-                console.log(`Valid regexp: ${arg.value}`);
-            } catch (e) {
-                // If error was thrown, then the argument is not a regexp
-                console.log(`Invalid regexp: ${arg.value}`);
-            }
-        }
-    });
-}
-```
+You can find more examples in the [examples](/examples) folder.
 
 ## Using in browser
 
 Our build process generates a browser-friendly version of the library, which can be used in the browser. You can insert it into your HTML page like this:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/ecss-tree/dist/ecsstree.iife.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@adguard/ecss-tree/dist/ecsstree.iife.min.js"></script>
 ```
 
 or
 
 ```html
-<script src="https://unpkg.com/ecss-tree@latest/dist/ecsstree.iife.min.js"></script>
+<script src="https://unpkg.com/@adguard/ecss-tree@latest/dist/ecsstree.iife.min.js"></script>
 ```
 
 Example usage:
@@ -370,38 +258,41 @@ Example usage:
 </script>
 ```
 
-## Development / Contributing
+## Reporting problems / Requesting features
 
-Here is a short guide on how to contribute to this project:
+If you find a bug or want to request a new feature, please open an issue or a discussion on GitHub. Please provide a detailed description of the problem or the feature you want to request, and if possible, a code example that demonstrates the problem or the feature.
+
+## Development & Contributing
+
+You can contribute to the project by opening a pull request. People who contribute to AdGuard projects can receive various rewards, see [this page](https://adguard.com/contribute.html) for details.
+
+Here is a short guide on how to set up the development environment and how to submit your changes:
 
 - Pre-requisites: [Node.js](https://nodejs.org/en/) (v14 or higher), [Yarn](https://yarnpkg.com/) (v2 or higher), [Git](https://git-scm.com/), [VSCode](https://code.visualstudio.com/) (optional)
 - Clone the repository with `git clone`
-- Install dependencies with `yarn install`
-- Create a new branch with `git checkout -b <branch-name>` (e.g. `git checkout -b add-some-feature`)
+- Install dependencies with `yarn` (this will also initialize the Git hooks via Husky)
+- Create a new branch with `git checkout -b <branch-name>` (e.g. `git checkout -b feature/add-some-feature`, please add `/feature` or `/fix` prefix to your branch name)
 - Make your changes in the `src` folder and make suitable tests for them in the `test` folder
 - **Please do NOT differ from the original CSSTree API!** Our primary goal is to keep the API as close as possible to the original CSSTree, so that it is easy to switch between the two libraries, if needed. We only improve the "internal logic" of the library to make it able to parse Extended CSS selectors, but the API should be the same!
-- Run tests with `yarn test` (or run only a specific test with `yarn test <test-name>`)
-- Commit your changes and push them to GitHub to your fork
-- Create a pull request to this repository
-
-*Note:* you can find CSSTree API map here: https://github.com/csstree/csstree#top-level-api
+- Check tests by running `yarn test` (or run only a specific test with `yarn test <test-name>`)
+- If everything is OK, commit your changes and push them to your forked repository. If Husky is set up correctly, it don't allow you to commit if the linter or tests fail.
+- Create a pull request to the main repository from your forked repository's branch.
 
 We would be happy to review your pull request and merge it if it is suitable for the project.
+
+*Note:* you can find CSSTree API map here: https://github.com/csstree/csstree#top-level-api
 
 ### Development commands
 
 During development, you can use the following commands (listed in `package.json`):
 
+- `yarn lint` - lint the code with [ESLint](https://eslint.org/)
 - `yarn test` - run tests with [Jest](https://jestjs.io/) (you can also run a specific test with `yarn test <test-name>`)
 - `yarn build` - build the library to the `dist` folder by using [Rollup](https://rollupjs.org/)
 
-## Reporting problems / Requesting features
-
-If you find a bug or want to request a new feature, please open an issue or a discussion on GitHub. Please provide a detailed description of the problem or the feature, and if possible, a code example, to make it easier to understand.
-
 ## License
 
-This library is licensed under the MIT license. See the [LICENSE](https://github.com/scripthunter7/ecsstree/blob/main/LICENSE) file for more info.
+This library is licensed under the MIT license. See the [LICENSE](https://github.com/AdguardTeam/ecsstree/blob/main/LICENSE) file for more info.
 
 ## Acknowledgements
 

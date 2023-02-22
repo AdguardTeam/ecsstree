@@ -1,25 +1,25 @@
-import { parse, generate, toPlainObject } from "../../src/index.js";
+import { parse, generate, toPlainObject } from '../../src/index';
 
 const parserConfig = {
-    context: "selector",
+    context: 'selector',
     positions: true,
 };
 
-describe(":-abp-has()", () => {
-    test("throws on invalid input", () => {
-        expect(() => parse(":-abp-has()", parserConfig)).toThrow();
-        expect(() => parse(":-abp-has( )", parserConfig)).toThrow();
+describe(':-abp-has()', () => {
+    test('throws on invalid input', () => {
+        expect(() => parse(':-abp-has()', parserConfig)).toThrow();
+        expect(() => parse(':-abp-has( )', parserConfig)).toThrow();
 
-        expect(() => parse(":-abp-has($$)", parserConfig)).toThrow();
-        expect(() => parse(":-abp-has(.)", parserConfig)).toThrow();
+        expect(() => parse(':-abp-has($$)', parserConfig)).toThrow();
+        expect(() => parse(':-abp-has(.)', parserConfig)).toThrow();
     });
 
-    test("parses valid input properly", () => {
+    test('parses valid input properly', () => {
         // Simple selector
-        expect(toPlainObject(parse(":-abp-has(div)", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse(':-abp-has(div)', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -33,9 +33,9 @@ describe(":-abp-has()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -47,12 +47,12 @@ describe(":-abp-has()", () => {
                             column: 15,
                         },
                     },
-                    name: "-abp-has",
+                    name: '-abp-has',
                     children: [
                         {
-                            type: "SelectorList",
+                            type: 'SelectorList',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -66,9 +66,9 @@ describe(":-abp-has()", () => {
                             },
                             children: [
                                 {
-                                    type: "Selector",
+                                    type: 'Selector',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 10,
                                             line: 1,
@@ -82,9 +82,9 @@ describe(":-abp-has()", () => {
                                     },
                                     children: [
                                         {
-                                            type: "TypeSelector",
+                                            type: 'TypeSelector',
                                             loc: {
-                                                source: "<unknown>",
+                                                source: '<unknown>',
                                                 start: {
                                                     offset: 10,
                                                     line: 1,
@@ -96,7 +96,7 @@ describe(":-abp-has()", () => {
                                                     column: 14,
                                                 },
                                             },
-                                            name: "div",
+                                            name: 'div',
                                         },
                                     ],
                                 },
@@ -109,9 +109,9 @@ describe(":-abp-has()", () => {
 
         // Complex selector
         expect(toPlainObject(parse(':-abp-has(div:has(> a[href*="tracker"]))', parserConfig))).toMatchObject({
-            type: "Selector",
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -125,9 +125,9 @@ describe(":-abp-has()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -139,12 +139,12 @@ describe(":-abp-has()", () => {
                             column: 41,
                         },
                     },
-                    name: "-abp-has",
+                    name: '-abp-has',
                     children: [
                         {
-                            type: "SelectorList",
+                            type: 'SelectorList',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -158,9 +158,9 @@ describe(":-abp-has()", () => {
                             },
                             children: [
                                 {
-                                    type: "Selector",
+                                    type: 'Selector',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 10,
                                             line: 1,
@@ -174,9 +174,9 @@ describe(":-abp-has()", () => {
                                     },
                                     children: [
                                         {
-                                            type: "TypeSelector",
+                                            type: 'TypeSelector',
                                             loc: {
-                                                source: "<unknown>",
+                                                source: '<unknown>',
                                                 start: {
                                                     offset: 10,
                                                     line: 1,
@@ -188,12 +188,12 @@ describe(":-abp-has()", () => {
                                                     column: 14,
                                                 },
                                             },
-                                            name: "div",
+                                            name: 'div',
                                         },
                                         {
-                                            type: "PseudoClassSelector",
+                                            type: 'PseudoClassSelector',
                                             loc: {
-                                                source: "<unknown>",
+                                                source: '<unknown>',
                                                 start: {
                                                     offset: 13,
                                                     line: 1,
@@ -205,12 +205,12 @@ describe(":-abp-has()", () => {
                                                     column: 40,
                                                 },
                                             },
-                                            name: "has",
+                                            name: 'has',
                                             children: [
                                                 {
-                                                    type: "SelectorList",
+                                                    type: 'SelectorList',
                                                     loc: {
-                                                        source: "<unknown>",
+                                                        source: '<unknown>',
                                                         start: {
                                                             offset: 18,
                                                             line: 1,
@@ -224,9 +224,9 @@ describe(":-abp-has()", () => {
                                                     },
                                                     children: [
                                                         {
-                                                            type: "Selector",
+                                                            type: 'Selector',
                                                             loc: {
-                                                                source: "<unknown>",
+                                                                source: '<unknown>',
                                                                 start: {
                                                                     offset: 18,
                                                                     line: 1,
@@ -240,9 +240,9 @@ describe(":-abp-has()", () => {
                                                             },
                                                             children: [
                                                                 {
-                                                                    type: "Combinator",
+                                                                    type: 'Combinator',
                                                                     loc: {
-                                                                        source: "<unknown>",
+                                                                        source: '<unknown>',
                                                                         start: {
                                                                             offset: 18,
                                                                             line: 1,
@@ -254,12 +254,12 @@ describe(":-abp-has()", () => {
                                                                             column: 20,
                                                                         },
                                                                     },
-                                                                    name: ">",
+                                                                    name: '>',
                                                                 },
                                                                 {
-                                                                    type: "TypeSelector",
+                                                                    type: 'TypeSelector',
                                                                     loc: {
-                                                                        source: "<unknown>",
+                                                                        source: '<unknown>',
                                                                         start: {
                                                                             offset: 20,
                                                                             line: 1,
@@ -271,12 +271,12 @@ describe(":-abp-has()", () => {
                                                                             column: 22,
                                                                         },
                                                                     },
-                                                                    name: "a",
+                                                                    name: 'a',
                                                                 },
                                                                 {
-                                                                    type: "AttributeSelector",
+                                                                    type: 'AttributeSelector',
                                                                     loc: {
-                                                                        source: "<unknown>",
+                                                                        source: '<unknown>',
                                                                         start: {
                                                                             offset: 21,
                                                                             line: 1,
@@ -289,9 +289,9 @@ describe(":-abp-has()", () => {
                                                                         },
                                                                     },
                                                                     name: {
-                                                                        type: "Identifier",
+                                                                        type: 'Identifier',
                                                                         loc: {
-                                                                            source: "<unknown>",
+                                                                            source: '<unknown>',
                                                                             start: {
                                                                                 offset: 22,
                                                                                 line: 1,
@@ -303,13 +303,13 @@ describe(":-abp-has()", () => {
                                                                                 column: 27,
                                                                             },
                                                                         },
-                                                                        name: "href",
+                                                                        name: 'href',
                                                                     },
-                                                                    matcher: "*=",
+                                                                    matcher: '*=',
                                                                     value: {
-                                                                        type: "String",
+                                                                        type: 'String',
                                                                         loc: {
-                                                                            source: "<unknown>",
+                                                                            source: '<unknown>',
                                                                             start: {
                                                                                 offset: 28,
                                                                                 line: 1,
@@ -321,7 +321,7 @@ describe(":-abp-has()", () => {
                                                                                 column: 38,
                                                                             },
                                                                         },
-                                                                        value: "tracker",
+                                                                        value: 'tracker',
                                                                     },
                                                                     flags: null,
                                                                 },
@@ -341,10 +341,10 @@ describe(":-abp-has()", () => {
         });
 
         // Simple selector list
-        expect(toPlainObject(parse(":-abp-has(div, div)", parserConfig))).toMatchObject({
-            type: "Selector",
+        expect(toPlainObject(parse(':-abp-has(div, div)', parserConfig))).toMatchObject({
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -358,9 +358,9 @@ describe(":-abp-has()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -372,12 +372,12 @@ describe(":-abp-has()", () => {
                             column: 20,
                         },
                     },
-                    name: "-abp-has",
+                    name: '-abp-has',
                     children: [
                         {
-                            type: "SelectorList",
+                            type: 'SelectorList',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -391,9 +391,9 @@ describe(":-abp-has()", () => {
                             },
                             children: [
                                 {
-                                    type: "Selector",
+                                    type: 'Selector',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 10,
                                             line: 1,
@@ -407,9 +407,9 @@ describe(":-abp-has()", () => {
                                     },
                                     children: [
                                         {
-                                            type: "TypeSelector",
+                                            type: 'TypeSelector',
                                             loc: {
-                                                source: "<unknown>",
+                                                source: '<unknown>',
                                                 start: {
                                                     offset: 10,
                                                     line: 1,
@@ -421,14 +421,14 @@ describe(":-abp-has()", () => {
                                                     column: 14,
                                                 },
                                             },
-                                            name: "div",
+                                            name: 'div',
                                         },
                                     ],
                                 },
                                 {
-                                    type: "Selector",
+                                    type: 'Selector',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 15,
                                             line: 1,
@@ -442,9 +442,9 @@ describe(":-abp-has()", () => {
                                     },
                                     children: [
                                         {
-                                            type: "TypeSelector",
+                                            type: 'TypeSelector',
                                             loc: {
-                                                source: "<unknown>",
+                                                source: '<unknown>',
                                                 start: {
                                                     offset: 15,
                                                     line: 1,
@@ -456,7 +456,7 @@ describe(":-abp-has()", () => {
                                                     column: 19,
                                                 },
                                             },
-                                            name: "div",
+                                            name: 'div',
                                         },
                                     ],
                                 },
@@ -469,11 +469,11 @@ describe(":-abp-has()", () => {
 
         // Complex selector list
         expect(
-            toPlainObject(parse(':-abp-has(div, div:has(> a[href*="tracker"]) + section:contains(ads))', parserConfig))
+            toPlainObject(parse(':-abp-has(div, div:has(> a[href*="tracker"]) + section:contains(ads))', parserConfig)),
         ).toMatchObject({
-            type: "Selector",
+            type: 'Selector',
             loc: {
-                source: "<unknown>",
+                source: '<unknown>',
                 start: {
                     offset: 0,
                     line: 1,
@@ -487,9 +487,9 @@ describe(":-abp-has()", () => {
             },
             children: [
                 {
-                    type: "PseudoClassSelector",
+                    type: 'PseudoClassSelector',
                     loc: {
-                        source: "<unknown>",
+                        source: '<unknown>',
                         start: {
                             offset: 0,
                             line: 1,
@@ -501,12 +501,12 @@ describe(":-abp-has()", () => {
                             column: 70,
                         },
                     },
-                    name: "-abp-has",
+                    name: '-abp-has',
                     children: [
                         {
-                            type: "SelectorList",
+                            type: 'SelectorList',
                             loc: {
-                                source: "<unknown>",
+                                source: '<unknown>',
                                 start: {
                                     offset: 10,
                                     line: 1,
@@ -520,9 +520,9 @@ describe(":-abp-has()", () => {
                             },
                             children: [
                                 {
-                                    type: "Selector",
+                                    type: 'Selector',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 10,
                                             line: 1,
@@ -536,9 +536,9 @@ describe(":-abp-has()", () => {
                                     },
                                     children: [
                                         {
-                                            type: "TypeSelector",
+                                            type: 'TypeSelector',
                                             loc: {
-                                                source: "<unknown>",
+                                                source: '<unknown>',
                                                 start: {
                                                     offset: 10,
                                                     line: 1,
@@ -550,14 +550,14 @@ describe(":-abp-has()", () => {
                                                     column: 14,
                                                 },
                                             },
-                                            name: "div",
+                                            name: 'div',
                                         },
                                     ],
                                 },
                                 {
-                                    type: "Selector",
+                                    type: 'Selector',
                                     loc: {
-                                        source: "<unknown>",
+                                        source: '<unknown>',
                                         start: {
                                             offset: 15,
                                             line: 1,
@@ -571,9 +571,9 @@ describe(":-abp-has()", () => {
                                     },
                                     children: [
                                         {
-                                            type: "TypeSelector",
+                                            type: 'TypeSelector',
                                             loc: {
-                                                source: "<unknown>",
+                                                source: '<unknown>',
                                                 start: {
                                                     offset: 15,
                                                     line: 1,
@@ -585,12 +585,12 @@ describe(":-abp-has()", () => {
                                                     column: 19,
                                                 },
                                             },
-                                            name: "div",
+                                            name: 'div',
                                         },
                                         {
-                                            type: "PseudoClassSelector",
+                                            type: 'PseudoClassSelector',
                                             loc: {
-                                                source: "<unknown>",
+                                                source: '<unknown>',
                                                 start: {
                                                     offset: 18,
                                                     line: 1,
@@ -602,12 +602,12 @@ describe(":-abp-has()", () => {
                                                     column: 45,
                                                 },
                                             },
-                                            name: "has",
+                                            name: 'has',
                                             children: [
                                                 {
-                                                    type: "SelectorList",
+                                                    type: 'SelectorList',
                                                     loc: {
-                                                        source: "<unknown>",
+                                                        source: '<unknown>',
                                                         start: {
                                                             offset: 23,
                                                             line: 1,
@@ -621,9 +621,9 @@ describe(":-abp-has()", () => {
                                                     },
                                                     children: [
                                                         {
-                                                            type: "Selector",
+                                                            type: 'Selector',
                                                             loc: {
-                                                                source: "<unknown>",
+                                                                source: '<unknown>',
                                                                 start: {
                                                                     offset: 23,
                                                                     line: 1,
@@ -637,9 +637,9 @@ describe(":-abp-has()", () => {
                                                             },
                                                             children: [
                                                                 {
-                                                                    type: "Combinator",
+                                                                    type: 'Combinator',
                                                                     loc: {
-                                                                        source: "<unknown>",
+                                                                        source: '<unknown>',
                                                                         start: {
                                                                             offset: 23,
                                                                             line: 1,
@@ -651,12 +651,12 @@ describe(":-abp-has()", () => {
                                                                             column: 25,
                                                                         },
                                                                     },
-                                                                    name: ">",
+                                                                    name: '>',
                                                                 },
                                                                 {
-                                                                    type: "TypeSelector",
+                                                                    type: 'TypeSelector',
                                                                     loc: {
-                                                                        source: "<unknown>",
+                                                                        source: '<unknown>',
                                                                         start: {
                                                                             offset: 25,
                                                                             line: 1,
@@ -668,12 +668,12 @@ describe(":-abp-has()", () => {
                                                                             column: 27,
                                                                         },
                                                                     },
-                                                                    name: "a",
+                                                                    name: 'a',
                                                                 },
                                                                 {
-                                                                    type: "AttributeSelector",
+                                                                    type: 'AttributeSelector',
                                                                     loc: {
-                                                                        source: "<unknown>",
+                                                                        source: '<unknown>',
                                                                         start: {
                                                                             offset: 26,
                                                                             line: 1,
@@ -686,9 +686,9 @@ describe(":-abp-has()", () => {
                                                                         },
                                                                     },
                                                                     name: {
-                                                                        type: "Identifier",
+                                                                        type: 'Identifier',
                                                                         loc: {
-                                                                            source: "<unknown>",
+                                                                            source: '<unknown>',
                                                                             start: {
                                                                                 offset: 27,
                                                                                 line: 1,
@@ -700,13 +700,13 @@ describe(":-abp-has()", () => {
                                                                                 column: 32,
                                                                             },
                                                                         },
-                                                                        name: "href",
+                                                                        name: 'href',
                                                                     },
-                                                                    matcher: "*=",
+                                                                    matcher: '*=',
                                                                     value: {
-                                                                        type: "String",
+                                                                        type: 'String',
                                                                         loc: {
-                                                                            source: "<unknown>",
+                                                                            source: '<unknown>',
                                                                             start: {
                                                                                 offset: 33,
                                                                                 line: 1,
@@ -718,7 +718,7 @@ describe(":-abp-has()", () => {
                                                                                 column: 43,
                                                                             },
                                                                         },
-                                                                        value: "tracker",
+                                                                        value: 'tracker',
                                                                     },
                                                                     flags: null,
                                                                 },
@@ -729,9 +729,9 @@ describe(":-abp-has()", () => {
                                             ],
                                         },
                                         {
-                                            type: "Combinator",
+                                            type: 'Combinator',
                                             loc: {
-                                                source: "<unknown>",
+                                                source: '<unknown>',
                                                 start: {
                                                     offset: 45,
                                                     line: 1,
@@ -743,12 +743,12 @@ describe(":-abp-has()", () => {
                                                     column: 47,
                                                 },
                                             },
-                                            name: "+",
+                                            name: '+',
                                         },
                                         {
-                                            type: "TypeSelector",
+                                            type: 'TypeSelector',
                                             loc: {
-                                                source: "<unknown>",
+                                                source: '<unknown>',
                                                 start: {
                                                     offset: 47,
                                                     line: 1,
@@ -760,12 +760,12 @@ describe(":-abp-has()", () => {
                                                     column: 55,
                                                 },
                                             },
-                                            name: "section",
+                                            name: 'section',
                                         },
                                         {
-                                            type: "PseudoClassSelector",
+                                            type: 'PseudoClassSelector',
                                             loc: {
-                                                source: "<unknown>",
+                                                source: '<unknown>',
                                                 start: {
                                                     offset: 54,
                                                     line: 1,
@@ -777,12 +777,12 @@ describe(":-abp-has()", () => {
                                                     column: 69,
                                                 },
                                             },
-                                            name: "contains",
+                                            name: 'contains',
                                             children: [
                                                 {
-                                                    type: "Raw",
+                                                    type: 'Raw',
                                                     loc: {
-                                                        source: "<unknown>",
+                                                        source: '<unknown>',
                                                         start: {
                                                             offset: 64,
                                                             line: 1,
@@ -794,7 +794,7 @@ describe(":-abp-has()", () => {
                                                             column: 68,
                                                         },
                                                     },
-                                                    value: "ads",
+                                                    value: 'ads',
                                                 },
                                             ],
                                         },
@@ -808,19 +808,19 @@ describe(":-abp-has()", () => {
         });
     });
 
-    test("generates valid input properly", () => {
-        expect(generate(parse(":-abp-has(div)", parserConfig))).toEqual(":-abp-has(div)");
+    test('generates valid input properly', () => {
+        expect(generate(parse(':-abp-has(div)', parserConfig))).toEqual(':-abp-has(div)');
         expect(generate(parse(':-abp-has(div:has(> a[href*="tracker"]))', parserConfig))).toEqual(
-            ':-abp-has(div:has(>a[href*="tracker"]))'
+            ':-abp-has(div:has(>a[href*="tracker"]))',
         );
         expect(generate(parse(":-abp-has(div:has(> a[href*='tracker']))", parserConfig))).toEqual(
-            ':-abp-has(div:has(>a[href*="tracker"]))'
+            ':-abp-has(div:has(>a[href*="tracker"]))',
         );
 
         // Selector lists
-        expect(generate(parse(":-abp-has(div, div)", parserConfig))).toEqual(":-abp-has(div,div)");
+        expect(generate(parse(':-abp-has(div, div)', parserConfig))).toEqual(':-abp-has(div,div)');
         expect(
-            generate(parse(':-abp-has(div, div:has(> a[href*="tracker"]) + section:contains(ads))', parserConfig))
+            generate(parse(':-abp-has(div, div:has(> a[href*="tracker"]) + section:contains(ads))', parserConfig)),
         ).toEqual(':-abp-has(div,div:has(>a[href*="tracker"])+section:contains(ads))');
     });
 });
