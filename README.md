@@ -274,7 +274,8 @@ Here is a short guide on how to set up the development environment and how to su
 - Create a new branch with `git checkout -b <branch-name>` (e.g. `git checkout -b feature/add-some-feature`, please add `/feature` or `/fix` prefix to your branch name)
 - Make your changes in the `src` folder and make suitable tests for them in the `test` folder
 - **Please do NOT differ from the original CSSTree API!** Our primary goal is to keep the API as close as possible to the original CSSTree, so that it is easy to switch between the two libraries, if needed. We only improve the "internal logic" of the library to make it able to parse Extended CSS selectors, but the API should be the same!
-- Check tests by running `yarn test` (or run only a specific test with `yarn test <test-name>`)
+- Check code by running `yarn lint` and `yarn test` commands (during development, you can run only a specific test with `yarn test <test-name>`)
+- Build the library with `yarn build` and check the `dist` folder to make sure that the build is successful, then install the library locally with `yarn add <path-to-local-library>` and test it in your project
 - If everything is OK, commit your changes and push them to your forked repository. If Husky is set up correctly, it don't allow you to commit if the linter or tests fail.
 - Create a pull request to the main repository from your forked repository's branch.
 
