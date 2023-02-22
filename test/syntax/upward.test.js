@@ -220,4 +220,24 @@ describe(':upward()', () => {
             'div:upward(.something+#another)',
         );
     });
+
+    test('no false positive parsing errors', () => {
+        // "Local" parser config for this test
+        const localParserConfig = {
+            ...parserConfig,
+            onParseError: (error) => {
+                throw error;
+            },
+        };
+
+        expect(() => parse('div:upward(0)', localParserConfig)).not.toThrow();
+        expect(() => parse('div:upward(42)', localParserConfig)).not.toThrow();
+        expect(() => parse('div:upward(.something + #another)', localParserConfig)).not.toThrow();
+        expect(
+            () => parse(
+                'div:upward(div + :-abp-has(> a[href^="https://example.com/"]) + div)',
+                localParserConfig,
+            ),
+        ).not.toThrow();
+    });
 });
