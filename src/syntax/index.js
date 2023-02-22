@@ -90,17 +90,21 @@ const numberOrSelector = {
      * @see {@link https://github.com/csstree/csstree/blob/master/lib/syntax/pseudo/index.js}
      */
     parse() {
-        return this.createSingleNodeList(
-            // If the next token is a number, parse it as a number,
-            // otherwise parse it as a selector as fallback
-            // * PLEASE NOTE: If the number parsing is failed, CSSTree
-            // * will throw an "internal error" via "onParsingError"
-            // * callback.
-            // * See: https://github.com/csstree/csstree/blob/master/docs/parsing.md#onparseerror
-            // * This not a breaking issue, because the parsing will
-            // * continue its work.
-            this.parseWithFallback(this.Number, this.Selector),
-        );
+        // Save the current token index
+        const startToken = this.tokenIndex;
+
+        // Don't use "parseWithFallback" here, because we don't want to
+        // throw parsing error, if just the number parsing fails.
+        try {
+            // Try to parse :upward()'s argument as a number, but if it fails,
+            // that's not a problem, because we can try to parse it as a selector.
+            return this.createSingleNodeList(this.Number.call(this));
+        } catch (error) {
+            // If the number parsing fails, then we try to parse a selector.
+            // If the selector parsing fails, then an error will be thrown,
+            // because the argument is invalid.
+            return this.createSingleNodeList(this.Selector.call(this, startToken));
+        }
     },
 };
 
