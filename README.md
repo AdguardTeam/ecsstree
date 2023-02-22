@@ -26,6 +26,7 @@ Adblock Extended CSS supplement for [CSSTree](https://github.com/csstree/csstree
   - [Reporting problems / Requesting features](#reporting-problems--requesting-features)
   - [Development \& Contributing](#development--contributing)
     - [Development commands](#development-commands)
+    - [Releasing a new version](#releasing-a-new-version)
   - [License](#license)
   - [Acknowledgements](#acknowledgements)
   - [References](#references)
@@ -290,6 +291,17 @@ During development, you can use the following commands (listed in `package.json`
 - `yarn lint` - lint the code with [ESLint](https://eslint.org/)
 - `yarn test` - run tests with [Jest](https://jestjs.io/) (you can also run a specific test with `yarn test <test-name>`)
 - `yarn build` - build the library to the `dist` folder by using [Rollup](https://rollupjs.org/)
+
+### Releasing a new version
+
+This section describes the release process for the new versions of the ECSSTree library. This process needs to be performed by maintainers only.
+
+1. Create a new branch for the release (e.g. `release/v1.0.0`) from the `main` branch.
+2. Fill the `CHANGELOG.md` file with the changes made since the last release by following the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) rules, then commit changes as `Update changelog`.
+3. Update the version number in the `package.json` file regarding the [semver](https://semver.org/) rules, then commit changes as `Bump version to v1.0.0`.
+4. Create a new pull request to the `main` branch from the release branch, and merge it after the review.
+5. Create a new tag with the version number (e.g. `v1.0.0`) to trigger the [release workflow](https://github.com/AdguardTeam/AGLint/blob/master/.github/workflows/release.yml).
+6. The release workflow will automatically publish the new version to the [npm registry](https://www.npmjs.com/package/@adguard/ecss-tree).
 
 ## License
 
