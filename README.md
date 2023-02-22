@@ -26,6 +26,7 @@ Adblock Extended CSS supplement for [CSSTree](https://github.com/csstree/csstree
   - [Reporting problems / Requesting features](#reporting-problems--requesting-features)
   - [Development \& Contributing](#development--contributing)
     - [Development commands](#development-commands)
+    - [Releasing a new version](#releasing-a-new-version)
   - [License](#license)
   - [Acknowledgements](#acknowledgements)
   - [References](#references)
@@ -274,7 +275,8 @@ Here is a short guide on how to set up the development environment and how to su
 - Create a new branch with `git checkout -b <branch-name>` (e.g. `git checkout -b feature/add-some-feature`, please add `/feature` or `/fix` prefix to your branch name)
 - Make your changes in the `src` folder and make suitable tests for them in the `test` folder
 - **Please do NOT differ from the original CSSTree API!** Our primary goal is to keep the API as close as possible to the original CSSTree, so that it is easy to switch between the two libraries, if needed. We only improve the "internal logic" of the library to make it able to parse Extended CSS selectors, but the API should be the same!
-- Check tests by running `yarn test` (or run only a specific test with `yarn test <test-name>`)
+- Check code by running `yarn lint` and `yarn test` commands (during development, you can run only a specific test with `yarn test <test-name>`)
+- Build the library with `yarn build` and check the `dist` folder to make sure that the build is successful, then install the library locally with `yarn add <path-to-local-library>` and test it in your project
 - If everything is OK, commit your changes and push them to your forked repository. If Husky is set up correctly, it don't allow you to commit if the linter or tests fail.
 - Create a pull request to the main repository from your forked repository's branch.
 
@@ -289,6 +291,17 @@ During development, you can use the following commands (listed in `package.json`
 - `yarn lint` - lint the code with [ESLint](https://eslint.org/)
 - `yarn test` - run tests with [Jest](https://jestjs.io/) (you can also run a specific test with `yarn test <test-name>`)
 - `yarn build` - build the library to the `dist` folder by using [Rollup](https://rollupjs.org/)
+
+### Releasing a new version
+
+This section describes the release process for the new versions of the ECSSTree library. This process needs to be performed by maintainers only.
+
+1. Create a new branch for the release (e.g. `release/v1.0.0`) from the `main` branch.
+2. Fill the `CHANGELOG.md` file with the changes made since the last release by following the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) rules, then commit changes as `Update changelog`.
+3. Update the version number in the `package.json` file regarding the [semver](https://semver.org/) rules, then commit changes as `Bump version to v1.0.0`.
+4. Create a new pull request to the `main` branch from the release branch, and merge it after the review.
+5. Create a new tag with the version number (e.g. `v1.0.0`) to trigger the [release workflow](https://github.com/AdguardTeam/AGLint/blob/master/.github/workflows/release.yml).
+6. The release workflow will automatically publish the new version to the [npm registry](https://www.npmjs.com/package/@adguard/ecss-tree).
 
 ## License
 
