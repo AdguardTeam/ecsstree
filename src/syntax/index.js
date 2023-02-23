@@ -22,9 +22,6 @@ import {
     CLOSING_PARENTHESIS, DOUBLE_QUOTE, ESCAPE, OPENING_PARENTHESIS, SPACE,
 } from '../utils/constants';
 
-// :contains()-related pseudo-classes
-const CONTAINS_PSEUDO_CLASSES = ['contains(', '-abp-contains(', 'has-text('];
-
 const selector = {
     /**
      * CSSTree logic for parsing a selector from the token stream.
@@ -193,9 +190,10 @@ const style = {
     },
 };
 
-const extCssContains = {
+const genericExtCssPseudo = {
     /**
-     * ECSSTree logic for parsing :contains() and similar pseudo-classes from the token stream.
+     * ECSSTree logic for parsing :contains(), :has-text(), :-abp-contains(), :matches-css(),
+     * :matches-css-after(), :matches-css-before() and similar pseudo-classes from the token stream.
      *
      * Via "this" we can access the parser's internal context, eg. methods, token stream, etc.
      *
@@ -250,10 +248,9 @@ const extCssContains = {
         let prevTokenIndex = this.tokenIndex;
 
         // Iterate over the token stream from the current position to the beginning
-        for (let i = this.tokenIndex; i >= 0; i -= 1) {
-            // Check token name to avoid :contains(join('')) case, where "join(" is also a function token
+        for (let i = this.tokenIndex - 1; i >= 0; i -= 1) {
             // Since this parsing function will be called, we definitely have a function token before
-            if (tokens[i].type === 'function-token' && CONTAINS_PSEUDO_CLASSES.includes(tokens[i].chunk)) {
+            if (tokens[i].type === 'function-token') {
                 // Find the first token of the :contains() function's argument, which
                 // is the next token after the function token (i + 1)
                 startPosition = this.getTokenStart(i + 1);
@@ -364,7 +361,8 @@ const extCssContains = {
 
 const xpath = {
     /**
-     * ECSSTree logic for parsing :xpath() pseudo-classes from the token stream.
+     * ECSSTree logic for parsing :xpath() pseudo-classes from the token stream. In this case, we
+     * should ignore parentheses, if they are inside strings.
      *
      * Via "this" we can access the parser's internal context, eg. methods, token stream, etc.
      *
@@ -491,16 +489,19 @@ const xpath = {
  */
 const extendedCssSyntax = fork({
     pseudo: {
+        '-abp-contains': genericExtCssPseudo,
         '-abp-has': selectorList,
+        'has-text': genericExtCssPseudo,
         'if-not': selector,
-        upward: numberOrSelector,
-        'nth-ancestor': number,
-        'min-text-length': number,
+        'matches-css': genericExtCssPseudo,
+        'matches-css-after': genericExtCssPseudo,
+        'matches-css-before': genericExtCssPseudo,
         'matches-media': mediaQueryList,
+        'min-text-length': number,
+        'nth-ancestor': number,
+        contains: genericExtCssPseudo,
         style,
-        contains: extCssContains,
-        'has-text': extCssContains,
-        '-abp-contains': extCssContains,
+        upward: numberOrSelector,
         xpath,
     },
 });
