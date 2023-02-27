@@ -52,17 +52,20 @@ Links:
 
 Currently, the following Extended CSS pseudo classes are supported:
 
-- `:-abp-contains(text / regexp)`: [[ABP reference]](https://help.adblockplus.org/hc/en-us/articles/360062733293#elemhide_css)
+- `:-abp-contains(raw)`: [[ABP reference]](https://help.adblockplus.org/hc/en-us/articles/360062733293#elemhide_css)
 - `:-abp-has(selector list)`: [[ABP reference]](https://help.adblockplus.org/hc/en-us/articles/360062733293#elemhide_css)
-- `:contains(text / regexp)`: [[ADG reference]](https://github.com/AdguardTeam/ExtendedCss#extended-css-contains)
-- `:has-text(text / regexp)`: [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjecthas-textneedle)
+- `:contains(raw)`: [[ADG reference]](https://github.com/AdguardTeam/ExtendedCss#extended-css-contains)
+- `:has-text(raw)`: [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjecthas-textneedle)
 - `:if-not(selector)`: [[ADG reference]](https://github.com/AdguardTeam/ExtendedCss#extended-css-if-not)
+- `:matches-css-after(raw)`: [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjectmatches-css-afterarg)
+- `:matches-css-before(raw)`: [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjectmatches-css-beforearg)
+- `:matches-css(raw)`: [[ADG reference]](https://github.com/AdguardTeam/ExtendedCss#extended-css-matches-css), [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjectmatches-cssarg)
 - `:matches-media(media query list)`: [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjectmatches-mediaarg)
 - `:min-text-length(number)`: [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjectmin-text-lengthn)
 - `:nth-ancestor(number)`: [[ADG reference]](https://github.com/AdguardTeam/ExtendedCss#extended-css-nth-ancestor)
-- `:style(style declaration list)`: [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Static-filter-syntax#subjectstylearg)
+- `:style(declaration list)`: [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Static-filter-syntax#subjectstylearg)
 - `:upward(selector / number)`: [[ADG reference]](https://github.com/AdguardTeam/ExtendedCss#extended-css-upward), [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjectupwardarg)
-- `:xpath(xpath expression)`: [[ADG reference]](https://github.com/AdguardTeam/ExtendedCss#-pseudo-class-xpath), [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjectxpatharg)
+- `:xpath(raw)`: [[ADG reference]](https://github.com/AdguardTeam/ExtendedCss#-pseudo-class-xpath), [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjectxpatharg)
 
 In addition, CSSTree supports the following pseudo classes [by default](https://github.com/csstree/csstree/blob/master/lib/syntax/pseudo/index.js):
 - `:has(selector list)`: [[W3C reference]](https://drafts.csswg.org/selectors-4/#has-pseudo), [[ADG reference]](https://github.com/AdguardTeam/ExtendedCss#extended-css-has), [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjecthasarg)
