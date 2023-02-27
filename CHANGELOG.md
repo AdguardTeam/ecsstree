@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.8] - 2022-02-27
+
+### Added
+
+- Support for `:matches-css-after(raw)` pseudo class [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjectmatches-css-afterarg)
+- Support for `:matches-css-before(raw)` pseudo class [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjectmatches-css-beforearg)
+- Support for `:matches-css(raw)` pseudo class [[ADG reference]](https://github.com/AdguardTeam/ExtendedCss#extended-css-matches-css), [[uBO reference]](https://github.com/gorhill/uBlock/wiki/Procedural-cosmetic-filters#subjectmatches-cssarg)
+
+### Fixed
+
+- Readme typos
+
 ## [1.0.7] - 2022-02-22
 
 ### Fixed
