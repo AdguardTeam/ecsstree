@@ -275,7 +275,7 @@ Here is a short guide on how to set up the development environment and how to su
 - Pre-requisites: [Node.js](https://nodejs.org/en/) (v14 or higher), [Yarn](https://yarnpkg.com/) (v2 or higher), [Git](https://git-scm.com/), [VSCode](https://code.visualstudio.com/) (optional)
 - Clone the repository with `git clone`
 - Install dependencies with `yarn` (this will also initialize the Git hooks via Husky)
-- Create a new branch with `git checkout -b <branch-name>` (e.g. `git checkout -b feature/add-some-feature`, please add `/feature` or `/fix` prefix to your branch name)
+- Create a new branch with `git checkout -b <branch-name>`. Example: `git checkout -b feature/add-some-feature`. Please add `feature/` or `fix/` prefix to your branch name, and refer to the issue number if there is one. Example: `fix/42`.
 - Make your changes in the `src` folder and make suitable tests for them in the `test` folder
 - **Please do NOT differ from the original CSSTree API!** Our primary goal is to keep the API as close as possible to the original CSSTree, so that it is easy to switch between the two libraries, if needed. We only improve the "internal logic" of the library to make it able to parse Extended CSS selectors, but the API should be the same!
 - Check code by running `yarn lint` and `yarn test` commands (during development, you can run only a specific test with `yarn test <test-name>`)
@@ -303,7 +303,7 @@ This section describes the release process for the new versions of the ECSSTree 
 2. Fill the `CHANGELOG.md` file with the changes made since the last release by following the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) rules, then commit changes as `Update changelog`.
 3. Update the version number in the `package.json` file regarding the [semver](https://semver.org/) rules, then commit changes as `Bump version to v1.0.0`.
 4. Create a new pull request to the `main` branch from the release branch, and merge it after the review.
-5. Create a new tag with the version number (e.g. `v1.0.0`) to trigger the [release workflow](https://github.com/AdguardTeam/AGLint/blob/master/.github/workflows/release.yml).
+5. Create a new tag with the version number (e.g. `v1.0.0`) to trigger the [release workflow](https://github.com/AdguardTeam/ecsstree/blob/main/.github/workflows/publish.yml).
 6. The release workflow will automatically publish the new version to the [npm registry](https://www.npmjs.com/package/@adguard/ecss-tree).
 
 ## License
