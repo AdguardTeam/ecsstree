@@ -275,7 +275,7 @@ Here is a short guide on how to set up the development environment and how to su
 - Pre-requisites: [Node.js](https://nodejs.org/en/) (v14 or higher), [Yarn](https://yarnpkg.com/) (v2 or higher), [Git](https://git-scm.com/), [VSCode](https://code.visualstudio.com/) (optional)
 - Clone the repository with `git clone`
 - Install dependencies with `yarn` (this will also initialize the Git hooks via Husky)
-- Create a new branch with `git checkout -b <branch-name>` (e.g. `git checkout -b feature/add-some-feature`, please add `/feature` or `/fix` prefix to your branch name)
+- Create a new branch with `git checkout -b <branch-name>`. Example: `git checkout -b feature/add-some-feature`. Please add `feature/` or `fix/` prefix to your branch name, and refer to the issue number if there is one. Example: `fix/42`.
 - Make your changes in the `src` folder and make suitable tests for them in the `test` folder
 - **Please do NOT differ from the original CSSTree API!** Our primary goal is to keep the API as close as possible to the original CSSTree, so that it is easy to switch between the two libraries, if needed. We only improve the "internal logic" of the library to make it able to parse Extended CSS selectors, but the API should be the same!
 - Check code by running `yarn lint` and `yarn test` commands (during development, you can run only a specific test with `yarn test <test-name>`)
