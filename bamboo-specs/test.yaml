@@ -1,0 +1,93 @@
+---
+version: 2
+plan:
+  project-key: AJL
+  key: ECSSTREETEST
+  name: ECSSTree - tests
+variables:
+  dockerNode: adguard/node-ssh:21.7--1
+
+stages:
+  - Build:
+      manual: false
+      final: false
+      jobs:
+        - Build
+
+Build:
+  key: BUILD
+  docker:
+    image: '${bamboo.dockerNode}'
+    volumes:
+      ${system.YARN_DIR}: '${bamboo.cacheYarn}'
+  tasks:
+    - checkout:
+        force-clean-build: true
+    - script:
+        interpreter: SHELL
+        scripts:
+          - |-
+            set -e
+            set -x
+
+            # Fix mixed logs
+            exec 2>&1
+
+            ls -laht
+
+            # Exclude '--ignore-optional' from yarn arguments
+            # This is needed for installing swc core optional dependencies properly
+            originalYarnArgs="$bamboo_varsYarn"
+            modifiedYarnArgs=$(echo "$originalYarnArgs" | sed 's/--ignore-optional//g')
+
+            # Install dependencies
+            yarn install ${modifiedYarnArgs}
+
+            # Lint code
+            yarn lint
+
+            # Run tests
+            yarn test
+
+            # Build should be successful
+            yarn build
+
+            # Run smoke tests
+            yarn test:smoke
+  final-tasks:
+    - script:
+        interpreter: SHELL
+        scripts:
+          - |-
+            set -x
+            set -e
+
+            # Fix mixed logs
+            exec 2>&1
+
+            ls -la
+
+            echo "Size before cleanup:" && du -h | tail -n 1
+            rm -rf node_modules dist
+            echo "Size after cleanup:" && du -h | tail -n 1
+  requirements:
+    - adg-docker: true
+
+branches:
+  create: for-pull-request
+  delete:
+    after-deleted-days: '1'
+    after-inactive-days: '5'
+  link-to-jira: true
+
+notifications:
+  - events:
+      - plan-status-changed
+    recipients:
+      - webhook:
+          name: Build webhook
+          url: http://prod.jirahub.service.eu.consul/v1/webhook/bamboo
+
+labels: []
+other:
+  concurrent-build-plugin: system-default
