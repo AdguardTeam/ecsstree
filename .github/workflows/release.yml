@@ -1,0 +1,84 @@
+name: Create GitHub Release
+
+env:
+  NODE_VERSION: 20
+
+on:
+  push:
+    tags:
+      - v*
+
+# Workflow need write access to the repository to create a release
+permissions:
+  contents: write
+
+# Make sure that only one release workflow runs at a time
+concurrency:
+  group: release
+
+jobs:
+  release:
+    name: Create GitHub release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: https://registry.npmjs.org
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint code
+        run: yarn lint
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Check build
+        run: yarn build
+
+      - name: Run smoke tests
+        run: yarn test:smoke
+
+      - name: Pack files
+        run: yarn pack --filename ecsstree.tgz
+
+      - name: Release on GitHub
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ecsstree.tgz
+          draft: false
+          prerelease: false
+          # TODO: Extract data from CHANGELOG.md
+          body: See [CHANGELOG.md](./CHANGELOG.md) for the list of changes.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  notify:
+    name: Send Slack notification
+    needs: release
+    # Note: 'always()' is needed to run the notify job even if the test job was failed
+    if:
+      ${{
+        always() &&
+        github.repository == 'AdguardTeam/ecsstree' &&
+        github.event_name == 'push'
+      }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Slack notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ needs.release.result }}
+          fields: workflow, repo, message, commit, author, eventName, ref, job
+          job_name: release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

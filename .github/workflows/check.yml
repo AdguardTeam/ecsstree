@@ -1,33 +1,69 @@
 name: Code check
 
+env:
+  NODE_VERSION: 20
+
 on:
   push:
     branches:
-      - main
-    paths-ignore: ["*.md", "examples/**"]
+      - master
   pull_request:
     branches:
-      - main
-    paths-ignore: ["*.md", "examples/**"]
+      - master
 
 jobs:
-  code_check:
+  check_code:
+    name: Run type checking, linting, and testing
     runs-on: ubuntu-latest
     steps:
       - name: Check out to repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: ${{ env.NODE_VERSION }}
           cache: yarn
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Run ESLint
+      - name: Lint code
         run: yarn lint
 
-      - name: Run Jest tests
+      - name: Run tests
         run: yarn test
+
+      - name: Check build
+        run: yarn build
+
+      - name: Run smoke tests
+        run: yarn test:smoke
+
+  notify:
+    name: Send Slack notification on failure
+    needs: check_code
+    # Run this job only if the previous job failed and the event was triggered by the 'AdguardTeam/ecsstree' repository
+    # Note: 'always()' is needed to run the notify job even if the test job was failed
+    if:
+      ${{
+        always() &&
+        needs.check_code.result == 'failure' &&
+        github.repository == 'AdguardTeam/ecsstree' &&
+        (
+          github.event_name == 'push' ||
+          github.event_name == 'workflow_dispatch' ||
+          github.event.pull_request.head.repo.full_name == github.repository
+        )
+      }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Slack notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          fields: workflow, repo, message, commit, author, eventName, ref, job
+          job_name: check_code
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

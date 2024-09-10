@@ -18,8 +18,13 @@
  */
 
 import { fork, tokenize, tokenTypes } from 'css-tree';
+
 import {
-    CLOSING_PARENTHESIS, DOUBLE_QUOTE, ESCAPE, OPENING_PARENTHESIS, SPACE,
+    CLOSING_PARENTHESIS,
+    DOUBLE_QUOTE,
+    ESCAPE,
+    OPENING_PARENTHESIS,
+    SPACE,
 } from '../utils/constants';
 
 const selector = {

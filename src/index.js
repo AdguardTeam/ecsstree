@@ -18,6 +18,10 @@ export {
     ident,
     string,
     url,
+    keyword,
+    property,
+    vendorPrefix,
+    isCustomProperty,
 } from 'css-tree';
 
 // Export the forked syntax (comes from the Fork API)

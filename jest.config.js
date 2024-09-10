@@ -4,7 +4,10 @@
  */
 
 export default {
-    // Indicates which provider should be used to instrument code for coverage
-    coverageProvider: 'babel',
-    verbose: true,
+    testEnvironment: 'node',
+    testTimeout: 30000,
+    testMatch: ['**/test/**/*.test.js'],
+    transform: {
+        '^.+\\.(t|j)sx?$': '@swc/jest',
+    },
 };
