@@ -75,6 +75,6 @@
     "lint": "eslint . --cache && markdownlint .",
     "test": "jest",
     "build": "rimraf dist && rollup --config rollup.config.js && node tasks/build-txt.js",
-    "test:smoke": "(cd test/smoke/esm && pnpm test) && (cd test/smoke/cjs && pnpm test) && (cd test/smoke/typescript && pnpm test)"
+    "test:smoke": "(cd test/smoke/esm && yarn test) && (cd test/smoke/cjs && yarn test) && (cd test/smoke/typescript && yarn test)"
   }
 }
