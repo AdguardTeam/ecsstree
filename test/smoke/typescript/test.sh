@@ -23,5 +23,5 @@ ecss_tree_node_modules=$nm_path"/@adguard/ecss-tree"
 mkdir -p $ecss_tree_node_modules
 tar -xzf $ecss_tree --strip-components=1 -C $ecss_tree_node_modules
 
-pnpm start
+yarn start
 echo "Test successfully built."
