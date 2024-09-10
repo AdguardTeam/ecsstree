@@ -20,6 +20,8 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 
 - Browser specific builds.
 
+[1.1.0]: https://github.com/AdguardTeam/ecsstree/compare/v1.0.8...v1.1.0
+
 ## [1.0.8] - 2022-02-27
 
 ### Added
