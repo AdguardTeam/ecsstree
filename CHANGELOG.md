@@ -16,6 +16,10 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
   These functions are also exported by `css-tree` package.
 - Custom types.
 
+### Removed
+
+- Browser specific builds.
+
 ## [1.0.8] - 2022-02-27
 
 ### Added
