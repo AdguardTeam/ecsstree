@@ -5,7 +5,7 @@ plan:
   key: ECSSTREETEST
   name: ECSSTree - tests
 variables:
-  dockerNode: adguard/node-ssh:21.7--1
+  dockerNode: adguard/node-ssh:21.7--2
 
 stages:
   - Build:
@@ -71,14 +71,14 @@ Build:
             rm -rf node_modules dist
             echo "Size after cleanup:" && du -h | tail -n 1
   requirements:
-    - adg-docker: true
+    - adg-docker: 'true'
 
 branches:
   create: for-pull-request
   delete:
     after-deleted-days: '1'
     after-inactive-days: '5'
-  link-to-jira: true
+  link-to-jira: 'true'
 
 notifications:
   - events:
