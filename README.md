@@ -43,9 +43,9 @@ and vice versa without any problems.
 
 You can install the library using
 
-- [Yarn][yarn-pkg-manager-url] (recommended): `yarn add @adguard/ecss-tree`
-- [NPM][npm-pkg-manager-url]: `npm install @adguard/ecss-tree`
 - [PNPM][pnpm-pkg-manager-url]: `pnpm add @adguard/ecss-tree`
+- [NPM][npm-pkg-manager-url]: `npm install @adguard/ecss-tree`
+- [Yarn][yarn-pkg-manager-url]: `yarn add @adguard/ecss-tree`
 
 [npm-pkg-manager-url]: https://www.npmjs.com/get-npm
 [pnpm-pkg-manager-url]: https://pnpm.io/
@@ -325,9 +325,9 @@ Make sure you have the following tools installed:
 
 During development, you can use the following commands (listed in `package.json`):
 
-- `yarn lint` - lint the code with [ESLint][eslint]
-- `yarn test` - run tests with [Jest][jest] (you can also run a specific test with `yarn test <test-name>`)
-- `yarn build` - build the library to the `dist` folder by using [Rollup][rollup]
+- `pnpm lint` - lint the code with [ESLint][eslint]
+- `pnpm test` - run tests with [Jest][jest] (you can also run a specific test with `pnpm test <test-name>`)
+- `pnpm build` - build the library to the `dist` folder by using [Rollup][rollup]
 
 [eslint]: https://eslint.org/
 [jest]: https://jestjs.io/

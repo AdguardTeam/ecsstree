@@ -5,7 +5,7 @@ plan:
   key: ECSSTREETEST
   name: ECSSTree - tests
 variables:
-  dockerNode: adguard/node-ssh:21.7--2
+  dockerNode: adguard/node-ssh:22.14--0
 
 stages:
   - Build:
@@ -19,7 +19,7 @@ Build:
   docker:
     image: '${bamboo.dockerNode}'
     volumes:
-      ${system.YARN_DIR}: '${bamboo.cacheYarn}'
+      ${system.PNPM_DIR}: "${bamboo.cachePnpm}"
   tasks:
     - checkout:
         force-clean-build: true
@@ -35,25 +35,23 @@ Build:
 
             ls -laht
 
-            # Exclude '--ignore-optional' from yarn arguments
-            # This is needed for installing swc core optional dependencies properly
-            originalYarnArgs="$bamboo_varsYarn"
-            modifiedYarnArgs=$(echo "$originalYarnArgs" | sed 's/--ignore-optional//g')
+            # Set cache directory
+            pnpm config set store-dir ${bamboo.cachePnpm}
 
             # Install dependencies
-            yarn install ${modifiedYarnArgs}
+            pnpm install
 
             # Lint code
-            yarn lint
+            pnpm lint
 
             # Run tests
-            yarn test
+            pnpm test
 
             # Build should be successful
-            yarn build
+            pnpm build
 
             # Run smoke tests
-            yarn test:smoke
+            pnpm test:smoke
   final-tasks:
     - script:
         interpreter: SHELL

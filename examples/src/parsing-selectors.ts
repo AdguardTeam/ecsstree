@@ -1,4 +1,4 @@
-// You can run this script with `yarn ts-node-esm parsing-selectors.ts`
+// You can run this script with `pnpm ts-node-esm parsing-selectors.ts`
 // (you can run TypeScript scripts directly with ts-node module)
 
 import {

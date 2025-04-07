@@ -55,6 +55,7 @@
     "@swc/core": "^1.7.24",
     "@swc/jest": "^0.2.36",
     "@types/css-tree": "^2.3.8",
+    "@types/node": "^22.14.0",
     "eslint": "^8.34.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.30.0",
@@ -75,6 +76,9 @@
     "lint": "eslint . --cache && markdownlint .",
     "test": "jest",
     "build": "rimraf dist && rollup --config rollup.config.js && node tasks/build-txt.js",
-    "test:smoke": "(cd test/smoke/esm && yarn test) && (cd test/smoke/cjs && yarn test) && (cd test/smoke/typescript && yarn test)"
+    "test:smoke": "(cd test/smoke/esm && pnpm test) && (cd test/smoke/cjs && pnpm test) && (cd test/smoke/typescript && pnpm test)"
+  },
+  "pnpm": {
+    "neverBuiltDependencies": []
   }
 }
