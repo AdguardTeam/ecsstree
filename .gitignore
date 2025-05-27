@@ -10,6 +10,7 @@ coverage
 node_modules/
 
 .npm
+.npmrc
 
 .eslintcache
 
