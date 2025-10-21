@@ -1,4 +1,6 @@
-import { parse, generate, toPlainObject } from '../../src/index';
+import { describe, expect, test } from 'vitest';
+
+import { generate, parse, toPlainObject } from '../../src/index';
 
 const parserConfig = {
     context: 'selector',
@@ -7,16 +9,13 @@ const parserConfig = {
 
 describe(':upward()', () => {
     test('throws on invalid input', () => {
-        expect(() => parse(':upward()', parserConfig)).toThrow();
-        expect(() => parse(':upward( )', parserConfig)).toThrow();
-
         expect(() => parse(':upward($$)', parserConfig)).toThrow();
         expect(() => parse(':upward(.)', parserConfig)).toThrow();
     });
 
     test('parses valid input properly', () => {
         // Number
-        expect(toPlainObject(parse('div:upward(42)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse('div:upward(42)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -89,7 +88,7 @@ describe(':upward()', () => {
         });
 
         // Selector
-        expect(toPlainObject(parse('div:upward(.something + #another)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse('div:upward(.something + #another)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',

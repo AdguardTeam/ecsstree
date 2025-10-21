@@ -22,7 +22,7 @@ export {
     property,
     vendorPrefix,
     isCustomProperty,
-} from 'css-tree';
+} from '@eslint/css-tree';
 
 // Export the forked syntax (comes from the Fork API)
 export const {

@@ -4,13 +4,13 @@
  * This is needed for Bamboo variable injection.
  */
 import {
-    writeFileSync,
     existsSync,
     mkdirSync,
     readFileSync,
-} from 'fs';
-import { resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
+    writeFileSync,
+} from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 // eslint-disable-next-line no-underscore-dangle
 const __filename = fileURLToPath(import.meta.url);

@@ -8,6 +8,22 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 [keepachangelog]: https://keepachangelog.com/en/1.0.0/
 [semver]: https://semver.org/spec/v2.0.0.html
 
+## [2.0.0] - 2025-10-21
+
+### Changed
+
+- `css-tree` to `@eslint/css-tree` (a `css-tree` fork made by ESLint Team) [#16].
+  This also updates CSS Tree from `v2` to `v3`, which introduces breaking changes.
+  For more details see their changelog.
+
+### Added
+
+- `@adguard/css-tokenizer` as tokenizer dependency [#15].
+
+[#15]: https://github.com/AdguardTeam/ecsstree/issues/15
+[#16]: https://github.com/AdguardTeam/ecsstree/issues/16
+[2.0.0]: https://github.com/AdguardTeam/ecsstree/compare/v1.1.0...v2.0.0
+
 ## [1.1.0] - 2024-09-10
 
 ### Fixed

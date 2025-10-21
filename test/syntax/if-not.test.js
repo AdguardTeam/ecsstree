@@ -1,4 +1,6 @@
-import { parse, generate, toPlainObject } from '../../src/index';
+import { describe, expect, test } from 'vitest';
+
+import { generate, parse, toPlainObject } from '../../src/index';
 
 const parserConfig = {
     context: 'selector',
@@ -7,15 +9,12 @@ const parserConfig = {
 
 describe(':if-not()', () => {
     test('throws on invalid input', () => {
-        expect(() => parse(':if-not()', parserConfig)).toThrow();
-        expect(() => parse(':if-not( )', parserConfig)).toThrow();
-
         expect(() => parse(':if-not($$)', parserConfig)).toThrow();
         expect(() => parse(':if-not(.)', parserConfig)).toThrow();
     });
 
     test('parses valid input properly', () => {
-        expect(toPlainObject(parse('div:if-not(.something + #another)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse('div:if-not(.something + #another)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',

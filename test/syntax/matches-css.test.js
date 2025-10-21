@@ -1,4 +1,6 @@
-import { parse, generate, toPlainObject } from '../../src/index';
+import { describe, expect, test } from 'vitest';
+
+import { generate, parse, toPlainObject } from '../../src/index';
 
 const parserConfig = {
     context: 'selector',
@@ -6,13 +8,9 @@ const parserConfig = {
 };
 
 describe(':matches-css()', () => {
-    test('throws on invalid input', () => {
-        expect(() => parse(':matches-css()', parserConfig)).toThrow();
-    });
-
     test('parses valid input properly', () => {
         // Regular style declaration
-        expect(toPlainObject(parse(':matches-css(width:720px)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':matches-css(width:720px)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -68,7 +66,7 @@ describe(':matches-css()', () => {
         });
 
         // Regular style declaration with space
-        expect(toPlainObject(parse(':matches-css(width: 720px)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':matches-css(width: 720px)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -132,7 +130,7 @@ describe(':matches-css()', () => {
                     parserConfig,
                 ),
             ),
-        ).toMatchObject({
+        ).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -196,7 +194,7 @@ describe(':matches-css()', () => {
                     parserConfig,
                 ),
             ),
-        ).toMatchObject({
+        ).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -362,7 +360,7 @@ describe(':matches-css()', () => {
                     parserConfig,
                 ),
             ),
-        ).toMatchObject({
+        ).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',

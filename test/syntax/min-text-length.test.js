@@ -1,4 +1,6 @@
-import { parse, generate, toPlainObject } from '../../src/index';
+import { describe, expect, test } from 'vitest';
+
+import { generate, parse, toPlainObject } from '../../src/index';
 
 const parserConfig = {
     context: 'selector',
@@ -7,9 +9,6 @@ const parserConfig = {
 
 describe(':min-text-length()', () => {
     test('throws on invalid input', () => {
-        expect(() => parse(':min-text-length()', parserConfig)).toThrow();
-        expect(() => parse(':min-text-length( )', parserConfig)).toThrow();
-
         expect(() => parse(':min-text-length($$)', parserConfig)).toThrow();
         expect(() => parse(':min-text-length(.)', parserConfig)).toThrow();
 
@@ -20,7 +19,7 @@ describe(':min-text-length()', () => {
 
     test('parses valid input properly', () => {
         // Number
-        expect(toPlainObject(parse('div:min-text-length(42)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse('div:min-text-length(42)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',

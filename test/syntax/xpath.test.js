@@ -1,4 +1,6 @@
-import { parse, generate, toPlainObject } from '../../src/index';
+import { describe, expect, test } from 'vitest';
+
+import { generate, parse, toPlainObject } from '../../src/index';
 
 const parserConfig = {
     context: 'selector',
@@ -8,7 +10,7 @@ const parserConfig = {
 describe(':xpath()', () => {
     test('parses valid input properly', () => {
         // Very simple test, just to make sure it's working
-        expect(toPlainObject(parse(':xpath(//test)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':xpath(//test)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -64,7 +66,7 @@ describe(':xpath()', () => {
         });
 
         // Test with a more complex expression, which contains a lot of special cases
-        expect(toPlainObject(parse(':xpath(//*[contains(text(),"()(cc")])', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':xpath(//*[contains(text(),"()(cc")])', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',

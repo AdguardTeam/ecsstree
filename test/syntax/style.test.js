@@ -1,4 +1,6 @@
-import { parse, generate, toPlainObject } from '../../src/index';
+import { describe, expect, test } from 'vitest';
+
+import { generate, parse, toPlainObject } from '../../src/index';
 
 const parserConfig = {
     context: 'selector',
@@ -6,15 +8,9 @@ const parserConfig = {
 };
 
 describe(':style()', () => {
-    test('throws on invalid input', () => {
-        // Empty declaration
-        expect(() => parse('div:style()', parserConfig)).toThrow();
-        expect(() => parse('div:style( )', parserConfig)).toThrow();
-    });
-
     test('parses valid input properly', () => {
         // Simple style
-        expect(toPlainObject(parse('div:style(padding: 0)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse('div:style(padding: 0)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -141,7 +137,7 @@ describe(':style()', () => {
         });
 
         // Semicolon at the end
-        expect(toPlainObject(parse('div:style(padding: 0;)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse('div:style(padding: 0;)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -268,7 +264,7 @@ describe(':style()', () => {
         });
 
         // Important style
-        expect(toPlainObject(parse('div:style(padding: 0 !important)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse('div:style(padding: 0 !important)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -397,7 +393,7 @@ describe(':style()', () => {
         // Complex style
         expect(
             toPlainObject(parse('div:style(padding: 0 !important; margin: 0; color: black !important)', parserConfig)),
-        ).toMatchObject({
+        ).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',

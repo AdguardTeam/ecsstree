@@ -5,7 +5,10 @@ import dtsPlugin from 'rollup-plugin-dts';
 
 const node = {
     input: './src/index.js',
-    external: ['css-tree'],
+    external: [
+        '@eslint/css-tree',
+        '@adguard/css-tokenizer',
+    ],
     output: [
         {
             file: './dist/ecsstree.cjs',
@@ -47,7 +50,9 @@ const dts = {
                 " * but the type definitions are written for 'css-tree'. Therefore, we need to",
                 ' * export type definitions from @types/css-tree to this file at build time.',
                 ' *',
-                ' * Source: https://www.npmjs.com/package/@types/css-tree',
+                ' * Sources:',
+                ' * - https://www.npmjs.com/package/@types/css-tree',
+                ' * - https://www.npmjs.com/package/@eslint/css-tree',
                 ' */',
                 ' ',
             ].join('\n'),

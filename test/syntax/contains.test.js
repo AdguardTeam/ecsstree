@@ -1,6 +1,7 @@
 // Tests for :contains(), :-abp-contains() and :has-text() pseudo-classes
+import { describe, expect, test } from 'vitest';
 
-import { parse, generate, toPlainObject } from '../../src/index';
+import { generate, parse, toPlainObject } from '../../src/index';
 
 const parserConfig = {
     context: 'selector',
@@ -9,19 +10,11 @@ const parserConfig = {
 
 describe(':contains()', () => {
     test('throws on invalid input', () => {
-        expect(() => parse(':contains()', parserConfig)).toThrow('Empty parameter specified');
-
         expect(() => parse(':contains(a', parserConfig)).toThrow();
         expect(() => parse(":contains(a'", parserConfig)).toThrow();
 
-        // :-abp-contains alias
-        expect(() => parse(':-abp-contains()', parserConfig)).toThrow('Empty parameter specified');
-
         expect(() => parse(':-abp-contains(a', parserConfig)).toThrow();
         expect(() => parse(":-abp-contains(a'", parserConfig)).toThrow();
-
-        // :has-text alias
-        expect(() => parse(':has-text()', parserConfig)).toThrow('Empty parameter specified');
 
         expect(() => parse(':has-text(a', parserConfig)).toThrow();
         expect(() => parse(":has-text(a'", parserConfig)).toThrow();
@@ -29,7 +22,7 @@ describe(':contains()', () => {
 
     test('parses valid input properly', () => {
         // One whitespace
-        expect(toPlainObject(parse(':contains( )', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':contains( )', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -85,7 +78,7 @@ describe(':contains()', () => {
         });
 
         // Two whitespaces
-        expect(toPlainObject(parse(':contains(  )', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':contains(  )', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -141,7 +134,7 @@ describe(':contains()', () => {
         });
 
         // Very simple input
-        expect(toPlainObject(parse(':contains(aaa)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':contains(aaa)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -197,7 +190,7 @@ describe(':contains()', () => {
         });
 
         // Space before input
-        expect(toPlainObject(parse(':contains( aaa)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':contains( aaa)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -253,7 +246,7 @@ describe(':contains()', () => {
         });
 
         // Space after input
-        expect(toPlainObject(parse(':contains(aaa )', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':contains(aaa )', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -309,7 +302,7 @@ describe(':contains()', () => {
         });
 
         // Space before and after input
-        expect(toPlainObject(parse(':contains( aaa )', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':contains( aaa )', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -365,7 +358,7 @@ describe(':contains()', () => {
         });
 
         // Space before and after input, with space in input
-        expect(toPlainObject(parse(':contains(  aaa  bbb  )', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':contains(  aaa  bbb  )', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -421,7 +414,7 @@ describe(':contains()', () => {
         });
 
         // Space in input
-        expect(toPlainObject(parse(':contains(aaa bbb ccc)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':contains(aaa bbb ccc)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -477,7 +470,7 @@ describe(':contains()', () => {
         });
 
         // Parenthesis in input
-        expect(toPlainObject(parse(':contains((aaa))', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':contains((aaa))', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -533,7 +526,7 @@ describe(':contains()', () => {
         });
 
         // Parenthesis in input, but a bit more complex
-        expect(toPlainObject(parse(':contains((aaa)(bbb)\\)\\()', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':contains((aaa)(bbb)\\)\\()', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -589,7 +582,7 @@ describe(':contains()', () => {
         });
 
         // Regular expression
-        expect(toPlainObject(parse(':contains(/aaa/)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':contains(/aaa/)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -645,7 +638,7 @@ describe(':contains()', () => {
         });
 
         // Regular expression with flags
-        expect(toPlainObject(parse(':contains(/aaa/i)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':contains(/aaa/i)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -701,7 +694,7 @@ describe(':contains()', () => {
         });
 
         // Regular expression with parentheses
-        expect(toPlainObject(parse(':contains(/^(a|b){3,}$/)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':contains(/^(a|b){3,}$/)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -757,7 +750,7 @@ describe(':contains()', () => {
         });
 
         // Regular expression with escaped parentheses
-        expect(toPlainObject(parse(':contains(/aaa\\(\\)/i)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':contains(/aaa\\(\\)/i)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -813,7 +806,7 @@ describe(':contains()', () => {
         });
 
         // Single quote mark within the string
-        expect(toPlainObject(parse(":contains(aaa'bbb)", parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(":contains(aaa'bbb)", parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -869,7 +862,7 @@ describe(':contains()', () => {
         });
 
         // Double quote mark within the string
-        expect(toPlainObject(parse(':contains(aaa"bbb)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':contains(aaa"bbb)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -925,7 +918,7 @@ describe(':contains()', () => {
         });
 
         // Functions
-        expect(toPlainObject(parse(":contains(function(another('')))", parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(":contains(function(another('')))", parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',

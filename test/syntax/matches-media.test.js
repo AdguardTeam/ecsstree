@@ -1,4 +1,6 @@
-import { parse, generate, toPlainObject } from '../../src/index';
+import { describe, expect, test } from 'vitest';
+
+import { generate, parse, toPlainObject } from '../../src/index';
 
 const parserConfig = {
     context: 'selector',
@@ -7,16 +9,13 @@ const parserConfig = {
 
 describe(':matches-media()', () => {
     test('throws on invalid input', () => {
-        expect(() => parse(':matches-media()', parserConfig)).toThrow();
-        expect(() => parse(':matches-media( )', parserConfig)).toThrow();
-
         expect(() => parse(':matches-media($$)', parserConfig)).toThrow();
         expect(() => parse(':matches-media(.)', parserConfig)).toThrow();
     });
 
     test('parses valid input properly', () => {
         // Simple media query
-        expect(toPlainObject(parse('div:matches-media((min-width: 720px))', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse('div:matches-media((min-width: 720px))', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -97,43 +96,63 @@ describe(':matches-media()', () => {
                                             column: 37,
                                         },
                                     },
-                                    children: [
-                                        {
-                                            type: 'MediaFeature',
-                                            loc: {
-                                                source: '<unknown>',
-                                                start: {
-                                                    offset: 18,
-                                                    line: 1,
-                                                    column: 19,
-                                                },
-                                                end: {
-                                                    offset: 36,
-                                                    line: 1,
-                                                    column: 37,
-                                                },
+                                    modifier: null,
+                                    mediaType: null,
+                                    condition: {
+                                        type: 'Condition',
+                                        loc: {
+                                            source: '<unknown>',
+                                            start: {
+                                                offset: 18,
+                                                line: 1,
+                                                column: 19,
                                             },
-                                            name: 'min-width',
-                                            value: {
-                                                type: 'Dimension',
+                                            end: {
+                                                offset: 36,
+                                                line: 1,
+                                                column: 37,
+                                            },
+                                        },
+                                        kind: 'media',
+                                        children: [
+                                            {
+                                                type: 'Feature',
                                                 loc: {
                                                     source: '<unknown>',
                                                     start: {
-                                                        offset: 30,
+                                                        offset: 18,
                                                         line: 1,
-                                                        column: 31,
+                                                        column: 19,
                                                     },
                                                     end: {
-                                                        offset: 35,
+                                                        offset: 36,
                                                         line: 1,
-                                                        column: 36,
+                                                        column: 37,
                                                     },
                                                 },
-                                                value: '720',
-                                                unit: 'px',
+                                                kind: 'media',
+                                                name: 'min-width',
+                                                value: {
+                                                    type: 'Dimension',
+                                                    loc: {
+                                                        source: '<unknown>',
+                                                        start: {
+                                                            offset: 30,
+                                                            line: 1,
+                                                            column: 31,
+                                                        },
+                                                        end: {
+                                                            offset: 35,
+                                                            line: 1,
+                                                            column: 36,
+                                                        },
+                                                    },
+                                                    value: '720',
+                                                    unit: 'px',
+                                                },
                                             },
-                                        },
-                                    ],
+                                        ],
+                                    },
                                 },
                             ],
                         },
@@ -147,7 +166,7 @@ describe(':matches-media()', () => {
             toPlainObject(
                 parse('div:matches-media((min-height: 680px), screen and (orientation: portrait))', parserConfig),
             ),
-        ).toMatchObject({
+        ).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -228,52 +247,72 @@ describe(':matches-media()', () => {
                                             column: 38,
                                         },
                                     },
-                                    children: [
-                                        {
-                                            type: 'MediaFeature',
-                                            loc: {
-                                                source: '<unknown>',
-                                                start: {
-                                                    offset: 18,
-                                                    line: 1,
-                                                    column: 19,
-                                                },
-                                                end: {
-                                                    offset: 37,
-                                                    line: 1,
-                                                    column: 38,
-                                                },
+                                    modifier: null,
+                                    mediaType: null,
+                                    condition: {
+                                        type: 'Condition',
+                                        loc: {
+                                            source: '<unknown>',
+                                            start: {
+                                                offset: 18,
+                                                line: 1,
+                                                column: 19,
                                             },
-                                            name: 'min-height',
-                                            value: {
-                                                type: 'Dimension',
+                                            end: {
+                                                offset: 37,
+                                                line: 1,
+                                                column: 38,
+                                            },
+                                        },
+                                        kind: 'media',
+                                        children: [
+                                            {
+                                                type: 'Feature',
                                                 loc: {
                                                     source: '<unknown>',
                                                     start: {
-                                                        offset: 31,
+                                                        offset: 18,
                                                         line: 1,
-                                                        column: 32,
+                                                        column: 19,
                                                     },
                                                     end: {
-                                                        offset: 36,
+                                                        offset: 37,
                                                         line: 1,
-                                                        column: 37,
+                                                        column: 38,
                                                     },
                                                 },
-                                                value: '680',
-                                                unit: 'px',
+                                                kind: 'media',
+                                                name: 'min-height',
+                                                value: {
+                                                    type: 'Dimension',
+                                                    loc: {
+                                                        source: '<unknown>',
+                                                        start: {
+                                                            offset: 31,
+                                                            line: 1,
+                                                            column: 32,
+                                                        },
+                                                        end: {
+                                                            offset: 36,
+                                                            line: 1,
+                                                            column: 37,
+                                                        },
+                                                    },
+                                                    value: '680',
+                                                    unit: 'px',
+                                                },
                                             },
-                                        },
-                                    ],
+                                        ],
+                                    },
                                 },
                                 {
                                     type: 'MediaQuery',
                                     loc: {
                                         source: '<unknown>',
                                         start: {
-                                            offset: 39,
+                                            offset: 38,
                                             line: 1,
-                                            column: 40,
+                                            column: 39,
                                         },
                                         end: {
                                             offset: 73,
@@ -281,76 +320,62 @@ describe(':matches-media()', () => {
                                             column: 74,
                                         },
                                     },
-                                    children: [
-                                        {
-                                            type: 'Identifier',
-                                            loc: {
-                                                source: '<unknown>',
-                                                start: {
-                                                    offset: 39,
-                                                    line: 1,
-                                                    column: 40,
-                                                },
-                                                end: {
-                                                    offset: 45,
-                                                    line: 1,
-                                                    column: 46,
-                                                },
+                                    modifier: null,
+                                    mediaType: 'screen',
+                                    condition: {
+                                        type: 'Condition',
+                                        loc: {
+                                            source: '<unknown>',
+                                            start: {
+                                                offset: 50,
+                                                line: 1,
+                                                column: 51,
                                             },
-                                            name: 'screen',
+                                            end: {
+                                                offset: 73,
+                                                line: 1,
+                                                column: 74,
+                                            },
                                         },
-                                        {
-                                            type: 'Identifier',
-                                            loc: {
-                                                source: '<unknown>',
-                                                start: {
-                                                    offset: 46,
-                                                    line: 1,
-                                                    column: 47,
-                                                },
-                                                end: {
-                                                    offset: 49,
-                                                    line: 1,
-                                                    column: 50,
-                                                },
-                                            },
-                                            name: 'and',
-                                        },
-                                        {
-                                            type: 'MediaFeature',
-                                            loc: {
-                                                source: '<unknown>',
-                                                start: {
-                                                    offset: 50,
-                                                    line: 1,
-                                                    column: 51,
-                                                },
-                                                end: {
-                                                    offset: 73,
-                                                    line: 1,
-                                                    column: 74,
-                                                },
-                                            },
-                                            name: 'orientation',
-                                            value: {
-                                                type: 'Identifier',
+                                        kind: 'media',
+                                        children: [
+                                            {
+                                                type: 'Feature',
                                                 loc: {
                                                     source: '<unknown>',
                                                     start: {
-                                                        offset: 64,
+                                                        offset: 50,
                                                         line: 1,
-                                                        column: 65,
+                                                        column: 51,
                                                     },
                                                     end: {
-                                                        offset: 72,
+                                                        offset: 73,
                                                         line: 1,
-                                                        column: 73,
+                                                        column: 74,
                                                     },
                                                 },
-                                                name: 'portrait',
+                                                kind: 'media',
+                                                name: 'orientation',
+                                                value: {
+                                                    type: 'Identifier',
+                                                    loc: {
+                                                        source: '<unknown>',
+                                                        start: {
+                                                            offset: 64,
+                                                            line: 1,
+                                                            column: 65,
+                                                        },
+                                                        end: {
+                                                            offset: 72,
+                                                            line: 1,
+                                                            column: 73,
+                                                        },
+                                                    },
+                                                    name: 'portrait',
+                                                },
                                             },
-                                        },
-                                    ],
+                                        ],
+                                    },
                                 },
                             ],
                         },

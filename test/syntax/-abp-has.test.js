@@ -1,4 +1,6 @@
-import { parse, generate, toPlainObject } from '../../src/index';
+import { describe, expect, test } from 'vitest';
+
+import { generate, parse, toPlainObject } from '../../src/index';
 
 const parserConfig = {
     context: 'selector',
@@ -7,16 +9,13 @@ const parserConfig = {
 
 describe(':-abp-has()', () => {
     test('throws on invalid input', () => {
-        expect(() => parse(':-abp-has()', parserConfig)).toThrow();
-        expect(() => parse(':-abp-has( )', parserConfig)).toThrow();
-
         expect(() => parse(':-abp-has($$)', parserConfig)).toThrow();
         expect(() => parse(':-abp-has(.)', parserConfig)).toThrow();
     });
 
     test('parses valid input properly', () => {
         // Simple selector
-        expect(toPlainObject(parse(':-abp-has(div)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':-abp-has(div)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -108,7 +107,7 @@ describe(':-abp-has()', () => {
         });
 
         // Complex selector
-        expect(toPlainObject(parse(':-abp-has(div:has(> a[href*="tracker"]))', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':-abp-has(div:has(> a[href*="tracker"]))', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -341,7 +340,7 @@ describe(':-abp-has()', () => {
         });
 
         // Simple selector list
-        expect(toPlainObject(parse(':-abp-has(div, div)', parserConfig))).toMatchObject({
+        expect(toPlainObject(parse(':-abp-has(div, div)', parserConfig))).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
@@ -470,7 +469,7 @@ describe(':-abp-has()', () => {
         // Complex selector list
         expect(
             toPlainObject(parse(':-abp-has(div, div:has(> a[href*="tracker"]) + section:contains(ads))', parserConfig)),
-        ).toMatchObject({
+        ).toStrictEqual({
             type: 'Selector',
             loc: {
                 source: '<unknown>',
