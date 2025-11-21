@@ -73,6 +73,7 @@
     "vitest": "^3.2.4"
   },
   "scripts": {
+    "increment": "pnpm version patch --no-git-tag-version",
     "prepare": "node .husky/install.js",
     "lint": "eslint . --cache && markdownlint .",
     "test": "vitest",
