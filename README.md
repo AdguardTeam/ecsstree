@@ -69,7 +69,7 @@ Currently, the following Extended CSS pseudo classes are supported:
 - `:min-text-length(number)`: [[uBO reference]][min-text-length-ubo]
 - `:nth-ancestor(number)`: [[ADG reference]][nth-ancestor-adg]
 - `:style(declaration list)`: [[uBO reference]][style-ubo]
-- `:upward(selector / number)`: [[ADG reference]][upward-adg], [[uBO reference]][upward-ubo]
+- `:upward(selector list / number)`: [[ADG reference]][upward-adg], [[uBO reference]][upward-ubo]
 - `:xpath(raw)`: [[ADG reference]][xpath-adg], [[uBO reference]][xpath-ubo]
 
 In addition, CSSTree supports the following pseudo classes
@@ -248,8 +248,8 @@ See [example codes](/examples) for more details.
 Here are a very simple example to show how to use ECSSTree:
 
 ```javascript
-const { parse, generate, toPlainObject, fromPlainObject } = require("@adguard/ecss-tree");
-const { inspect } = require("util");
+import { parse, generate, toPlainObject, fromPlainObject } from "@adguard/ecss-tree";
+import { inspect } from "util";
 
 // Some inputs to test
 const inputs = [

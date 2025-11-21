@@ -45,7 +45,7 @@
   ],
   "dependencies": {
     "@adguard/css-tokenizer": "^1.2.0",
-    "@eslint/css-tree": "^3.6.6"
+    "@eslint/css-tree": "3.6.6"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^5.1.1",
