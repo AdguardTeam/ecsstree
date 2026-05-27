@@ -1,0 +1,30 @@
+# Version control
+.git
+
+# IDE and editor files
+.idea
+.vscode
+.DS_Store
+
+# Build caches
+.eslintcache
+*.tsbuildinfo
+
+# Build outputs
+build/
+output/
+
+# Dependencies
+node_modules/
+
+# Docker files
+Dockerfile*
+
+# Logs
+*.log
+
+# Test coverage
+coverage/
+
+# Built output (rebuilt inside Docker)
+dist/

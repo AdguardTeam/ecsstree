@@ -5,7 +5,7 @@ plan:
   key: ECSSTREEINCR
   name: ECSSTree - increment
 variables:
-  dockerNode: adguard/node-ssh:22.14--0
+  dockerNode: adguard/node-ssh:22.22--0
 
 stages:
   - Increment:
