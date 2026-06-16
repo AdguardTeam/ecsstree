@@ -8,12 +8,27 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 [keepachangelog]: https://keepachangelog.com/en/1.0.0/
 [semver]: https://semver.org/spec/v2.0.0.html
 
+## [Unreleased]
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
 ## [2.0.1] - 2025-11-21
 
 ### Fixed
 
 - Parsing of `:upward()` pseudo-class with selector list argument.
 
+[Unreleased]: https://github.com/AdguardTeam/ecsstree/compare/v2.0.1...HEAD
 [2.0.1]: https://github.com/AdguardTeam/ecsstree/compare/v2.0.0...v2.0.1
 
 ## [2.0.0] - 2025-10-21

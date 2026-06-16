@@ -47,8 +47,7 @@ COPY --from=lint /out/ /
 
 # ============================================================================
 # Stage: test
-# Runs vitest
-# Always exits 0 — exit code stored in /out/exit-code.txt for Bamboo to check
+# Runs ESLint and vitest, fails the build on error
 # ============================================================================
 FROM source AS test
 
@@ -56,8 +55,10 @@ ARG BUILD_RUN_ID=""
 
 RUN --mount=type=cache,target=/pnpm-store,id=ecsstree-pnpm \
     echo "${BUILD_RUN_ID}" > /tmp/.build-run-id && \
+    pnpm lint && \
+    pnpm test && \
     mkdir -p /out && \
-    pnpm test; echo $? > /out/exit-code.txt
+    touch /out/test-passed.txt
 
 FROM scratch AS test-output
 COPY --from=test /out/ /
@@ -81,4 +82,4 @@ RUN --mount=type=cache,target=/pnpm-store,id=ecsstree-pnpm \
     cp build.txt /out/artifacts/
 
 FROM scratch AS build-output
-COPY --from=build /out/ /
+COPY --from=build /out/artifacts/ /
