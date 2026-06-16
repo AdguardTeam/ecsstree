@@ -5,6 +5,7 @@ description: >-
   mirrors to the public repo, drafts a GitHub Release, and notifies Slack.
 
 on:
+  # Release PRs are always internal (created by prepare-release.yml).
   pull_request:
     types: [closed]
     branches: [master]
@@ -21,6 +22,7 @@ jobs:
     with:
       ref: ${{ inputs.ref || github.event.pull_request.merge_commit_sha || github.ref_name }}
       team: extensions
+    # `contents: write` — create the git tag
     permissions:
       contents: write
 
@@ -35,6 +37,8 @@ jobs:
           ref: ${{ inputs.ref || github.event.pull_request.merge_commit_sha || github.ref_name }}
           submodules: true
 
+      # Version is not kept in source; it is parsed from CHANGELOG
+      # by the tag job and injected here before building.
       - name: Inject version into package.json
         run: npm pkg set version="${{ needs.tag.outputs.version }}"
 
@@ -57,10 +61,14 @@ jobs:
       artifact-name: npm-package
       package-file: ecsstree.tgz
       environment: extensions
+    # `contents: read` — download artifact only
+    # `id-token: write` — npm Trusted Publishing via OIDC
     permissions:
       contents: read
       id-token: write
 
+  # Mirrors the tag to the public repo and creates a GitHub Release there
+  # (with changelog + artifact). Separate from mirror.yml (code sync on push).
   mirror-and-release:
     needs: [tag, publish]
     uses: AdGuardSoftwareLimited/actions/.github/workflows/mirror-and-release.yml@master
@@ -71,6 +79,9 @@ jobs:
       changelog: ${{ needs.tag.outputs.changelog }}
       artifact_name: npm-package
     secrets: inherit
+    # `actions: write` — disable workflows in the public mirror
+    # `contents: write` — create GitHub Release on public repo
+    # `id-token: write` — Octopass token for mirror push
     permissions:
       actions: write
       contents: write
