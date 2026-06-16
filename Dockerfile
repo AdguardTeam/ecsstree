@@ -65,8 +65,7 @@ COPY --from=test /out/ /
 
 # ============================================================================
 # Stage: build
-# Creates the library build, runs smoke tests, packs .tgz for npm publish,
-# and exports build.txt for Bamboo variable injection
+# Creates the library build, runs smoke tests, and packs .tgz for npm publish
 # ============================================================================
 FROM source AS build
 
@@ -78,8 +77,7 @@ RUN --mount=type=cache,target=/pnpm-store,id=ecsstree-pnpm \
     pnpm test:smoke && \
     pnpm pack --out ecsstree.tgz && \
     mkdir -p /out/artifacts && \
-    mv ecsstree.tgz /out/artifacts/ && \
-    cp build.txt /out/artifacts/
+    mv ecsstree.tgz /out/artifacts/
 
 FROM scratch AS build-output
 COPY --from=build /out/artifacts/ /
