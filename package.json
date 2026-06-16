@@ -1,6 +1,5 @@
 {
   "name": "@adguard/ecss-tree",
-  "version": "2.0.1",
   "description": "Adblock Extended CSS fork for CSSTree",
   "author": "AdGuard Software Ltd. <https://adguard.com>",
   "license": "MIT",
