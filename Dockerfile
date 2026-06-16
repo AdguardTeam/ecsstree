@@ -29,23 +29,6 @@ FROM deps AS source
 COPY . /ecsstree
 
 # ============================================================================
-# Stage: lint
-# Runs ESLint and markdownlint
-# ============================================================================
-FROM source AS lint
-
-ARG BUILD_RUN_ID=""
-
-RUN --mount=type=cache,target=/pnpm-store,id=ecsstree-pnpm \
-    echo "${BUILD_RUN_ID}" > /tmp/.build-run-id && \
-    mkdir -p /out && \
-    touch /out/lint.txt && \
-    pnpm lint
-
-FROM scratch AS lint-output
-COPY --from=lint /out/ /
-
-# ============================================================================
 # Stage: test
 # Runs ESLint and vitest, fails the build on error
 # ============================================================================
