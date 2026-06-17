@@ -41,6 +41,10 @@ RUN --mount=type=cache,target=/pnpm-store,id=ecsstree-pnpm \
     pnpm lint && \
     pnpm test && \
     pnpm build && \
+    # Smoke tests call pnpm pack, which requires a version field.
+    # Use a placeholder; the real version is injected at release time.
+    npm pkg set version="0.0.0" && \
+    pnpm test:smoke && \
     mkdir -p /out && \
     touch /out/test-passed.txt
 
