@@ -103,7 +103,9 @@ repository `AdguardTeam/ecsstree`.
 - You MUST update the unit tests for changed code.
 
 - When making changes to the project structure, ensure the Project
-  Structure section in `AGENTS.md` is updated and remains valid.
+  Structure section in `AGENTS.md` is updated and remains valid. Apply
+  the same to `DEVELOPMENT.md` and `DEPLOYMENT.md` if related changes
+  were made to them.
 
 - When modifying CI workflows, ensure `prepare-release.yml` and
   `publish-release.yml` stay in sync. The version is derived from git
@@ -127,8 +129,7 @@ Design for a library:
   a drop-in replacement.
 - Keep the AST structure identical to CSSTree — only the parser's
   internal behavior changes. Do not introduce new AST node types.
-- Maintain backwards compatibility with CSSTree functions and vice
-  versa.
+- Maintain backwards compatibility with CSSTree functions and vice versa.
 
 ### Architecture
 

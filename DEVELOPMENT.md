@@ -53,6 +53,11 @@ git clone git@github.com:AdGuardSoftwareLimited/ext-ecsstree.git
 cd ext-ecsstree
 ```
 
+> **Note:** If you only need to use or extend the library, you can
+> clone the
+> [public mirror](https://github.com/AdguardTeam/ecsstree)
+> instead.
+
 ### Install Dependencies
 
 ```bash

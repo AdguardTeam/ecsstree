@@ -87,10 +87,8 @@ Manually triggered workflow that opens a release pull request.
 Calls the shared `create-release-pr.yml` workflow from
 `AdGuardSoftwareLimited/actions` which:
 
-1. Validates the tag and resolves version metadata via
-   `version-metadata.yml`
-2. Patches `CHANGELOG.md` — resets `[Unreleased]`, creates a new version
-   section with previously-unreleased entries, updates reference links
+1. Validates the tag and resolves version metadata via `version-metadata.yml`
+2. Patches `CHANGELOG.md` — resets `[Unreleased]`, adds a new version section, updates reference links
 3. Commits the changelog on a `release-bump/v{version}` branch
 4. Opens a PR (attributed to the Octopass app via Octopass token)
 
@@ -113,7 +111,7 @@ Jobs (sequential, each depends on the previous):
 | --- | --- | --- |
 | `tag` | `team-extensions` (shared) | Parse CHANGELOG, create `v{version}` tag |
 | `build` | `team-extensions` | Inject version, lint and test via Docker, build `ecsstree.tgz` |
-| `publish` | `ubuntu-latest` (container: `node:24`) | Publish to npm via trusted publishing |
+| `publish` | `ubuntu-latest` | Publish to npm via trusted publishing |
 | `mirror-and-release` | `team-extensions` (shared) | Mirror to public repo, create GitHub Release |
 | `notify` | `team-extensions` (shared) | Slack notification |
 
@@ -184,9 +182,7 @@ even if Slack is unreachable.
 
 ## Troubleshooting
 
-### Release pipeline fails with "No released version found in
-
-CHANGELOG.md"
+### Release pipeline fails with "No released version found in CHANGELOG.md"
 
 The `publish-release.yml` workflow expects `CHANGELOG.md` to follow
 keepachangelog format with bracket version headings
