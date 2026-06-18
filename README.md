@@ -21,7 +21,7 @@ and vice versa without any problems.
 > [AdGuardSoftwareLimited/ext-ecsstree](https://github.com/AdGuardSoftwareLimited/ext-ecsstree).
 > The [AdguardTeam/ecsstree](https://github.com/AdguardTeam/ecsstree)
 > repository is a public mirror.
-
+>
 > [!NOTE]
 > If you are looking for a library that can parse CSS, but you don't know what is Adblock
 > or Extended CSS, you should probably use [CSSTree](https://github.com/csstree/csstree) instead of this library :)

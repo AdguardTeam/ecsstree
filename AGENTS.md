@@ -8,14 +8,14 @@
 - [Build And Test Commands](#build-and-test-commands)
 - [Contribution Instructions](#contribution-instructions)
 - [Code Guidelines](#code-guidelines)
-  - [System Design](#system-design)
-  - [Architecture](#architecture)
-  - [Code Quality](#code-quality)
-  - [Testing](#testing)
-  - [Dependency Management](#dependency-management)
-  - [Configuration & Documentation](#configuration--documentation)
-  - [Releases & CI/CD](#releases--cicd)
-  - [Markdown Formatting](#markdown-formatting)
+    - [System Design](#system-design)
+    - [Architecture](#architecture)
+    - [Code Quality](#code-quality)
+    - [Testing](#testing)
+    - [Dependency Management](#dependency-management)
+    - [Configuration & Documentation](#configuration--documentation)
+    - [Releases & CI/CD](#releases--cicd)
+    - [Markdown Formatting](#markdown-formatting)
 
 ## Project Overview
 
@@ -37,7 +37,7 @@ repository `AdguardTeam/ecsstree`.
 ## Technical Context
 
 | Category | Detail |
-|---|---|
+| --- | --- |
 | **Language / Version** | JavaScript (ES module, `"type": "module"`) |
 | **Runtime** | Node.js >= 20; browser consumers |
 | **Package Manager** | pnpm 10.x |
@@ -83,7 +83,7 @@ repository `AdguardTeam/ecsstree`.
 ## Build And Test Commands
 
 | Command | Description |
-|---|---|
+| --- | --- |
 | `pnpm build` | Build CJS + ESM + type declarations via Rollup |
 | `pnpm test` | Run vitest test suite |
 | `pnpm lint` | Run ESLint + markdownlint |

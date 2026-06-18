@@ -3,20 +3,20 @@
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
-  - [Required Tools](#required-tools)
-  - [Recommended Tools](#recommended-tools)
+    - [Required Tools](#required-tools)
+    - [Recommended Tools](#recommended-tools)
 - [Getting Started](#getting-started)
-  - [Clone the Repository](#clone-the-repository)
-  - [Install Dependencies](#install-dependencies)
-  - [Verify the Setup](#verify-the-setup)
+    - [Clone the Repository](#clone-the-repository)
+    - [Install Dependencies](#install-dependencies)
+    - [Verify the Setup](#verify-the-setup)
 - [Development Workflow](#development-workflow)
-  - [Branching Strategy](#branching-strategy)
-  - [Code Style](#code-style)
-  - [Running Tests](#running-tests)
-  - [Building](#building)
+    - [Branching Strategy](#branching-strategy)
+    - [Code Style](#code-style)
+    - [Running Tests](#running-tests)
+    - [Building](#building)
 - [Common Tasks](#common-tasks)
-  - [Running a Single Test File](#running-a-single-test-file)
-  - [Running the Full CI Pipeline Locally](#running-the-full-ci-pipeline-locally)
+    - [Running a Single Test File](#running-a-single-test-file)
+    - [Running the Full CI Pipeline Locally](#running-the-full-ci-pipeline-locally)
 - [Project Structure](#project-structure)
 - [Troubleshooting](#troubleshooting)
 - [Additional Resources](#additional-resources)
@@ -27,7 +27,7 @@
 
 <!-- markdownlint-disable MD013 -->
 | Tool | Minimum Version | How to Check |
-|---|---|---|
+| --- | --- | --- |
 | **Node.js** | 20.x (latest LTS recommended) | `node --version` |
 | **pnpm** | 10.x | `pnpm --version` |
 <!-- markdownlint-enable MD013 -->
@@ -130,7 +130,7 @@ pnpm test -- --coverage
 
 <!-- markdownlint-disable MD013 -->
 | Output | Path | Format |
-|---|---|---|
+| --- | --- | --- |
 | ESM bundle | `dist/ecsstree.js` | ES Module |
 | CJS bundle | `dist/ecsstree.cjs` | CommonJS |
 | Type declarations | `dist/ecsstree.d.ts` | TypeScript declarations |
