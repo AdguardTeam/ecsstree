@@ -1,6 +1,5 @@
 {
   "name": "@adguard/ecss-tree",
-  "version": "2.0.1",
   "description": "Adblock Extended CSS fork for CSSTree",
   "author": "AdGuard Software Ltd. <https://adguard.com>",
   "license": "MIT",
@@ -77,7 +76,7 @@
     "prepare": "node .husky/install.js",
     "lint": "eslint . --cache && markdownlint .",
     "test": "vitest",
-    "build": "rimraf dist && rollup --config rollup.config.js && node tasks/build-txt.js",
+    "build": "rimraf dist && rollup --config rollup.config.js",
     "test:smoke": "(cd test/smoke/esm && pnpm test) && (cd test/smoke/cjs && pnpm test) && (cd test/smoke/typescript && pnpm test)"
   },
   "pnpm": {

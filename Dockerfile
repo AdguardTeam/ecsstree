@@ -29,26 +29,8 @@ FROM deps AS source
 COPY . /ecsstree
 
 # ============================================================================
-# Stage: lint
-# Runs ESLint and markdownlint
-# ============================================================================
-FROM source AS lint
-
-ARG BUILD_RUN_ID=""
-
-RUN --mount=type=cache,target=/pnpm-store,id=ecsstree-pnpm \
-    echo "${BUILD_RUN_ID}" > /tmp/.build-run-id && \
-    mkdir -p /out && \
-    touch /out/lint.txt && \
-    pnpm lint
-
-FROM scratch AS lint-output
-COPY --from=lint /out/ /
-
-# ============================================================================
 # Stage: test
-# Runs vitest
-# Always exits 0 — exit code stored in /out/exit-code.txt for Bamboo to check
+# Runs ESLint and vitest, fails the build on error
 # ============================================================================
 FROM source AS test
 
@@ -56,16 +38,22 @@ ARG BUILD_RUN_ID=""
 
 RUN --mount=type=cache,target=/pnpm-store,id=ecsstree-pnpm \
     echo "${BUILD_RUN_ID}" > /tmp/.build-run-id && \
+    pnpm lint && \
+    pnpm test && \
+    pnpm build && \
+    # Smoke tests call pnpm pack, which requires a version field.
+    # Use a placeholder; the real version is injected at release time.
+    npm pkg set version="0.0.0" && \
+    pnpm test:smoke && \
     mkdir -p /out && \
-    pnpm test; echo $? > /out/exit-code.txt
+    touch /out/test-passed.txt
 
 FROM scratch AS test-output
 COPY --from=test /out/ /
 
 # ============================================================================
 # Stage: build
-# Creates the library build, runs smoke tests, packs .tgz for npm publish,
-# and exports build.txt for Bamboo variable injection
+# Creates the library build, runs smoke tests, and packs .tgz for npm publish
 # ============================================================================
 FROM source AS build
 
@@ -77,8 +65,7 @@ RUN --mount=type=cache,target=/pnpm-store,id=ecsstree-pnpm \
     pnpm test:smoke && \
     pnpm pack --out ecsstree.tgz && \
     mkdir -p /out/artifacts && \
-    mv ecsstree.tgz /out/artifacts/ && \
-    cp build.txt /out/artifacts/
+    mv ecsstree.tgz /out/artifacts/
 
 FROM scratch AS build-output
-COPY --from=build /out/ /
+COPY --from=build /out/artifacts/ /
