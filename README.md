@@ -17,6 +17,11 @@ Extended CSS (ECSS) language elements, but we don't change the API or the AST st
 Therefore ECSSTree fully backwards compatible with CSSTree, so you can pass our AST to CSSTree functions
 and vice versa without any problems.
 
+> **Note:** This package is developed in
+> [AdGuardSoftwareLimited/ext-ecsstree](https://github.com/AdGuardSoftwareLimited/ext-ecsstree).
+> The [AdguardTeam/ecsstree](https://github.com/AdguardTeam/ecsstree)
+> repository is a public mirror.
+>
 > [!NOTE]
 > If you are looking for a library that can parse CSS, but you don't know what is Adblock
 > or Extended CSS, you should probably use [CSSTree](https://github.com/csstree/csstree) instead of this library :)
@@ -319,7 +324,7 @@ various rewards, see [this page][contribute] for details.
 Make sure you have the following tools installed:
 
 1. Node.js (latest LTS version is recommended)
-1. Yarn
+1. [pnpm](https://pnpm.io/)
 
 #### Commands
 
@@ -332,6 +337,13 @@ During development, you can use the following commands (listed in `package.json`
 [eslint]: https://eslint.org/
 [jest]: https://jestjs.io/
 [rollup]: https://rollupjs.org/
+
+## Documentation
+
+- [Development](DEVELOPMENT.md)
+- [Deployment](DEPLOYMENT.md)
+- [Changelog](CHANGELOG.md)
+- [LLM agent rules](AGENTS.md)
 
 ## License
 

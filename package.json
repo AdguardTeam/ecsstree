@@ -23,7 +23,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AdguardTeam/ecsstree.git"
+    "url": "git+https://github.com/AdGuardSoftwareLimited/ext-ecsstree.git"
   },
   "bugs": {
     "url": "https://github.com/AdguardTeam/ecsstree/issues"
@@ -40,7 +40,10 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "dependencies": {
     "@adguard/css-tokenizer": "^1.2.0",
