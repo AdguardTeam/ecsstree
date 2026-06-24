@@ -19,6 +19,9 @@ jobs:
       - name: Build and test via Docker
         run: DOCKER_BUILDKIT=1 docker build --progress plain --target test-output .
 
+      - name: Set placeholder version
+        run: npm pkg set version="0.0.0"
+
       - name: Build release artifacts
         run: DOCKER_BUILDKIT=1 docker build --progress plain --target build-output --output ./artifacts .
 
