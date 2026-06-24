@@ -59,7 +59,7 @@ jobs:
     with:
       artifact-name: npm-package
       package-file: ecsstree.tgz
-      environment: extensions
+      environment: npm
     # `contents: read` — download artifact only
     # `id-token: write` — npm Trusted Publishing via OIDC
     permissions:
