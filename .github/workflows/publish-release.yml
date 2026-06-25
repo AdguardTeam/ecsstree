@@ -1,11 +1,6 @@
 name: Publish release
 
-description: >-
-  Tags the release commit, builds, tests, publishes to npm,
-  mirrors to the public repo, drafts a GitHub Release, and notifies Slack.
-
 on:
-  # Release PRs are always internal (created by prepare-release.yml).
   pull_request:
     types: [closed]
     branches: [master]
@@ -17,97 +12,11 @@ on:
         type: string
 
 jobs:
-  tag:
-    uses: AdGuardSoftwareLimited/actions/.github/workflows/tag-from-changelog.yml@master
-    with:
-      ref: ${{ inputs.ref || github.event.pull_request.merge_commit_sha || github.ref_name }}
-      team: extensions
-    # `contents: write` — create the git tag
-    permissions:
-      contents: write
-
-  build:
-    name: Test and build
-    needs: tag
-    runs-on: team-extensions
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-        with:
-          ref: ${{ inputs.ref || github.event.pull_request.merge_commit_sha || github.ref_name }}
-
-      # Version is not kept in source; it is parsed from CHANGELOG
-      # by the tag job and injected here before building.
-      - name: Inject version into package.json
-        run: npm pkg set version="${{ needs.tag.outputs.version }}"
-
-      - name: Lint and test
-        run: DOCKER_BUILDKIT=1 docker build --progress plain --target test-output .
-
-      - name: Build release artifacts
-        run: DOCKER_BUILDKIT=1 docker build --progress plain --target build-output --output ./artifacts .
-
-      - name: Upload npm package
-        uses: actions/upload-artifact@v7
-        with:
-          name: npm-package
-          path: artifacts/ecsstree.tgz
-
   publish:
-    needs: build
-    uses: AdGuardSoftwareLimited/actions/.github/workflows/deploy-to-npm.yml@master
+    uses: AdGuardSoftwareLimited/ext-shared-actions/.github/workflows/publish-release.yml@master
     with:
-      artifact-name: npm-package
-      package-file: ecsstree.tgz
-      environment: npm
-    # `contents: read` — download artifact only
-    # `id-token: write` — npm Trusted Publishing via OIDC
-    permissions:
-      contents: read
-      id-token: write
-
-  # Mirrors the tag to the public repo and creates a GitHub Release there
-  # (with changelog + artifact). Separate from mirror.yml (code sync on push).
-  mirror-and-release:
-    needs: [tag, publish]
-    uses: AdGuardSoftwareLimited/actions/.github/workflows/mirror-and-release.yml@master
-    with:
-      team: extensions
+      package_file: ecsstree.tgz
+      npm_package_name: "@adguard/ecss-tree"
       target_repo: AdguardTeam/ecsstree
-      tag: ${{ needs.tag.outputs.tag }}
-      changelog: ${{ needs.tag.outputs.changelog }}
-      artifact_name: npm-package
+      ref: ${{ inputs.ref }}
     secrets: inherit
-    # `actions: write` — disable workflows in the public mirror
-    # `contents: write` — create GitHub Release on public repo
-    # `id-token: write` — Octopass token for mirror push
-    permissions:
-      actions: write
-      contents: write
-      id-token: write
-
-  notify-success:
-    name: Notify (success)
-    needs: [tag, publish, mirror-and-release]
-    if: ${{ needs.publish.result == 'success' && needs.mirror-and-release.result == 'success' }}
-    runs-on: team-extensions
-    steps:
-      - name: Send Slack notification
-        uses: AdGuardSoftwareLimited/actions/actions/slack@master
-        with:
-          channel: '#adguard-extension-vcs'
-          message: ':white_check_mark: *@adguard/ecss-tree* *v${{ needs.tag.outputs.version }}* published to npm — <${{ needs.mirror-and-release.outputs.release-url }}|release> | <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|run>'
-          color: good
-
-  notify-failure:
-    name: Notify (failure)
-    needs: [tag, publish, mirror-and-release]
-    if: ${{ always() && needs.tag.result == 'success' && (needs.publish.result != 'success' || needs.mirror-and-release.result != 'success') }}
-    runs-on: team-extensions
-    steps:
-      - name: Send Slack notification
-        uses: AdGuardSoftwareLimited/actions/actions/slack@master
-        with:
-          channel: '#adguard-extension-vcs'
-          message: ':cross-mark: *@adguard/ecss-tree* *v${{ needs.tag.outputs.version }}* publish failed (publish: ${{ needs.publish.result }}, release: ${{ needs.mirror-and-release.result }}) — <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|run>'
-          color: danger
