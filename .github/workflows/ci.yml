@@ -10,7 +10,6 @@ on:
 
 jobs:
   test:
-    name: Lint, test, build
     uses: AdGuardSoftwareLimited/ext-shared-actions/.github/workflows/test-and-build.yml@master
     with:
       package_file: ecsstree.tgz
