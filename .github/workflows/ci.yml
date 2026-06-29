@@ -4,6 +4,7 @@ description: Lints, tests, and builds on pull requests and pushes to master.
 
 on:
   pull_request:
+  workflow_dispatch:
   push:
     branches:
       - master
