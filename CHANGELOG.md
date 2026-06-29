@@ -22,6 +22,8 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 
 ### Security
 
+## [2.0.3] - 2026-06-29
+
 ## [2.0.2] - 2026-06-19
 
 ## [2.0.1] - 2025-11-21
@@ -30,7 +32,8 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 
 - Parsing of `:upward()` pseudo-class with selector list argument.
 
-[Unreleased]: https://github.com/AdguardTeam/ecsstree/compare/v2.0.2...HEAD
+[Unreleased]: https://github.com/AdguardTeam/ecsstree/compare/v2.0.3...HEAD
+[2.0.3]: https://github.com/AdguardTeam/ecsstree/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/AdguardTeam/ecsstree/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/AdguardTeam/ecsstree/compare/v2.0.0...v2.0.1
 
