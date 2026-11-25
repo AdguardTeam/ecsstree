@@ -45,6 +45,9 @@
     "LICENSE",
     "CHANGELOG.md"
   ],
+  "engines": {
+    "node": ">=22.23.5"
+  },
   "dependencies": {
     "@adguard/css-tokenizer": "^1.2.0",
     "@eslint/css-tree": "3.6.6"

@@ -39,7 +39,7 @@ repository `AdguardTeam/ecsstree`.
 | Category | Detail |
 | --- | --- |
 | **Language / Version** | JavaScript (ES module, `"type": "module"`) |
-| **Runtime** | Node.js >= 20; browser consumers |
+| **Runtime** | Node.js >= 22.23.5; browser consumers |
 | **Package Manager** | pnpm 10.x |
 | **Build** | Rollup 4 (via SWC) → CJS + ESM + type declarations |
 | **Test** | vitest 3.x |

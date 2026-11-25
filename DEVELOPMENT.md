@@ -28,7 +28,7 @@
 <!-- markdownlint-disable MD013 -->
 | Tool | Minimum Version | How to Check |
 | --- | --- | --- |
-| **Node.js** | 20.x (latest LTS recommended) | `node --version` |
+| **Node.js** | 22.23.5+ (latest LTS recommended) | `node --version` |
 | **pnpm** | 10.x | `pnpm --version` |
 <!-- markdownlint-enable MD013 -->
 
